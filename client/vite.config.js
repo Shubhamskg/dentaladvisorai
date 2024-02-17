@@ -10,7 +10,7 @@ export default defineConfig({
     // port:3000,
     proxy: {
       "/api": {
-        target: process.env.SERVER_URL,
+        target: https://dentaladvisor.onrender.com/,
         changeOrigin: true,
         secure: true,
         

@@ -250,6 +250,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
   if(option=='general') placeholder='Ask Dental Query'
   else if(option=='notes') placeholder='Please provide appointment details here'
   else placeholder='Please provide details of the letter you would like to write'
+  
 
   return (
     <div className="inputArea">
@@ -272,9 +273,9 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           <option value="Review Note">Review Notes</option>
         </select>
       </div>
-      <div className="type-selector">
+      {/* <div className="type-selector">
         <input onChange={(e)=>{setQ1(e.target.value)}} className="type" placeholder="What appointment should I write notes for?"/>
-      </div>
+      </div> */}
       <div className="type-selector">
         <input onChange={(e)=>{setQ2(e.target.value)}} className="type" placeholder="Did the patient mention anything specific or did the dentist discuss anything with the patient?"/>
       </div>
@@ -301,7 +302,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
                 placeholder={placeholder}
                 ref={textAreaRef}
                 onChange={(e) => {
-                  dispatch(livePrompt(e.target.value))}}
+                  dispatch(livePrompt(`${e.target.value} ${q2?`. Additional Details to consider while writing clinical notes - Patient or dentist mention - ${q2}`:''} ${q3?`, Materila or instrutment used - ${q3}`:''} ${q4?`, plan for next appointment - ${q4}`:''} `))}}
                 onKeyDown={(evt)=>{
                 var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
                 if(keyCode==13){

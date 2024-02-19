@@ -66,7 +66,38 @@ const Chat = forwardRef(({ error }, ref) => {
       }
     }
   }))
-
+  function timeSince(time) {
+    const timestamp=new Date(time)
+    const now = Date.now();
+    if (isNaN(timestamp)) {
+      return "Invalid timestamp";
+    }
+    const difference = now - timestamp;
+    const seconds = difference / 1000;
+    if (seconds > 31536000) {
+      const years = Math.floor(seconds / 31536000);
+      return years === 1 ? "1 year ago" : `${years} years ago`;
+    } else if (seconds > 2592000) {
+      const months = Math.floor(seconds / 2592000);
+      return months === 1 ? "1 month ago" : `${months} months ago`;
+    }
+    const units = [
+      { time: 31536000, label: "year" },
+      { time: 2592000, label: "month" },
+      { time: 86400, label: "day" },
+      { time: 3600, label: "hour" },
+      { time: 60, label: "minute" },
+      { time: 1, label: "second" }
+    ];
+    for (const unit of units) {
+      if (seconds >= unit.time) {
+        const count = Math.floor(seconds / unit.time);
+        return count === 1 ? `${count} ${unit.label} ago` : `${count} ${unit.label}s ago`;
+      }
+    }
+    return "Just now";
+  }
+  
   return (
     <div className='Chat'>
       
@@ -111,7 +142,6 @@ const Chat = forwardRef(({ error }, ref) => {
       }
       {
         all?.filter((obj) => {
-          console.log(obj)
           return !obj.id ? true : obj?.id !== latest?.id
         })?.reverse().map((obj, key) => {
           return (
@@ -121,9 +151,7 @@ const Chat = forwardRef(({ error }, ref) => {
                   {user?.fName?.charAt(0)}
                 </div>
                 <div className='txt'>
-                  <span>{obj?.prompt}</span>
-                  <br/>
-                  <span>{obj?.createdAt}</span>
+                  <span>{obj?.prompt}<h4>{timeSince(obj.createdAt)}</h4></span>
                   {obj?.prompt && 
                 <div className="copy">
                   <CopyButton text={obj?.prompt} />

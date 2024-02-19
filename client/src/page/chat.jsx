@@ -240,6 +240,11 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
       }
     }
   };
+   // `${q1?'Write Clinical notes for '+q1+' appointment.':''} 
+                    // ${q2?'Patient/Dentist mention- '+q2+' .':''} 
+                    // ${q3?'Material/Instrument use- '+q3+' .':''} 
+                    // ${q4?'Plan for next appointment- '+q4+' .':''}
+                    // ${e.target.value}`));
   
   let placeholder='';
   if(option=='general') placeholder='Ask Dental Query'
@@ -296,13 +301,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
                 placeholder={placeholder}
                 ref={textAreaRef}
                 onChange={(e) => {
-                  dispatch(livePrompt(
-                    `${q1?'Write Clinical notes for '+q1+' appointment.':''} 
-                    ${q2?'Patient/Dentist mention- '+q2+' .':''} 
-                    ${q3?'Material/Instrument use- '+q3+' .':''} 
-                    ${q4?'Plan for next appointment- '+q4+' .':''}
-                    ${e.target.value}`));
-                }}
+                  dispatch(livePrompt(e.target.value))}}
                 onKeyDown={(evt)=>{
                 var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
                 if(keyCode==13){
@@ -331,6 +330,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
                         chatRef.current.loadResponse(stateAction);
                       }}
                     >
+                      
                       <Reload />
                     </button>
                   </div>

@@ -20,8 +20,8 @@ let historySlice = createSlice({
 
             if (pos) {
                 let obj = state[pos]
-                state.splice(pos,1)
-                state.unshift(obj)
+                // state.splice(pos,1)
+                // state.unshift(obj)
             }
 
             return state

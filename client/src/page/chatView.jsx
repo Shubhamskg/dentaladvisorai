@@ -121,37 +121,7 @@ const ChatView = () => {
       }, 1000);
     }
   }, [location]);
-  function timeSince(time) {
-    const timestamp=new Date(time)
-    const now = Date.now();
-    if (isNaN(timestamp)) {
-      return "";
-    }
-    const difference = now - timestamp;
-    const seconds = difference / 1000;
-    if (seconds > 31536000) {
-      const years = Math.floor(seconds / 31536000);
-      return years === 1 ? "1 year ago" : `${years} years ago`;
-    } else if (seconds > 2592000) {
-      const months = Math.floor(seconds / 2592000);
-      return months === 1 ? "1 month ago" : `${months} months ago`;
-    }
-    const units = [
-      { time: 31536000, label: "year" },
-      { time: 2592000, label: "month" },
-      { time: 86400, label: "day" },
-      { time: 3600, label: "hour" },
-      { time: 60, label: "minute" },
-      { time: 1, label: "second" }
-    ];
-    for (const unit of units) {
-      if (seconds >= unit.time) {
-        const count = Math.floor(seconds / unit.time);
-        return count === 1 ? `${count} ${unit.label} ago` : `${count} ${unit.label}s ago`;
-      }
-    }
-    return "Just now";
-  }
+  
   return (
     <div className="table">
     <h1>Chat View DashBoard</h1>
@@ -169,7 +139,7 @@ const ChatView = () => {
   {chats && chats.map((chat, index) => (
     <>
           {/* <tr key={index}> */}
-            {chat.createdAt.map((time,ind)=>{
+            {chat.prompt.map((time,ind)=>{
               console.log(time,ind)
               return (
            <>

@@ -154,7 +154,7 @@ router.post('/', CheckUser, async (req, res) => {
             response.openai=res.text()}
     console.log(response.openai)
     if(response.openai){
-        response.db = await chat.newResponse(prompt, response, userId,threadId)
+        response.db = await chat.newResponse(prompt, response, userId,threadId,option,type)
     }
     } catch (err) {
         // console.log("error",err)
@@ -240,7 +240,7 @@ router.put('/', CheckUser, async (req, res) => {
     }
     console.log(response.openai)
         if(response.openai){
-            response.db = await chat.updateChat(chatId, prompt, response, userId,threadId)
+            response.db = await chat.updateChat(chatId, prompt, response, userId,threadId,option,type)
         }
     } catch (err) {
         console.log("error",err)

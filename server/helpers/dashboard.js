@@ -57,7 +57,7 @@ export default {
                     $limit: 50
                 }, {
                     $sort: {
-                        chatId: -1
+                        createdAt: -1
                     }
                 }
             ]).toArray().catch((err) => {

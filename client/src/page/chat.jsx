@@ -190,7 +190,9 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
   });
   
     const FormHandle = async () => {
-    
+    setQ2('')
+    setQ3('')
+    setQ4('')
     if (prompt?.length > 0) {
       stateAction({ type: "chat", status: true });
 

@@ -8,7 +8,9 @@ let messagesSlice = createSlice({
         _id: null,
         latest: {
             prompt: '',
-            content: ''
+            content: '',
+            option:'',
+            type:''
         },
         all: []
     },
@@ -20,7 +22,9 @@ let messagesSlice = createSlice({
                 _id: null,
                 latest: {
                     prompt: '',
-                    content: ''
+                    content: '',
+                    option:'',
+                    type:''
                 },
                 all: []
             }
@@ -34,7 +38,7 @@ let messagesSlice = createSlice({
         insertNew: (state, { payload }) => {
             const { chatsId, content = null,
                 resume = false, fullContent = null,
-                _id = null, prompt = null } = payload
+                _id = null, prompt = null,option=null,type=null } = payload
 
             if (_id) {
                 state._id = _id

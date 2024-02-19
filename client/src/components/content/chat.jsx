@@ -70,7 +70,7 @@ const Chat = forwardRef(({ error }, ref) => {
     const timestamp=new Date(time)
     const now = Date.now();
     if (isNaN(timestamp)) {
-      return "Invalid timestamp";
+      return "";
     }
     const difference = now - timestamp;
     const seconds = difference / 1000;
@@ -110,7 +110,10 @@ const Chat = forwardRef(({ error }, ref) => {
                 {user?.fName?.charAt(0)}
               </div>
               <div className='txt'>
-                <span>{latest?.prompt}</span>
+                
+                <span>
+                <h4>{latest?.type}</h4>
+                  <p>{latest?.prompt}</p></span>
                 <br/>
                   <span>{latest?.createdAt}</span>
                 {latest?.prompt && 
@@ -151,7 +154,10 @@ const Chat = forwardRef(({ error }, ref) => {
                   {user?.fName?.charAt(0)}
                 </div>
                 <div className='txt'>
-                  <span>{obj?.prompt}<h4>{timeSince(obj.createdAt)}</h4></span>
+                  <span>
+                    <h4>{obj?.type}</h4>
+                    <p>{obj.prompt}</p>
+                    <p>{timeSince(obj.createdAt)}</p></span>
                   {obj?.prompt && 
                 <div className="copy">
                   <CopyButton text={obj?.prompt} />

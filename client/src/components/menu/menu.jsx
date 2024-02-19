@@ -19,7 +19,7 @@ const Menu = ({ changeColorMode }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { history } = useSelector((state) => state)
+  let { history } = useSelector((state) => state)
   const [confirm, setConfim] = useState(false)
 
   const logOut = async () => {
@@ -46,7 +46,6 @@ const Menu = ({ changeColorMode }) => {
       } 
     } catch (err) {
     } finally {
-      // if(res) console.log("res",res)
       if(path=='/')
       navigate('/chat')
     else navigate('/')
@@ -112,6 +111,7 @@ const Menu = ({ changeColorMode }) => {
       } catch (err) {
       } finally {
         if (res?.data) {
+          console.log(res.data.data)
           dispatch(addHistory(res?.data?.data))
         }
       }
@@ -127,7 +127,10 @@ const Menu = ({ changeColorMode }) => {
     chatId = chatId.replace('/', '')
     dispatch(activePage(chatId))
   }, [path, history])
-
+  const history2=[...history]
+  history2.sort((a, b) => a.lastUpdate - b.lastUpdate)
+  history=history2
+  
   return (
     <Fragment>
       <Modal

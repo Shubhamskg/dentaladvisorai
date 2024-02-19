@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 
 
 export default {
-    newResponse: (prompt, { openai }, userId,threadId) => {
+    newResponse: (prompt, { openai }, userId,threadId,option,type) => {
         return new Promise(async (resolve, reject) => {
             let chatId = new ObjectId().toHexString()
             let res = null
@@ -17,9 +17,12 @@ export default {
                         chats: [{
                             createdAt: new Date(),
                             prompt,
-                            content: openai
+                            content: openai,
+                            option:option,
+                            type:type
                         }],
-                        threadId
+                        threadId,
+                        lastUpdate:new Date()
                     }]
                 })
             } catch (err) {
@@ -33,9 +36,12 @@ export default {
                                 chats: [{
                                     createdAt: new Date(),
                                     prompt,
-                                    content: openai
+                                    content: openai,
+                                    option:option,
+                                    type:type
                                 }],
-                                threadId
+                                threadId,
+                                lastUpdate:new Date()
                             }
                         }
                     }).catch((err) => {
@@ -55,7 +61,7 @@ export default {
             }
         })
     },
-    updateChat: (chatId, prompt, { openai }, userId,threadId) => {
+    updateChat: (chatId, prompt, { openai }, userId,threadId,option,type) => {
         return new Promise(async (resolve, reject) => {
             let res = await db.collection(collections.CHAT).updateOne({
                 user: userId.toString(),
@@ -65,8 +71,11 @@ export default {
                     'data.$.chats': {
                         createdAt: new Date(),
                         prompt,
-                        content: openai
-                    }
+                        content: openai,
+                        option:option,
+                        type:type
+                    },
+                    // 'data.lastUpdate':new Date()
                 },
             }).catch((err) => {
                 reject(err)
@@ -155,13 +164,14 @@ export default {
                         chatId: '$data.chatId',
                         prompt: {
                             $arrayElemAt: ['$data.chats.prompt', 0]
-                        }
+                        },
+                        lastUpdate:'$data.lastUpdate'
                     }
                 }, {
                     $limit: 50
                 }, {
                     $sort: {
-                        chatId: -1
+                        lastUpdate: -1
                     }
                 }
             ]).toArray().catch((err) => {

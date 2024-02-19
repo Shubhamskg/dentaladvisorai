@@ -128,6 +128,7 @@ const ChatView = () => {
     <table>
       <thead>
   <tr>
+    <th>Created At</th>
     <th>Input</th>
     <th>Output</th>
     <th>Action</th>
@@ -137,8 +138,9 @@ const ChatView = () => {
   
   {chats && chats.map(chat=> 
     <tr key={chat.chatId}>
-     <td>{chat.prompt.map(val=><p>{val}</p>)}</td>
-     <td>{chat.content.map(val=><p>{val}</p>)}</td>
+     <td>{chat.createdAt?.map(val=><p key={val}>{val}</p>)}</td>
+     <td>{chat.prompt.map(val=><p key={val}>{val}</p>)}</td>
+     <td>{chat.content.map(val=><p key={val}>{val}</p>)}</td>
    </tr>) 
   }
   </tbody>

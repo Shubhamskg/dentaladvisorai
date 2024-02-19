@@ -80,6 +80,8 @@ const Chat = forwardRef(({ error }, ref) => {
               </div>
               <div className='txt'>
                 <span>{latest?.prompt}</span>
+                <br/>
+                  <span>{latest?.createdAt}</span>
                 {latest?.prompt && 
                 <div className="copy">
                   <CopyButton text={latest?.prompt} onCopy={handleCopySuccess} />
@@ -109,6 +111,7 @@ const Chat = forwardRef(({ error }, ref) => {
       }
       {
         all?.filter((obj) => {
+          console.log(obj)
           return !obj.id ? true : obj?.id !== latest?.id
         })?.reverse().map((obj, key) => {
           return (
@@ -119,6 +122,8 @@ const Chat = forwardRef(({ error }, ref) => {
                 </div>
                 <div className='txt'>
                   <span>{obj?.prompt}</span>
+                  <br/>
+                  <span>{obj?.createdAt}</span>
                   {obj?.prompt && 
                 <div className="copy">
                   <CopyButton text={obj?.prompt} />

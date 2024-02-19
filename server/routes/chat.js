@@ -91,6 +91,7 @@ router.get('/', (req, res) => {
   ];
 router.post('/', CheckUser, async (req, res) => {
     const { prompt, userId, option,type } = req.body
+    console.log("first")
     let response = {}
     let parts=[]
     console.log(option)
@@ -151,9 +152,6 @@ router.post('/', CheckUser, async (req, res) => {
                 });
             const res = result.response;
             response.openai=res.text()}
-    // console.log(type)
-    // console.log(option)
-    // console.log(response.openai)
     console.log(response.openai)
     if(response.openai){
         response.db = await chat.newResponse(prompt, response, userId,threadId)
@@ -223,17 +221,12 @@ router.put('/', CheckUser, async (req, res) => {
     }
     
     const messagesResponse = await openai.beta.threads.messages.list(threadId);
-    
     const assistantResponses = messagesResponse.data.filter(msg => msg.role === 'assistant');
-    response.openai = assistantResponses.map(msg => 
-      msg.content
+    response.openai = assistantResponses[0].content
         .filter(contentItem => contentItem.type === 'text')
         .map(textContent => textContent.text.value)
         .join('\n')
-    ).join('\n');
     }
-    // console.log(option)
-    // console.log(type)
     
     if(option!='general'){
     parts.push({text:`input: Write a ${type} notes on ${prompt} `})
@@ -250,7 +243,7 @@ router.put('/', CheckUser, async (req, res) => {
             response.db = await chat.updateChat(chatId, prompt, response, userId,threadId)
         }
     } catch (err) {
-        // console.log("error",err)
+        console.log("error",err)
         res.status(500).json({
             status: 500,
             message: err

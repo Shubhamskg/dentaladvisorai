@@ -48,6 +48,7 @@ export default {
                     $project: {
                         _id: 0,
                         chatId: '$data.chatId',
+                        createdAt:'$data.chats.createdAt',
                         prompt: '$data.chats.prompt', 
                         content: '$data.chats.content'
                     }

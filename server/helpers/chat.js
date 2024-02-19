@@ -2,6 +2,7 @@ import { db } from "../db/connection.js";
 import collections from "../db/collections.js";
 import { ObjectId } from "mongodb";
 
+
 export default {
     newResponse: (prompt, { openai }, userId,threadId) => {
         return new Promise(async (resolve, reject) => {
@@ -14,6 +15,7 @@ export default {
                     data: [{
                         chatId,
                         chats: [{
+                            createdAt: new Date(),
                             prompt,
                             content: openai
                         }],
@@ -29,6 +31,7 @@ export default {
                             data: {
                                 chatId,
                                 chats: [{
+                                    createdAt: new Date(),
                                     prompt,
                                     content: openai
                                 }],
@@ -44,6 +47,7 @@ export default {
             } finally {
                 if (res) {
                     res.chatId = chatId
+                    console.log(res)
                     resolve(res)
                 } else {
                     reject({ text: "DB gets something wrong" })
@@ -59,6 +63,7 @@ export default {
             }, {
                 $push: {
                     'data.$.chats': {
+                        createdAt: new Date(),
                         prompt,
                         content: openai
                     }
@@ -68,6 +73,7 @@ export default {
             })
 
             if (res) {
+                console.log(res)
                 resolve(res)
             } else {
                 reject({ text: "DB gets something wrong" })

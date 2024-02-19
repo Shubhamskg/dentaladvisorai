@@ -93,7 +93,10 @@ router.post('/', CheckUser, async (req, res) => {
     const { prompt, userId, option,type } = req.body
     let response = {}
     let parts=[]
-    console.log('prompt',prompt)
+    console.log(option)
+    console.log(type)
+    console.log(prompt)
+    
     const assistant_id=process.env.ASSISTANT_ID_GENERAL
     const threadResponse = await openai.beta.threads.create();
     const threadId = threadResponse.id;
@@ -151,6 +154,7 @@ router.post('/', CheckUser, async (req, res) => {
     // console.log(type)
     // console.log(option)
     // console.log(response.openai)
+    console.log(response.openai)
     if(response.openai){
         response.db = await chat.newResponse(prompt, response, userId,threadId)
     }
@@ -177,6 +181,9 @@ router.post('/', CheckUser, async (req, res) => {
 router.put('/', CheckUser, async (req, res) => {
     const { prompt, userId, chatId,option ,type} = req.body
     // console.log(type)
+    console.log(option)
+    console.log(type)
+    console.log(prompt)
     const assistant_id=process.env.ASSISTANT_ID_GENERAL
     const threadId = await chat.getThread(userId,chatId)
     let response = {}
@@ -238,7 +245,7 @@ router.put('/', CheckUser, async (req, res) => {
     const res = result.response;
     response.openai=res.text()
     }
-    // console.log(response.openai)
+    console.log(response.openai)
         if(response.openai){
             response.db = await chat.updateChat(chatId, prompt, response, userId,threadId)
         }

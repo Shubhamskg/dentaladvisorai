@@ -240,6 +240,13 @@
                 justify-content: start;
                 align-items: start;
                 flex: 1;
+                display: flex;
+                flex-direction: row;
+            }
+            .playbtn{
+                background: transparent;
+                border: none;
+                cursor: pointer;
             }
             span{
                 flex: 500;
@@ -322,6 +329,13 @@
                 justify-content: start;
                 align-items: start;
                 flex: 1;
+                display: flex;
+                flex-direction: row;
+            }
+            .playbtn{
+                background: transparent;
+                border: none;
+                cursor: pointer;
             }
             span{
                 flex: 100;

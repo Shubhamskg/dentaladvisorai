@@ -1,12 +1,16 @@
 import React, {
   forwardRef,
   Fragment,
-  useImperativeHandle, useRef
+  useImperativeHandle, useRef, useState
 } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { insertNew } from '../../redux/messages'
 import './style.scss'
 import CopyButton from '../../assets/copy';
+import Listen from "../../assets/listen"
+import Stop from "../../assets/stop"
+import Pause from "../../assets/pause"
+import Resume from "../../assets/resume"
 import ReactMarkdown from 'react-markdown';
 
 
@@ -97,6 +101,29 @@ const Chat = forwardRef(({ error }, ref) => {
     }
     return "Just now";
   }
+ 
+  const handleSpeech=(text,p)=>{
+    let synth = window.speechSynthesis;
+    let speech=new SpeechSynthesisUtterance();
+    speech.text=text
+    if(p==0){
+      synth.speak(speech)
+      setPlay(0)
+    }
+    else if(p==1){
+      synth.pause();
+      setPlay(1)
+    }
+    else if(p==2){
+      synth.resume();
+      setPlay(2)
+    }
+    else{
+       synth.cancel();
+       setPlay(3)
+    }
+  }
+  const [play,setPlay]=useState(3)
   
   return (
     <div className='Chat'>
@@ -119,6 +146,7 @@ const Chat = forwardRef(({ error }, ref) => {
                 {latest?.prompt && 
                 <div className="copy">
                   <CopyButton text={latest?.prompt} onCopy={handleCopySuccess} />
+
                   </div>}
               </div>
             </div>
@@ -175,6 +203,10 @@ const Chat = forwardRef(({ error }, ref) => {
                   </span>
                   <div className="copy">
                   <CopyButton text={obj?.content} onCopy={handleCopySuccess} />
+                  {play==3 && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,0)}}><Listen/></button>}
+                  {(play==0 || play==2) && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,1)}}><Pause/></button>}
+                  {play==1 && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,2)}}><Resume/></button>}
+                  {(play==0 || play==2) && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,3)}}><Stop/></button>}
                   </div>
                   
                 </div>

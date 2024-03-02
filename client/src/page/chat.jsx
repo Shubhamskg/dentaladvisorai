@@ -1,5 +1,5 @@
 import React, { useEffect,useLayoutEffect, useReducer, useRef, useState } from "react";
-import { Reload, Rocket, Stop } from "../assets";
+import { Reload, Rocket, Stop, Tick,VoiceRecognitionButton } from "../assets";
 import { Ads,Chat, New } from "../components";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import { setLoading } from "../redux/loading";
@@ -190,6 +190,10 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
   });
   
     const FormHandle = async () => {
+      // q2Ref.current.value=""
+      // q3Ref.current.value=""
+      // q4Ref.current.value=""
+      console.log(prompt)
     setQ2('')
     setQ3('')
     setQ4('')
@@ -242,17 +246,39 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
       }
     }
   };
-   // `${q1?'Write Clinical notes for '+q1+' appointment.':''} 
-                    // ${q2?'Patient/Dentist mention- '+q2+' .':''} 
-                    // ${q3?'Material/Instrument use- '+q3+' .':''} 
-                    // ${q4?'Plan for next appointment- '+q4+' .':''}
-                    // ${e.target.value}`));
   
   let placeholder='';
   if(option=='general') placeholder='Ask Dental Query'
   else if(option=='notes') placeholder='Please provide appointment details here'
   else placeholder='Please provide details of the letter you would like to write'
-  
+  const q2Ref = useRef();
+  const q3Ref = useRef();
+  const q4Ref = useRef();
+  const speechToText=(q)=>{
+    let recognition=new webkitSpeechRecognition();
+    recognition.lang="en-GB";
+    recognition.onresult=function(e){
+      if(q=="q2"){
+        setQ2(e.results[0][0].transcript)
+        q2Ref.current.value=e.results[0][0].transcript
+      }
+      else if(q=="q3"){
+        setQ3(e.results[0][0].transcript)
+        q3Ref.current.value=e.results[0][0].transcript
+      }
+      else if(q=="q4"){
+        setQ4(e.results[0][0].transcript)
+        q4Ref.current.value=e.results[0][0].transcript
+      }
+      else {
+      textAreaRef.current.value=e.results[0][0].transcript;
+      dispatch(livePrompt(`${e.results[0][0].transcript} 
+      ${q2?`. Additional Details to consider while writing clinical notes - Patient or dentist mention - 
+      ${q2}`:''} ${q3?`, Materila or instrutment used - ${q3}`:''} 
+      ${q4?`, plan for next appointment - ${q4}`:''} `))}
+    }
+    recognition.start()
+  }
 
   return (
     <div className="inputArea">
@@ -279,13 +305,16 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         <input onChange={(e)=>{setQ1(e.target.value)}} className="type" placeholder="What appointment should I write notes for?"/>
       </div> */}
       <div className="type-selector">
-        <input onChange={(e)=>{setQ2(e.target.value)}} className="type" placeholder="Did the patient mention anything specific or did the dentist discuss anything with the patient?"/>
+        <input ref={q2Ref} onChange={(e)=>{setQ2(e.target.value)}} className="type" placeholder="Did the patient mention anything specific or did the dentist discuss anything with the patient?"/>
+        <VoiceRecognitionButton className="recorderq" onClick={()=>{speechToText("q2")}} />
       </div>
       <div className="type-selector">
-        <input onChange={(e)=>{setQ3(e.target.value)}} className="type" placeholder="Was any specific material or instruments used?"/>
+        <input ref={q3Ref} onChange={(e)=>{setQ3(e.target.value)}} className="type" placeholder="Was any specific material or instruments used?"/>
+        <VoiceRecognitionButton className="recorderq" onClick={()=>{speechToText("q3")}} />
       </div>
       <div className="type-selector">
-        <input onChange={(e)=>{setQ4(e.target.value)}} className="type" placeholder="What’s the plan for the next appointment?"/>
+        <input ref={q4Ref} onChange={(e)=>{setQ4(e.target.value)}} className="type" placeholder="What’s the plan for the next appointment?"/>
+        <VoiceRecognitionButton className="recorderq" onClick={()=>{speechToText("q4")}} />
       </div>
       </div>:<div className="type-selector">
         <select
@@ -312,9 +341,11 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
                 }
                 }}
               />
+              <VoiceRecognitionButton className="recorder" onClick={()=>{speechToText("text")}} />
               {!status?.loading ? (
                 <>
                 <button onClick={FormHandle}>{<Rocket />}</button>
+                
                 </>
               ) : (
                 <div className="loading">
@@ -323,6 +354,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
                   <div className="dot-3 dot" />
                 </div>
               )}
+             
             </div>
             {status.chat && content?.length > 0 && status.actionBtns && (
               <>
@@ -348,9 +380,11 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
                     </button>
                   </div>
                 )}
+                 
               </>
             )}
           </div>
+          
         </>
       ) : (
         <div className="error">

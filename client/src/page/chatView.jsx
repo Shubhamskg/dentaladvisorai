@@ -138,7 +138,6 @@ const ChatView = () => {
   
   {chats && chats.map((chat, index) => (
     <>
-          {/* <tr key={index}> */}
             {chat.prompt.map((time,ind)=>{
               console.log(time,ind)
               return (
@@ -151,9 +150,6 @@ const ChatView = () => {
             
             </>)
           })}
-          {/* // </tr> */}
-          {/* <h1>next</h1> */}
-          {/* <hr/> */}
           </>
         ))}
 

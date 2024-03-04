@@ -470,7 +470,7 @@ hr{
         gap: 10px;
         background-color: white;
         border-radius: 0.375rem;
-
+        
         .recorderq{
           position: absolute;
           border: none;
@@ -478,15 +478,24 @@ hr{
           background: transparent;
           background-color: white;
           padding: 0.70rem;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          border-radius: 0.375rem;
+          // justify-content: center;
+          // align-items: center;
+          // text-align: center;
+          border-radius: 50%;
           margin-left: 700px;
           cursor: pointer;
           @media screen and (max-width: 1300px) {
             margin-left: 320px;
           }
+        }
+        .red{
+          padding: 4px;
+          margin-top: 9px;
+          border-radius: 50%;
+          height: 32px;
+          width: 32px;
+          background-color: red;
+          color: white;
         }
 
         select{
@@ -598,6 +607,15 @@ hr{
           margin-right: 30px;
           margin-bottom: 5px;
           cursor: pointer;
+        }
+        .red{
+          padding: 4px;
+          margin-top: 2px;
+          border-radius: 50%;
+          height: 32px;
+          width: 32px;
+          background-color: red;
+          color: white;
         }
 
         button {

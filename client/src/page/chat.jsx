@@ -1,5 +1,5 @@
-import React, { useEffect,useLayoutEffect, useReducer, useRef, useState } from "react";
-import { Reload, Rocket, Stop, Tick,VoiceRecognitionButton } from "../assets";
+import React, { useCallback, useEffect,useLayoutEffect, useReducer, useRef, useState } from "react";
+import { Reload, Rocket, Stop, Tick } from "../assets";
 import { Ads,Chat, New } from "../components";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import { setLoading } from "../redux/loading";
@@ -9,6 +9,9 @@ import { emptyUser } from "../redux/user";
 import instance from "../config/instance";
 import "./style.scss";
 import {Menu} from "../components";
+import 'regenerator-runtime/runtime';
+import Speech from "./speech";
+
 
 
 const reducer = (state, { type, status }) => {
@@ -169,7 +172,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
   let textAreaRef = useRef();
   let typeRef=useRef();
   const [type,setType]=useState('')
-  const [q1,setQ1]=useState('')
+  const [area,setArea]=useState('')
   const [q2,setQ2]=useState('')
   const [q3,setQ3]=useState('')
   const [q4,setQ4]=useState('')
@@ -188,15 +191,23 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         textAreaRef.current.scrollHeight + "px";
     });
   });
-  
+  const q2Ref = useRef();
+  const q3Ref = useRef();
+  const q4Ref = useRef();
+  const fn=async()=>{
+    dispatch(livePrompt(`${area? area:""} 
+                  ${q2?`. Additional Details to consider while writing clinical notes - 
+                  Patient or dentist mention - ${q2}`:''} 
+                  ${q3?`, Materila or instrutment used - 
+                  ${q3}`:''} ${q4?`, plan for next appointment - 
+                  ${q4}`:''} `))
+                  console.log(prompt)
+  }
     const FormHandle = async () => {
-      // q2Ref.current.value=""
-      // q3Ref.current.value=""
-      // q4Ref.current.value=""
-      console.log(prompt)
     setQ2('')
     setQ3('')
     setQ4('')
+    setArea('')
     if (prompt?.length > 0) {
       stateAction({ type: "chat", status: true });
 
@@ -251,35 +262,8 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
   if(option=='general') placeholder='Ask Dental Query'
   else if(option=='notes') placeholder='Please provide appointment details here'
   else placeholder='Please provide details of the letter you would like to write'
-  const q2Ref = useRef();
-  const q3Ref = useRef();
-  const q4Ref = useRef();
-  const speechToText=(q)=>{
-    let recognition=new webkitSpeechRecognition();
-    recognition.lang="en-GB";
-    recognition.onresult=function(e){
-      if(q=="q2"){
-        setQ2(e.results[0][0].transcript)
-        q2Ref.current.value=e.results[0][0].transcript
-      }
-      else if(q=="q3"){
-        setQ3(e.results[0][0].transcript)
-        q3Ref.current.value=e.results[0][0].transcript
-      }
-      else if(q=="q4"){
-        setQ4(e.results[0][0].transcript)
-        q4Ref.current.value=e.results[0][0].transcript
-      }
-      else {
-      textAreaRef.current.value=e.results[0][0].transcript;
-      dispatch(livePrompt(`${e.results[0][0].transcript} 
-      ${q2?`. Additional Details to consider while writing clinical notes - Patient or dentist mention - 
-      ${q2}`:''} ${q3?`, Materila or instrutment used - ${q3}`:''} 
-      ${q4?`, plan for next appointment - ${q4}`:''} `))}
-    }
-    recognition.start()
-  }
-
+  
+ 
   return (
     <div className="inputArea">
     
@@ -301,22 +285,21 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           <option value="Review Note">Review Notes</option>
         </select>
       </div>
-      {/* <div className="type-selector">
-        <input onChange={(e)=>{setQ1(e.target.value)}} className="type" placeholder="What appointment should I write notes for?"/>
-      </div> */}
       <div className="type-selector">
         <input ref={q2Ref} onChange={(e)=>{setQ2(e.target.value)}} className="type" placeholder="Did the patient mention anything specific or did the dentist discuss anything with the patient?"/>
-        <VoiceRecognitionButton className="recorderq" onClick={()=>{speechToText("q2")}} />
+        <Speech q2={q2Ref} cls="q" q="q2" set={setQ2} Q2={q2} fn={fn}/>
       </div>
       <div className="type-selector">
         <input ref={q3Ref} onChange={(e)=>{setQ3(e.target.value)}} className="type" placeholder="Was any specific material or instruments used?"/>
-        <VoiceRecognitionButton className="recorderq" onClick={()=>{speechToText("q3")}} />
+    
+        <Speech q3={q3Ref} cls="q" q="q3" set={setQ3} Q3={q3} fn={fn}/>
       </div>
       <div className="type-selector">
         <input ref={q4Ref} onChange={(e)=>{setQ4(e.target.value)}} className="type" placeholder="What’s the plan for the next appointment?"/>
-        <VoiceRecognitionButton className="recorderq" onClick={()=>{speechToText("q4")}} />
+        
+        <Speech q4={q4Ref} cls="q" q="q4" set={setQ4} Q4={q4} fn={fn}/>
       </div>
-      </div>:<div className="type-selector">
+      </div>:<div className="type-selector" >
         <select
           id="type"
           ref={typeRef}
@@ -333,18 +316,23 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
                 placeholder={placeholder}
                 ref={textAreaRef}
                 onChange={(e) => {
-                  dispatch(livePrompt(`${e.target.value} ${q2?`. Additional Details to consider while writing clinical notes - Patient or dentist mention - ${q2}`:''} ${q3?`, Materila or instrutment used - ${q3}`:''} ${q4?`, plan for next appointment - ${q4}`:''} `))}}
+                  setArea(e.target.value)
+                  fn()
+                }}
                 onKeyDown={(evt)=>{
                 var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
                 if(keyCode==13){
+                  fn()
                   FormHandle()
                 }
                 }}
               />
-              <VoiceRecognitionButton className="recorder" onClick={()=>{speechToText("text")}} />
+              
+              <Speech textarea={textAreaRef} cls="" q="text" set={setArea} Area={area} fn={fn}/>
+              
               {!status?.loading ? (
                 <>
-                <button onClick={FormHandle}>{<Rocket />}</button>
+                <button onClick={()=>{fn();FormHandle()}}>{<Rocket />}</button>
                 
                 </>
               ) : (

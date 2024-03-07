@@ -137,17 +137,16 @@ const Chat = forwardRef(({ error }, ref) => {
                 {user?.fName?.charAt(0)}
               </div>
               <div className='txt'>
-                
                 <span>
                 <h4>{latest?.type}</h4>
-                  <p>{latest?.prompt}</p></span>
-                <br/>
-                  <span>{latest?.createdAt}</span>
+                  <p>{latest?.prompt}</p>
+                  <p>{latest?.createdAt}</p></span>
                 {latest?.prompt && 
                 <div className="copy">
                   <CopyButton text={latest?.prompt} onCopy={handleCopySuccess} />
 
                   </div>}
+                  
               </div>
             </div>
 

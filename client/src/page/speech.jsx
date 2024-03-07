@@ -47,8 +47,8 @@ export default function Speech({textarea,cls,q,q2,q3,q4,set,fn}) {
           },[transcript])
   return (
     <>
-        {browserSupportsSpeechRecognition && !listening  && !speechActive && <VoiceRecognitionButton className={`recorder${cls}`} onClick={speechToText} />}
-        {browserSupportsSpeechRecognition && listening && speechActive && <SpeechStop className={`recorder${cls} red`} onClick={stopListening}/>}
+        {browserSupportsSpeechRecognition && !listening  && !speechActive && <VoiceRecognitionButton className={`recorderq`} onClick={speechToText} />}
+        {browserSupportsSpeechRecognition && listening && speechActive && <SpeechStop className={`recorderq red`} onClick={stopListening}/>}
     </>
   )
 }

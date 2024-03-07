@@ -144,7 +144,8 @@ router.post('/', CheckUser, async (req, res) => {
     ).join('\n');
     }
     if(option!='general'){
-    parts.push({text:`input: Write a ${type} notes on ${prompt} `})
+    // parts.push({text:`input: Write a ${type} notes on ${prompt} `})
+    parts.push({text: prompt})
             const result = await model.generateContent({
             contents: [{ role: "user", parts}],
                 generationConfig,
@@ -229,7 +230,7 @@ router.put('/', CheckUser, async (req, res) => {
     }
     
     if(option!='general'){
-    parts.push({text:`input: Write a ${type} notes on ${prompt} `})
+    parts.push({text:prompt})
     const result = await model.generateContent({
     contents: [{ role: "user", parts}],
         generationConfig,

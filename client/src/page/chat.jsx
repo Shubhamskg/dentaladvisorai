@@ -270,7 +270,6 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
       {!status.error ? (
         <>
           <div className="flexBody">
-          
             {option==='general'?"":<div>
             {option==='notes'?<div className="space">
           <div className="type-selector">
@@ -285,6 +284,39 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           <option value="Review Note">Review Notes</option>
         </select>
       </div>
+      </div>
+      :<div className="type-selector" >
+        <select
+          id="type"
+          ref={typeRef}
+          onChange={handleTypeChange} className="type"
+        >
+          <option value="" >Choose Letter type</option>
+          <option value="Patient Letter">Patient Letter</option>
+          <option value="Dentist Letter">Dentist Letter</option>
+        </select>
+      </div>}</div>}
+          <div className="box">
+            
+            <textarea  
+              placeholder={placeholder}
+              ref={textAreaRef}
+              onChange={(e) => {
+                setArea(e.target.value)
+                fn()
+              }}
+              // onKeyDown={(evt)=>{
+              // var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
+              // if(keyCode==13){
+              //   if(area.length>0){fn();FormHandle()}
+              // }
+              // }}
+            />
+            
+            <Speech textarea={textAreaRef} cls="" q="text" set={setArea} Area={area} fn={fn}/>
+          </div>
+            {option==='notes'?<div className="space">
+         
       <div className="type-selector">
         <input ref={q2Ref} onChange={(e)=>{setQ2(e.target.value)}} className="type" placeholder="Did the patient mention anything specific or did the dentist discuss anything with the patient?"/>
         <Speech q2={q2Ref} cls="q" q="q2" set={setQ2} Q2={q2} fn={fn}/>
@@ -299,51 +331,23 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         
         <Speech q4={q4Ref} cls="q" q="q4" set={setQ4} Q4={q4} fn={fn}/>
       </div>
-      </div>:<div className="type-selector" >
-        <select
-          id="type"
-          ref={typeRef}
-          onChange={handleTypeChange} className="type"
-        >
-          <option value="" >Choose Letter type</option>
-          <option value="Patient Letter">Patient Letter</option>
-          <option value="Dentist Letter">Dentist Letter</option>
-        </select>
-      </div>}</div>}
-            <div className="box">
-            
-              <textarea  
-                placeholder={placeholder}
-                ref={textAreaRef}
-                onChange={(e) => {
-                  setArea(e.target.value)
-                  fn()
-                }}
-                onKeyDown={(evt)=>{
-                var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
-                if(keyCode==13){
-                  fn()
-                  FormHandle()
-                }
-                }}
-              />
+      </div>
+      :''}
+      {!status?.loading ? (
+              <div className="boxs">
+              <button onClick={()=>{if(area.length>0){fn();FormHandle()}}}>
+                {<Rocket />}
+              </button>
               
-              <Speech textarea={textAreaRef} cls="" q="text" set={setArea} Area={area} fn={fn}/>
-              
-              {!status?.loading ? (
-                <>
-                <button onClick={()=>{fn();FormHandle()}}>{<Rocket />}</button>
-                
-                </>
-              ) : (
-                <div className="loading">
-                  <div className="dot" />
-                  <div className="dot-2 dot" />
-                  <div className="dot-3 dot" />
-                </div>
-              )}
-             
-            </div>
+              </div>
+            ) : (
+              <div className="loading">
+                <div className="dot" />
+                <div className="dot-2 dot" />
+                <div className="dot-3 dot" />
+              </div>
+            )}
+           
             {status.chat && content?.length > 0 && status.actionBtns && (
               <>
                 {!status?.resume ? (

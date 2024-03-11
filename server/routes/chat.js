@@ -58,65 +58,73 @@ const openai = new OpenAI({
 router.get('/', (req, res) => {
     res.send("Welcome to Dental Advisor api v1")
 })
-// let assistant_id=process.env.ASSISTANT_ID_GENERAL
-  const MODEL_NAME = "gemini-1.0-pro";
-  const API_KEY =process.env.GEMINI_API_KEY
-  const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
+let assistant_id=process.env.ASSISTANT_ID_GENERAL
 
-  const generationConfig = {
-    temperature: 0.9,
-    topK: 1,
-    topP: 1,
-    maxOutputTokens: 2048,
-  };
+//   const MODEL_NAME = "gemini-1.0-pro";
+//   const API_KEY =process.env.GEMINI_API_KEY
+//   const genAI = new GoogleGenerativeAI(API_KEY);
+//   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-  ];
+//   const generationConfig = {
+//     temperature: 0.9,
+//     topK: 1,
+//     topP: 1,
+//     maxOutputTokens: 2048,
+//   };
+
+//   const safetySettings = [
+//     {
+//       category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+//       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+//     },
+//     {
+//       category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+//       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+//     },
+//     {
+//       category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+//       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+//     },
+//     {
+//       category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+//       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+//     },
+//   ];
 router.post('/', CheckUser, async (req, res) => {
     const { prompt, userId, option,type } = req.body
-    console.log("first")
+    // console.log("first")
     let response = {}
     let parts=[]
-    console.log(option)
-    console.log(type)
-    console.log(prompt)
+    // console.log(option)
+    // console.log(type)
+    // console.log(prompt)
+    if(option=="letters"){
+        assistant_id=process.env.ASSISTANT_ID_LETTERS
+    }else if(option=="notes"){
+        assistant_id=process.env.ASSISTANT_ID_NOTES
+    }else{
+        assistant_id=process.env.ASSISTANT_ID_GENERAL
+    }
     
-    const assistant_id=process.env.ASSISTANT_ID_GENERAL
+    // const assistant_id=process.env.ASSISTANT_ID_GENERAL
     const threadResponse = await openai.beta.threads.create();
     const threadId = threadResponse.id;
     try {
-    if(option=="notes"){
-        if(type=='Examination Note'){
-            parts=examination
-        }else if(type=='Treatment Note'){
-            parts=treament
-        }else{
-            parts=review
-        }
-    }else if(option=="letters"){
-        if(type=='Patient Letter'){
-            parts=patient
-        }else {
-            parts=dentist
-        }
-    }else{
+    // if(option=="notes"){
+    //     if(type=='Examination Note'){
+    //         parts=examination
+    //     }else if(type=='Treatment Note'){
+    //         parts=treament
+    //     }else{
+    //         parts=review
+    //     }
+    // }else if(option=="letters"){
+    //     if(type=='Patient Letter'){
+    //         parts=patient
+    //     }else {
+    //         parts=dentist
+    //     }
+    // }else{
         
         // console.log(threadId)
         await openai.beta.threads.messages.create(threadId, {
@@ -142,25 +150,24 @@ router.post('/', CheckUser, async (req, res) => {
         .map(textContent => textContent.text.value)
         .join('\n')
     ).join('\n');
-    }
-    if(option!='general'){
+    // }
+    // if(option!='general'){
         // console.log(parts)
         // console.log(type)
-    parts.push({text:`input: Write a ${type} on ${prompt} `})
+    // parts.push({text:`input: Write a ${type} on ${prompt} `})
     // parts.push({text: prompt})
-            const result = await model.generateContent({
-            contents: [{ role: "user", parts}],
-                generationConfig,
-                safetySettings,
-                });
-            const res = result.response;
-            response.openai=res.text()}
-    console.log(response.openai)
-    if(response.openai){
+    //         const result = await model.generateContent({
+    //         contents: [{ role: "user", parts}],
+    //             generationConfig,
+    //             safetySettings,
+    //             });
+    //         const res = result.response;
+    //         response.openai=res.text()}
+    // console.log(response.openai)
+    if(response?.openai){
         response.db = await chat.newResponse(prompt, response, userId,threadId,option,type)
     }
     } catch (err) {
-        // console.log("error",err)
         res.status(500).json({
             status: 500,
             message: err
@@ -182,31 +189,38 @@ router.post('/', CheckUser, async (req, res) => {
 router.put('/', CheckUser, async (req, res) => {
     const { prompt, userId, chatId,option ,type} = req.body
     // console.log(type)
-    console.log(option)
-    console.log(type)
-    console.log(prompt)
-    const assistant_id=process.env.ASSISTANT_ID_GENERAL
+    // console.log(option)
+    // console.log(type)
+    // console.log(prompt)
+    if(option=="letters"){
+        assistant_id=process.env.ASSISTANT_ID_LETTERS
+    }else if(option=="notes"){
+        assistant_id=process.env.ASSISTANT_ID_NOTES
+    }else{
+        assistant_id=process.env.ASSISTANT_ID_GENERAL
+    }
+    // const assistant_id=process.env.ASSISTANT_ID_GENERAL
     const threadId = await chat.getThread(userId,chatId)
     let response = {}
     let parts=[]
     // console.log(option)
     // console.log(type)
     try {
-    if(option=="notes"){
-        if(type=='Examination Note'){
-            parts=examination
-        }else if(type=='Treatment Note'){
-            parts=treament
-        }else{
-            parts=review
-        }
-    }else if(option=="letters"){
-        if(type=='Patient Letter'){
-            parts=patient
-        }else {
-            parts=dentist
-        }
-    }else{
+    // if(option=="notes"){
+    //     if(type=='Examination Note'){
+    //         parts=examination
+    //     }else if(type=='Treatment Note'){
+    //         parts=treament
+    //     }else{
+    //         parts=review
+    //     }
+    // }else if(option=="letters"){
+    //     if(type=='Patient Letter'){
+    //         parts=patient
+    //     }else {
+    //         parts=dentist
+    //     }
+    // }else{
         
         
         await openai.beta.threads.messages.create(threadId, {
@@ -229,20 +243,20 @@ router.put('/', CheckUser, async (req, res) => {
         .filter(contentItem => contentItem.type === 'text')
         .map(textContent => textContent.text.value)
         .join('\n')
-    }
+    // }
     
-    if(option!='general'){
-        parts.push({text:`input: Write a ${type} on ${prompt} `})
-    // parts.push({text:prompt})
-    const result = await model.generateContent({
-    contents: [{ role: "user", parts}],
-        generationConfig,
-        safetySettings,
-        });
-    const res = result.response;
-    response.openai=res.text()
-    }
-    console.log(response.openai)
+    // if(option!='general'){
+    //     parts.push({text:`input: Write a ${type} on ${prompt} `})
+    // // parts.push({text:prompt})
+    // const result = await model.generateContent({
+    // contents: [{ role: "user", parts}],
+    //     generationConfig,
+    //     safetySettings,
+    //     });
+    // const res = result.response;
+    // response.openai=res.text()
+    // }
+    // console.log(response.openai)
         if(response.openai){
             response.db = await chat.updateChat(chatId, prompt, response, userId,threadId,option,type)
         }

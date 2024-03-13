@@ -119,6 +119,7 @@ router.post('/', CheckUser, async (req, res) => {
     // const assistant_id=process.env.ASSISTANT_ID_GENERAL
     const threadResponse = await openai.beta.threads.create();
     const threadId = threadResponse.id;
+    console.log(threadId)
     try {
     // if(option=="notes"){
     //     if(type=='Examination Note'){
@@ -220,6 +221,7 @@ router.put('/', CheckUser, async (req, res) => {
     }
     // const assistant_id=process.env.ASSISTANT_ID_GENERAL
     const threadId = await chat.getThread(userId,chatId)
+    console.log(threadId)
     let response = {}
     let parts=[]
     // console.log(option)

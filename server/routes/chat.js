@@ -103,13 +103,15 @@ router.post('/', CheckUser, async (req, res) => {
             assistant_id=process.env.ASSISTANT_ID_EXAMINATION
         else if(type=="Treatment Note")
             assistant_id=process.env.ASSISTANT_ID_TREATMENT
-        else 
+        else if(type=="Review Note")
             assistant_id=process.env.ASSISTANT_ID_REVIEW
+        else assistant_id=process.env.ASSISTANT_ID_GENERAL
     }else if(option=="letters"){
         if(type=="Patient Letter")
             assistant_id=process.env.ASSISTANT_ID_PATIENT
-        else 
+        else if(type=="Dentist Letter")
             assistant_id=process.env.ASSISTANT_ID_DENTIST
+        else assistant_id=process.env.ASSISTANT_ID_GENERAL
     }else{
         assistant_id=process.env.ASSISTANT_ID_GENERAL
     }
@@ -204,13 +206,15 @@ router.put('/', CheckUser, async (req, res) => {
             assistant_id=process.env.ASSISTANT_ID_EXAMINATION
         else if(type=="Treatment Note")
             assistant_id=process.env.ASSISTANT_ID_TREATMENT
-        else 
+        else if(type=="Review Note")
             assistant_id=process.env.ASSISTANT_ID_REVIEW
+        else assistant_id=process.env.ASSISTANT_ID_GENERAL
     }else if(option=="letters"){
         if(type=="Patient Letter")
             assistant_id=process.env.ASSISTANT_ID_PATIENT
-        else 
+        else if(type=="Dentist Letter")
             assistant_id=process.env.ASSISTANT_ID_DENTIST
+        else assistant_id=process.env.ASSISTANT_ID_GENERAL
     }else{
         assistant_id=process.env.ASSISTANT_ID_GENERAL
     }

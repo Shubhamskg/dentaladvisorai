@@ -97,7 +97,7 @@ router.post('/', CheckUser, async (req, res) => {
     let parts=[]
     console.log(type)
     console.log(option)
-    console.log(post,prompt)
+    console.log("post",prompt)
     if(option=="notes"){
         if(type=="Examination Note")
             assistant_id=process.env.ASSISTANT_ID_EXAMINATION
@@ -200,7 +200,7 @@ router.put('/', CheckUser, async (req, res) => {
     const { prompt, userId, chatId,option ,type} = req.body
     console.log(type)
     console.log(option)
-    console.log(prompt)
+    console.log("put",prompt)
     if(option=="notes"){
         if(type=="Examination Note")
             assistant_id=process.env.ASSISTANT_ID_EXAMINATION

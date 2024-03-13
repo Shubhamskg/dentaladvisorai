@@ -95,13 +95,21 @@ router.post('/', CheckUser, async (req, res) => {
     // console.log("first")
     let response = {}
     let parts=[]
-    // console.log(option)
-    // console.log(type)
-    // console.log(prompt)
-    if(option=="letters"){
-        assistant_id=process.env.ASSISTANT_ID_LETTERS
-    }else if(option=="notes"){
-        assistant_id=process.env.ASSISTANT_ID_NOTES
+    console.log(type)
+    console.log(option)
+    console.log(post,prompt)
+    if(option=="notes"){
+        if(type=="Examination Note")
+            assistant_id=process.env.ASSISTANT_ID_EXAMINATION
+        else if(type=="Treatment Note")
+            assistant_id=process.env.ASSISTANT_ID_TREATMENT
+        else 
+            assistant_id=process.env.ASSISTANT_ID_REVIEW
+    }else if(option=="letters"){
+        if(type=="Patient Letter")
+            assistant_id=process.env.ASSISTANT_ID_PATIENT
+        else 
+            assistant_id=process.env.ASSISTANT_ID_DENTIST
     }else{
         assistant_id=process.env.ASSISTANT_ID_GENERAL
     }
@@ -129,7 +137,7 @@ router.post('/', CheckUser, async (req, res) => {
         // console.log(threadId)
         await openai.beta.threads.messages.create(threadId, {
             role: "user",
-            content: prompt,
+            content: `Write a ${type} on ${prompt}` ,
           });
           const runResponse = await openai.beta.threads.runs.create(threadId, {
             assistant_id: assistant_id,
@@ -188,14 +196,21 @@ router.post('/', CheckUser, async (req, res) => {
 
 router.put('/', CheckUser, async (req, res) => {
     const { prompt, userId, chatId,option ,type} = req.body
-    // console.log(type)
-    // console.log(option)
-    // console.log(type)
-    // console.log(prompt)
-    if(option=="letters"){
-        assistant_id=process.env.ASSISTANT_ID_LETTERS
-    }else if(option=="notes"){
-        assistant_id=process.env.ASSISTANT_ID_NOTES
+    console.log(type)
+    console.log(option)
+    console.log(prompt)
+    if(option=="notes"){
+        if(type=="Examination Note")
+            assistant_id=process.env.ASSISTANT_ID_EXAMINATION
+        else if(type=="Treatment Note")
+            assistant_id=process.env.ASSISTANT_ID_TREATMENT
+        else 
+            assistant_id=process.env.ASSISTANT_ID_REVIEW
+    }else if(option=="letters"){
+        if(type=="Patient Letter")
+            assistant_id=process.env.ASSISTANT_ID_PATIENT
+        else 
+            assistant_id=process.env.ASSISTANT_ID_DENTIST
     }else{
         assistant_id=process.env.ASSISTANT_ID_GENERAL
     }
@@ -225,7 +240,7 @@ router.put('/', CheckUser, async (req, res) => {
         
         await openai.beta.threads.messages.create(threadId, {
             role: "user",
-            content: prompt,
+            content: `Write a ${type} on ${prompt}`,
           });
           const runResponse = await openai.beta.threads.runs.create(threadId, {
             assistant_id: assistant_id,

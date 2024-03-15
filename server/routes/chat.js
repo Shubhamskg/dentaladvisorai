@@ -9,7 +9,10 @@ import {
     HarmCategory,
     HarmBlockThreshold,
   } from "@google/generative-ai";
-import {examination,treament,review,patient,dentist} from '../utils/prompt.js'
+import {examination,treament,review,patient,dentist,general} from '../utils/prompt.js'
+import Anthropic from "@anthropic-ai/sdk";
+import {treatment_notes,examination_notes,review_notes,patient_letters,dentist_letters,general_notes} from '../utils/sonnet.js'
+
 
 dotnet.config()
 
@@ -53,128 +56,158 @@ const CheckUser = async (req, res, next) => {
 
 const openai = new OpenAI({
     apiKey: process.env['OPENAI_API_KEY'],
-  });
+});
+const anthropic = new Anthropic({
+    apiKey: process.env['ANTHROPIC_API_KEY'],
+});
 
 router.get('/', (req, res) => {
     res.send("Welcome to Dental Advisor api v1")
 })
 let assistant_id=process.env.ASSISTANT_ID_GENERAL
 
-//   const MODEL_NAME = "gemini-1.0-pro";
-//   const API_KEY =process.env.GEMINI_API_KEY
-//   const genAI = new GoogleGenerativeAI(API_KEY);
-//   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
+  const MODEL_NAME = "gemini-1.0-pro";
+  const API_KEY =process.env.GEMINI_API_KEY
+  const genAI = new GoogleGenerativeAI(API_KEY);
+  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
-//   const generationConfig = {
-//     temperature: 0.9,
-//     topK: 1,
-//     topP: 1,
-//     maxOutputTokens: 2048,
-//   };
+  const generationConfig = {
+    temperature: 0.1,
+    topK: 1,
+    topP: 1,
+    maxOutputTokens: 4098,
+  };
 
-//   const safetySettings = [
-//     {
-//       category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-//       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-//     },
-//     {
-//       category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-//       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-//     },
-//     {
-//       category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-//       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-//     },
-//     {
-//       category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-//       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-//     },
-//   ];
+  const safetySettings = [
+    {
+      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+  ];
+const prompt_model=process.env.prompt_model
+let threadId=""
 router.post('/', CheckUser, async (req, res) => {
     const { prompt, userId, option,type } = req.body
-    // console.log("first")
+    console.log(prompt_model)
     let response = {}
     let parts=[]
     console.log(type)
     console.log(option)
     console.log("post",prompt)
+    let system_msg=""
     if(option=="notes"){
-        if(type=="Examination Note")
+        if(type=="Examination Note"){
             assistant_id=process.env.ASSISTANT_ID_EXAMINATION
-        else if(type=="Treatment Note")
+            system_msg=examination_notes
+            parts=examination
+        }
+        else if(type=="Treatment Note"){
             assistant_id=process.env.ASSISTANT_ID_TREATMENT
-        else if(type=="Review Note")
+            system_msg=treatment_notes
+            parts=treament
+        }
+        else if(type=="Review Note"){
             assistant_id=process.env.ASSISTANT_ID_REVIEW
-        else assistant_id=process.env.ASSISTANT_ID_GENERAL
+            system_msg=review_notes
+            parts=review
+        }
+        else {
+            assistant_id=process.env.ASSISTANT_ID_GENERAL
+            system_msg=general_notes
+            parts=general
+        }
     }else if(option=="letters"){
-        if(type=="Patient Letter")
+        if(type=="Patient Letter"){
             assistant_id=process.env.ASSISTANT_ID_PATIENT
-        else if(type=="Dentist Letter")
+            system_msg=patient_letters
+            parts=patient
+        }
+        else if(type=="Dentist Letter"){
             assistant_id=process.env.ASSISTANT_ID_DENTIST
-        else assistant_id=process.env.ASSISTANT_ID_GENERAL
+            system_msg=dentist_letters
+            parts=dentist
+        }
+        else {
+            assistant_id=process.env.ASSISTANT_ID_GENERAL
+            system_msg=general_notes
+            parts=general
+        }
     }else{
         assistant_id=process.env.ASSISTANT_ID_GENERAL
+        system_msg=general_notes
+        parts=general
+    }
+    if(prompt_model=='gpt4'){
+        const threadResponse = await openai.beta.threads.create();
+        threadId = threadResponse.id;
     }
     
-    // const assistant_id=process.env.ASSISTANT_ID_GENERAL
-    const threadResponse = await openai.beta.threads.create();
-    const threadId = threadResponse.id;
-    console.log(threadId)
     try {
-    // if(option=="notes"){
-    //     if(type=='Examination Note'){
-    //         parts=examination
-    //     }else if(type=='Treatment Note'){
-    //         parts=treament
-    //     }else{
-    //         parts=review
-    //     }
-    // }else if(option=="letters"){
-    //     if(type=='Patient Letter'){
-    //         parts=patient
-    //     }else {
-    //         parts=dentist
-    //     }
-    // }else{
-        
-        // console.log(threadId)
-        await openai.beta.threads.messages.create(threadId, {
-            role: "user",
-            content: `Write a ${type} on ${prompt}` ,
+        if(prompt_model=="sonnet"){
+        const msg = await anthropic.messages.create({
+            model: "claude-3-sonnet-20240229",
+            max_tokens: 4000,
+            temperature: 0.1,
+            system: system_msg[0].text,
+            messages: [
+              {
+                "role": "user",
+                "content": [
+                  {
+                    "type": "text",
+                    "text":  `Write a ${type} on ${prompt}` 
+                  }
+                ]
+              }
+            ]
           });
-          const runResponse = await openai.beta.threads.runs.create(threadId, {
-            assistant_id: assistant_id,
-          });
-          let run = await openai.beta.threads.runs.retrieve(threadId, runResponse.id);
-    while (run.status !== "completed") {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      run = await openai.beta.threads.runs.retrieve(threadId, runResponse.id);
-    }
-    // console.log(run.status)
-    
-    const messagesResponse = await openai.beta.threads.messages.list(threadId);
-    // console.log(messagesResponse)
-    const assistantResponses = messagesResponse.data.filter(msg => msg.role === 'assistant');
-    response.openai = assistantResponses.map(msg => 
-      msg.content
-        .filter(contentItem => contentItem.type === 'text')
-        .map(textContent => textContent.text.value)
-        .join('\n')
-    ).join('\n');
-    // }
-    // if(option!='general'){
-        // console.log(parts)
-        // console.log(type)
-    // parts.push({text:`input: Write a ${type} on ${prompt} `})
-    // parts.push({text: prompt})
-    //         const result = await model.generateContent({
-    //         contents: [{ role: "user", parts}],
-    //             generationConfig,
-    //             safetySettings,
-    //             });
-    //         const res = result.response;
-    //         response.openai=res.text()}
-    // console.log(response.openai)
+          response.openai=msg.content[0].text
+        }
+        else if(prompt_model=="gpt4"){
+            await openai.beta.threads.messages.create(threadId, {
+                role: "user",
+                content: `Write a ${type} on ${prompt}` ,
+            });
+            const runResponse = await openai.beta.threads.runs.create(threadId, {
+                assistant_id: assistant_id,
+            });
+            let run = await openai.beta.threads.runs.retrieve(threadId, runResponse.id);
+            while (run.status !== "completed") {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            run = await openai.beta.threads.runs.retrieve(threadId, runResponse.id);
+            }
+            const messagesResponse = await openai.beta.threads.messages.list(threadId);
+            const assistantResponses = messagesResponse.data.filter(msg => msg.role === 'assistant');
+            response.openai = assistantResponses.map(msg => 
+            msg.content
+                .filter(contentItem => contentItem.type === 'text')
+                .map(textContent => textContent.text.value)
+                .join('\n')
+            ).join('\n');
+        }
+        else{
+            parts.push({text:`input: Write a ${type} on ${prompt} `})
+            parts.push({text: prompt})
+            const result = await model.generateContent({
+                contents: [{ role: "user", parts}],
+                    generationConfig,
+                    safetySettings,
+                });
+            const res = result.response;
+            response.openai=res.text()
+        }
     if(response?.openai){
         response.db = await chat.newResponse(prompt, response, userId,threadId,option,type)
     }
@@ -199,85 +232,107 @@ router.post('/', CheckUser, async (req, res) => {
 
 router.put('/', CheckUser, async (req, res) => {
     const { prompt, userId, chatId,option ,type} = req.body
+    console.log(prompt_model)
     console.log(type)
     console.log(option)
     console.log("put",prompt)
-    if(option=="notes"){
-        if(type=="Examination Note")
-            assistant_id=process.env.ASSISTANT_ID_EXAMINATION
-        else if(type=="Treatment Note")
-            assistant_id=process.env.ASSISTANT_ID_TREATMENT
-        else if(type=="Review Note")
-            assistant_id=process.env.ASSISTANT_ID_REVIEW
-        else assistant_id=process.env.ASSISTANT_ID_GENERAL
-    }else if(option=="letters"){
-        if(type=="Patient Letter")
-            assistant_id=process.env.ASSISTANT_ID_PATIENT
-        else if(type=="Dentist Letter")
-            assistant_id=process.env.ASSISTANT_ID_DENTIST
-        else assistant_id=process.env.ASSISTANT_ID_GENERAL
-    }else{
-        assistant_id=process.env.ASSISTANT_ID_GENERAL
-    }
-    // const assistant_id=process.env.ASSISTANT_ID_GENERAL
-    const threadId = await chat.getThread(userId,chatId)
-    console.log(threadId)
     let response = {}
     let parts=[]
-    // console.log(option)
-    // console.log(type)
-    try {
-    // if(option=="notes"){
-    //     if(type=='Examination Note'){
-    //         parts=examination
-    //     }else if(type=='Treatment Note'){
-    //         parts=treament
-    //     }else{
-    //         parts=review
-    //     }
-    // }else if(option=="letters"){
-    //     if(type=='Patient Letter'){
-    //         parts=patient
-    //     }else {
-    //         parts=dentist
-    //     }
-    // }else{
-        
-        
-        await openai.beta.threads.messages.create(threadId, {
-            role: "user",
-            content: `Write a ${type} on ${prompt}`,
-          });
-          const runResponse = await openai.beta.threads.runs.create(threadId, {
-            assistant_id: assistant_id,
-          });
-          let run = await openai.beta.threads.runs.retrieve(threadId, runResponse.id);
-          
-    while (run.status !== "completed") {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      run = await openai.beta.threads.runs.retrieve(threadId, runResponse.id);
+    let system_msg=""
+    if(option=="notes"){
+        if(type=="Examination Note"){
+            assistant_id=process.env.ASSISTANT_ID_EXAMINATION
+            system_msg=examination_notes
+            parts=examination
+        }
+        else if(type=="Treatment Note"){
+            assistant_id=process.env.ASSISTANT_ID_TREATMENT
+            system_msg=treatment_notes
+            parts=treament
+        }
+        else if(type=="Review Note"){
+            assistant_id=process.env.ASSISTANT_ID_REVIEW
+            system_msg=review_notes
+            parts=review
+        }
+        else {
+            assistant_id=process.env.ASSISTANT_ID_GENERAL
+            system_msg=general_notes
+            parts=general
+        }
+    }else if(option=="letters"){
+        if(type=="Patient Letter"){
+            assistant_id=process.env.ASSISTANT_ID_PATIENT
+            system_msg=patient_letters
+            parts=patient
+        }
+        else if(type=="Dentist Letter"){
+            assistant_id=process.env.ASSISTANT_ID_DENTIST
+            system_msg=dentist_letters
+            parts=dentist
+        }
+        else {
+            assistant_id=process.env.ASSISTANT_ID_GENERAL
+            system_msg=general_notes
+            parts=general
+        }
+    }else{
+        assistant_id=process.env.ASSISTANT_ID_GENERAL
+        system_msg=general_notes
+        parts=general
     }
-    
-    const messagesResponse = await openai.beta.threads.messages.list(threadId);
-    const assistantResponses = messagesResponse.data.filter(msg => msg.role === 'assistant');
-    response.openai = assistantResponses[0].content
-        .filter(contentItem => contentItem.type === 'text')
-        .map(textContent => textContent.text.value)
-        .join('\n')
-    // }
-    
-    // if(option!='general'){
-    //     parts.push({text:`input: Write a ${type} on ${prompt} `})
-    // // parts.push({text:prompt})
-    // const result = await model.generateContent({
-    // contents: [{ role: "user", parts}],
-    //     generationConfig,
-    //     safetySettings,
-    //     });
-    // const res = result.response;
-    // response.openai=res.text()
-    // }
-    // console.log(response.openai)
+    if(prompt_model=="gpt4"){
+        threadId = await chat.getThread(userId,chatId)
+    }
+    try {
+        if(prompt_model=="sonnet"){
+            const msg = await anthropic.messages.create({
+                model: "claude-3-sonnet-20240229",
+                max_tokens: 4000,
+                temperature: 0.1,
+                system: system_msg[0].text,
+                messages: [
+                {
+                    "role": "user",
+                    "content": [
+                    {
+                        "type": "text",
+                        "text": prompt
+                    }
+                    ]
+                }
+                ]
+            });    
+            response.openai=msg.content[0].text
+        }else if(prompt_model=="gpt4"){
+            await openai.beta.threads.messages.create(threadId, {
+                role: "user",
+                content: `Write a ${type} on ${prompt}`,
+            });
+            const runResponse = await openai.beta.threads.runs.create(threadId, {
+                assistant_id: assistant_id,
+            });
+            let run = await openai.beta.threads.runs.retrieve(threadId, runResponse.id);
+            while (run.status !== "completed") {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            run = await openai.beta.threads.runs.retrieve(threadId, runResponse.id);
+            }
+            const messagesResponse = await openai.beta.threads.messages.list(threadId);
+            const assistantResponses = messagesResponse.data.filter(msg => msg.role === 'assistant');
+            response.openai = assistantResponses[0].content
+                .filter(contentItem => contentItem.type === 'text')
+                .map(textContent => textContent.text.value)
+                .join('\n')
+        }else{
+                parts.push({text:`input: Write a ${type} on ${prompt} `})
+            const result = await model.generateContent({
+            contents: [{ role: "user", parts}],
+                generationConfig,
+                safetySettings,
+                });
+            const res = result.response;
+            response.openai=res.text()
+        }
         if(response.openai){
             response.db = await chat.updateChat(chatId, prompt, response, userId,threadId,option,type)
         }

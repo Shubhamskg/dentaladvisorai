@@ -156,7 +156,7 @@ router.post('/', CheckUser, async (req, res) => {
     
     try {
         if(prompt_model=="sonnet"){
-        const msg = await anthropic.messages.create({
+        const msg =await anthropic.messages.create({
             model: "claude-3-sonnet-20240229",
             max_tokens: 4000,
             temperature: 0.1,
@@ -171,9 +171,10 @@ router.post('/', CheckUser, async (req, res) => {
                   }
                 ]
               }
-            ]
-          });
-          response.openai=msg.content[0].text
+            ],
+          })
+          response.openai=stream.content[0].text;
+          console.log(response.openai)
         }
         else if(prompt_model=="gpt4"){
             await openai.beta.threads.messages.create(threadId, {
@@ -208,24 +209,26 @@ router.post('/', CheckUser, async (req, res) => {
             const res = result.response;
             response.openai=res.text()
         }
-    if(response?.openai){
-        response.db = await chat.newResponse(prompt, response, userId,threadId,option,type)
-    }
+    // if(response?.openai){
+    //     response.db = await chat.newResponse(prompt, response, userId,threadId,option,type)
+    // }
     } catch (err) {
+        console.log(err)
         res.status(500).json({
             status: 500,
             message: err
         })
     } finally {
-        if (response?.db && response.openai) {
+        if (response.openai) {
             res.status(200).json({
                 status: 200,
                 message: 'Success',
                 data: {
-                    _id: response.db['chatId'],
+                    // _id: response.db['chatId'],
                     content: response.openai
                 }
             })
+            response.db = await chat.newResponse(prompt, response, userId,threadId,option,type)
         }
     }
 })
@@ -286,6 +289,7 @@ router.put('/', CheckUser, async (req, res) => {
     }
     try {
         if(prompt_model=="sonnet"){
+            let starttime = Date.now();
             const msg = await anthropic.messages.create({
                 model: "claude-3-sonnet-20240229",
                 max_tokens: 4000,
@@ -301,9 +305,11 @@ router.put('/', CheckUser, async (req, res) => {
                     }
                     ]
                 }
-                ]
-            });    
-            response.openai=msg.content[0].text
+                ],
+                stream: true,
+            });
+            response.openai=await msg.content[0].text
+            console.log(response.openai)
         }else if(prompt_model=="gpt4"){
             await openai.beta.threads.messages.create(threadId, {
                 role: "user",
@@ -333,9 +339,9 @@ router.put('/', CheckUser, async (req, res) => {
             const res = result.response;
             response.openai=res.text()
         }
-        if(response.openai){
-            response.db = await chat.updateChat(chatId, prompt, response, userId,threadId,option,type)
-        }
+        // if(response.openai){
+        //     response.db = await chat.updateChat(chatId, prompt, response, userId,threadId,option,type)
+        // }
     } catch (err) {
         console.log("error",err)
         res.status(500).json({
@@ -343,7 +349,7 @@ router.put('/', CheckUser, async (req, res) => {
             message: err
         })
     } finally {
-        if (response?.db && response?.openai) {
+        if (response?.openai) {
             res.status(200).json({
                 status: 200,
                 message: 'Success',
@@ -351,6 +357,7 @@ router.put('/', CheckUser, async (req, res) => {
                     content: response.openai
                 }
             })
+            response.db = await chat.updateChat(chatId, prompt, response, userId,threadId,option,type)
         }
         
     }

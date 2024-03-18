@@ -103,7 +103,6 @@ const SignupComponent = () => {
   return (
     <div className='Contain'>
       <div className='icon'>
-        {/* <GptIcon /> */}
         <img src={IMAGES.image} alt='first image'/>
       </div>
 

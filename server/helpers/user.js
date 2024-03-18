@@ -350,7 +350,6 @@ export default {
                     console.log(err)
                     reject(err)
                 })
-
             if (user) {
                 resolve(user)
             } else {

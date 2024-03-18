@@ -53,7 +53,6 @@ export default {
             } finally {
                 if (res) {
                     res.chatId = chatId
-                    console.log(res)
                     resolve(res)
                 } else {
                     reject({ text: "DB gets something wrong" })
@@ -82,7 +81,6 @@ export default {
             })
 
             if (res) {
-                console.log(res)
                 resolve(res)
             } else {
                 reject({ text: "DB gets something wrong" })

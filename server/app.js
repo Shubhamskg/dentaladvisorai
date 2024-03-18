@@ -9,6 +9,7 @@ import VisionRoute from './routes/vision.js';
 import DashboardRoute from './routes/dashboard.js'
 import ImageRoute from './routes/image.js'
 import path from 'path'
+import status from 'express-status-monitor'
 
 dotnet.config()
 
@@ -16,7 +17,9 @@ let app = express()
 let port = process.env.PORT||5000
 
 // for production copy paste react js product build files in dist folder
-app.use(express.static('dist'))
+app.use(status())
+// app.use(express.static('dist'))
+
 
 app.use(cors({  origin: '*',
 methods: ['GET','HEAD','PATCH', 'POST', 'PUT', 'DELETE'],
@@ -38,9 +41,9 @@ app.use('/api/upload-image/',ImageRoute)
 app.use('/api/dashboard/',DashboardRoute)
 
 // front end react route
-app.get('/*',(req,res)=>{
-    res.sendFile(path.join(`${path.resolve(path.dirname(''))}/dist/index.html`))
-})
+// app.get('/*',(req,res)=>{
+//     res.sendFile(path.join(`${path.resolve(path.dirname(''))}/dist/index.html`))
+// })
 app.get("/",(req,res)=>{
     return res.send("hello buddy")
 })

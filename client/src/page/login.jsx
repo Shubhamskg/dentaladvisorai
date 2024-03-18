@@ -45,7 +45,6 @@ const Login = () => {
         ) : (
           <div className="suggection">
             <div>
-              {/* <GptIcon /> */}
               <img src={IMAGES.image} alt='first image'/>
             </div>
 

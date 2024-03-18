@@ -9,6 +9,7 @@ import { emptyUser } from "../redux/user";
 import instance from "../config/instance";
 import "./style.scss";
 import {Menu} from "../components";
+import 'regenerator-runtime/runtime';
 import Speech from "./speech";
 
 
@@ -304,6 +305,12 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
                 setArea(e.target.value)
                 fn()
               }}
+              // onKeyDown={(evt)=>{
+              // var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
+              // if(keyCode==13){
+              //   if(area.length>0){fn();FormHandle()}
+              // }
+              // }}
             />
             
             <Speech textarea={textAreaRef} cls="" q="text" set={setArea} Area={area} fn={fn}/>

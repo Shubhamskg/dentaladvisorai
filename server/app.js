@@ -18,7 +18,7 @@ let port = process.env.PORT||5000
 
 // for production copy paste react js product build files in dist folder
 app.use(status())
-// app.use(express.static('dist'))
+app.use(express.static('dist'))
 
 
 app.use(cors({  origin: '*',
@@ -41,9 +41,9 @@ app.use('/api/upload-image/',ImageRoute)
 app.use('/api/dashboard/',DashboardRoute)
 
 // front end react route
-// app.get('/*',(req,res)=>{
-//     res.sendFile(path.join(`${path.resolve(path.dirname(''))}/dist/index.html`))
-// })
+app.get('/*',(req,res)=>{
+    res.sendFile(path.join(`${path.resolve(path.dirname(''))}/dist/index.html`))
+})
 app.get("/",(req,res)=>{
     return res.send("hello buddy")
 })

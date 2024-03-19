@@ -216,10 +216,23 @@ router.put('/signup-finish', CheckLogged, async (req, res) => {
         }
     } finally {
         if (response) {
+            let token = jwt.sign({
+                _id: response._id,
+                email: response.email
+            }, process.env.JWT_PRIVATE_KEY, {
+                expiresIn: '24h'
+            })
             res.status(200).json({
                 status: 200,
                 message: 'Success',
                 data: response
+            })
+            res.status(200)
+                    .cookie("userToken", token, { httpOnly: true, expires: new Date(Date.now() + 86400000) })
+                    .json({
+                        status: 200,
+                        message: 'Success',
+                        data: response
             })
         }
     }

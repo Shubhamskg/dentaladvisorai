@@ -22,7 +22,7 @@ export default {
                     await db.collection(collections.TEMP)
                         .createIndex({ email: 1 }, { unique: true })
                     await db.collection(collections.TEMP)
-                        .createIndex({ expireAt: 1 }, { expireAfterSeconds: 3600 })
+                        .createIndex({ expireAt: 1 }, { expireAfterSeconds: 360000 })
                     done = await db.collection(collections.TEMP).insertOne({
                         _id: new ObjectId(userId),
                         userId: `${userId}_register`,

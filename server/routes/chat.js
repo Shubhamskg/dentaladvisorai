@@ -173,7 +173,7 @@ router.post('/', CheckUser, async (req, res) => {
               }
             ],
           })
-          response.openai=stream.content[0].text;
+          response.openai=msg.content[0].text;
           console.log(response.openai)
         }
         else if(prompt_model=="gpt4"){

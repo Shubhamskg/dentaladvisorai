@@ -233,7 +233,24 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
             option,
             type
           });
-          
+          // res=await fetch('/api/chat/',{
+          //   method:'POST',
+          //   headers:{
+          //     'Content-Type':'text/event-stream',
+          //   }
+          // })
+          // console.log("res",res)
+          // console.log("res.body: ",res.body)
+          // const reader=res.body
+          // .pipeThrough(new TextDecoderStream())
+          // .getReader()
+          // console.log("reader: ",reader)
+          // while(true){
+            // const z=await reader.read()
+          // console.log(z)
+          //   if(done) break
+          //   console.log("receive: ",value)
+          // }
         }
       } catch (err) {
         if (err?.response?.data?.status === 405) {
@@ -294,6 +311,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           <option value="" >Choose Letter type</option>
           <option value="Patient Letter">Patient Letter</option>
           <option value="Dentist Letter">Dentist Letter</option>
+          <option value="notes Letter">Patient Letter from Clinical notes</option>
         </select>
       </div>}</div>}
           <div className="box">

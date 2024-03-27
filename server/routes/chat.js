@@ -11,7 +11,7 @@ import {
   } from "@google/generative-ai";
 import {examination,treament,review,patient,dentist,general} from '../utils/prompt.js'
 import Anthropic from "@anthropic-ai/sdk";
-import {treatment_notes,examination_notes,review_notes,patient_letters,dentist_letters,general_notes} from '../utils/sonnet.js'
+import {treatment_notes,examination_notes,review_notes,patient_letters,dentist_letters,general_notes,notes_letters} from '../utils/sonnet.js'
 
 
 dotnet.config()
@@ -139,6 +139,11 @@ router.post('/', CheckUser, async (req, res) => {
             system_msg=dentist_letters
             parts=dentist
         }
+        else if(type=="notes Letter"){
+            assistant_id=process.env.ASSISTANT_ID_DENTIST
+            system_msg=notes_letters
+            parts=dentist
+        }
         else {
             assistant_id=process.env.ASSISTANT_ID_GENERAL
             system_msg=general_notes
@@ -156,23 +161,66 @@ router.post('/', CheckUser, async (req, res) => {
     
     try {
         if(prompt_model=="sonnet"){
-        const msg =await anthropic.messages.create({
-            model: "claude-3-sonnet-20240229",
-            max_tokens: 4000,
-            temperature: 0.1,
-            system: system_msg[0].text,
-            messages: [
-              {
-                "role": "user",
-                "content": [
-                  {
-                    "type": "text",
-                    "text":  `Write a ${type} on ${prompt}` 
-                  }
-                ]
-              }
-            ],
-          })
+            const msg = await anthropic.messages.create({
+                model: "claude-3-sonnet-20240229",
+                max_tokens: 4000,
+                temperature: 0.1,
+                system: system_msg[0].text,
+                messages: [
+                {
+                    "role": "user",
+                    "content": [
+                    {
+                        "type": "text",
+                        "text": prompt
+                    }
+                    ]
+                }
+                ],
+            });
+        // const msg = anthropic.messages.stream({
+        //     model: "claude-3-sonnet-20240229",
+        //     max_tokens: 4000,
+        //     temperature: 0.1,
+        //     system: system_msg[0].text,
+        //     messages: [
+        //       {
+        //         "role": "user",
+        //         "content": [
+        //           {
+        //             "type": "text",
+        //             "text":  `Write a ${type} on ${prompt}` 
+        //           }
+        //         ]
+        //       }
+        //     ]
+        //   }) .on('text', (chunk) => {
+            // console.log("chunk: ",chunk);
+            // const payloads=chunk.toString().split('\n\n')
+            // console.log("payloads: ",payloads)
+            // for(const payload of payloads){
+            //     if(payload.includes('[DONE]')){
+            //         res.end()
+            //         return
+            //     }
+                // if(payload.startsWith('data:')){
+                    // const data=JSON.parse(payload.replace('data: ',''))
+        //             try{
+        //                 // const text=data.choices[0].delta?.content
+        //                 if(chunk){
+        //                     console.log("text: ",chunk)
+        //                     res.write("abc")
+        //                 }
+        //             }
+        //             catch(err){
+        //                 console.log(`error with JSON.parse and ${chunk}.\n${err}`)
+        //             }
+        //         // }
+        //     // }
+        //   });
+        //   res.end()
+            
+          
           response.openai=msg.content[0].text;
           console.log(response.openai)
         }
@@ -274,6 +322,11 @@ router.put('/', CheckUser, async (req, res) => {
             system_msg=dentist_letters
             parts=dentist
         }
+        else if(type=="notes Letter"){
+            assistant_id=process.env.ASSISTANT_ID_DENTIST
+            system_msg=notes_letters
+            parts=dentist
+        }
         else {
             assistant_id=process.env.ASSISTANT_ID_GENERAL
             system_msg=general_notes
@@ -306,7 +359,6 @@ router.put('/', CheckUser, async (req, res) => {
                     ]
                 }
                 ],
-                stream: true,
             });
             response.openai=await msg.content[0].text
             console.log(response.openai)

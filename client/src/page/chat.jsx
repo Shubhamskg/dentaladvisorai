@@ -169,9 +169,12 @@ export default Main;
 
 //Input Area
 const InputArea = ({ status, chatRef, stateAction,option }) => {
+  const chunks = [];
+  let answer=""
   let textAreaRef = useRef();
   let typeRef=useRef();
   const [type,setType]=useState('')
+  const [val,setVal]=useState('')
   const [area,setArea]=useState('')
   const [q2,setQ2]=useState('')
   const [q3,setQ3]=useState('')
@@ -220,39 +223,90 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
       let res = null;
       try {
         if (_id) {
-          res = await instance.put("/api/chat", {
-            chatId: _id,
-            prompt,
-            option,
-            type
+          // res = await instance.put("/api/chat", {
+          //   chatId: _id,
+          //   prompt,
+          //   option,
+          //   type
             
-          });
+          // });
+          const url = '/api/chat'
+        const data = {
+          prompt: prompt,
+          option: option,
+          type: type
+        };
+      const request = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }
+      res = await fetch(url, request)
+      console.log("res: ",res)
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let done, value;
+     
+          while (!done) {
+            ({ value, done } = await reader.read());
+            value = decoder.decode(value);
+            if (done) {
+              break
+            }
+            console.log("value:",value);
+            answer+=value
+            chatRef?.current?.loadResponse(stateAction, answer, chatsId);
+            chunks.push(value);
+          }
+          if(done){
+           console.log("done",chunks)
+           return
+          }
         } else {
-          res = await instance.post("/api/chat", {
-            prompt,
-            option,
-            type
-          });
-          // res=await fetch('/api/chat/',{
-          //   method:'POST',
-          //   headers:{
-          //     'Content-Type':'text/event-stream',
-          //   }
+          // res = await instance.post("/api/chat", {
+          //   prompt,
+          //   option,
+          //   type,
           // })
-          // console.log("res",res)
-          // console.log("res.body: ",res.body)
-          // const reader=res.body
-          // .pipeThrough(new TextDecoderStream())
-          // .getReader()
-          // console.log("reader: ",reader)
-          // while(true){
-            // const z=await reader.read()
-          // console.log(z)
-          //   if(done) break
-          //   console.log("receive: ",value)
-          // }
+        const url = '/api/chat'
+        const data = {
+          prompt: prompt,
+          option: option,
+          type: type
+        };
+      const request = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }
+      res = await fetch(url, request)
+      console.log("res: ",res)
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let done, value;
+     
+      while (!done) {
+        ({ value, done } = await reader.read());
+        value = decoder.decode(value);
+        if (done) {
+          break
+        }
+        console.log("value:",value);
+        answer+=value
+        chatRef?.current?.loadResponse(stateAction, answer, chatsId);
+        chunks.push(value);
+      }
+      if(done){
+       console.log("done",chunks)
+       return
+      }
         }
       } catch (err) {
+        console.log("error",err)
         if (err?.response?.data?.status === 405) {
           dispatch(emptyUser());
           dispatch(emptyAllRes());
@@ -261,14 +315,12 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           stateAction({ type: "error", status: true });
         }
       } finally {
-        if (res?.data) {
-          const { _id, content } = res?.data?.data;
-
-          dispatch(insertNew({ _id, fullContent: content, chatsId }));
-          
-
-          chatRef?.current?.loadResponse(stateAction, content, chatsId);
-          
+        if (res) {
+          // const { _id, content } = res?.data?.data;
+          const _id=123
+          console.log("finally")
+          dispatch(insertNew({ _id, fullContent: answer, chatsId }));
+          // chatRef?.current?.loadResponse(stateAction, content, chatsId);
           stateAction({ type: "error", status: false });
         }
       }
@@ -290,11 +342,13 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
             {option==='general'?"":<div>
             {option==='notes'?<div className="space">
           <div className="type-selector">
+          
         <select
           id="type"
           ref={typeRef}
           onChange={handleTypeChange} className="type"
         >
+          
           <option value="" >Choose Notes type</option>
           <option value="Examination Note" >Examination Notes</option>
           <option value="Treatment Note">Treatment Notes</option>

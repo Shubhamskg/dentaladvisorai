@@ -99,6 +99,7 @@ let assistant_id=process.env.ASSISTANT_ID_GENERAL
 const prompt_model=process.env.prompt_model
 let threadId=""
 router.post('/', CheckUser, async (req, res) => {
+    console.log(req.body)
     const { prompt, userId, option,type } = req.body
     console.log(prompt_model)
     let response = {}
@@ -177,51 +178,25 @@ router.post('/', CheckUser, async (req, res) => {
                     ]
                 }
                 ],
+                stream: true,
             });
-        // const msg = anthropic.messages.stream({
-        //     model: "claude-3-sonnet-20240229",
-        //     max_tokens: 4000,
-        //     temperature: 0.1,
-        //     system: system_msg[0].text,
-        //     messages: [
-        //       {
-        //         "role": "user",
-        //         "content": [
-        //           {
-        //             "type": "text",
-        //             "text":  `Write a ${type} on ${prompt}` 
-        //           }
-        //         ]
-        //       }
-        //     ]
-        //   }) .on('text', (chunk) => {
-            // console.log("chunk: ",chunk);
-            // const payloads=chunk.toString().split('\n\n')
-            // console.log("payloads: ",payloads)
-            // for(const payload of payloads){
-            //     if(payload.includes('[DONE]')){
-            //         res.end()
-            //         return
-            //     }
-                // if(payload.startsWith('data:')){
-                    // const data=JSON.parse(payload.replace('data: ',''))
-        //             try{
-        //                 // const text=data.choices[0].delta?.content
-        //                 if(chunk){
-        //                     console.log("text: ",chunk)
-        //                     res.write("abc")
-        //                 }
-        //             }
-        //             catch(err){
-        //                 console.log(`error with JSON.parse and ${chunk}.\n${err}`)
-        //             }
-        //         // }
-        //     // }
-        //   });
-        //   res.end()
-            
-          
-          response.openai=msg.content[0].text;
+            let answer=""
+            for await (const event of msg) {
+                const type=event.type
+                if(type=='content_block_stop'){
+                    res.end()
+                    break
+                }
+                else if(type=='content_block_delta'){
+                const text=event.delta.text
+                console.log(text)
+                if(text){
+                    res.write(`${text}`)
+                    answer+=text
+                }
+                }
+              }
+          response.openai=answer
           console.log(response.openai)
         }
         else if(prompt_model=="gpt4"){
@@ -268,14 +243,14 @@ router.post('/', CheckUser, async (req, res) => {
         })
     } finally {
         if (response.openai) {
-            res.status(200).json({
-                status: 200,
-                message: 'Success',
-                data: {
-                    // _id: response.db['chatId'],
-                    content: response.openai
-                }
-            })
+        //     res.status(200).json({
+        //         status: 200,
+        //         message: 'Success',
+        //         data: {
+        //             // _id: response.db['chatId'],
+        //             content: response.openai
+        //         }
+        //     })
             response.db = await chat.newResponse(prompt, response, userId,threadId,option,type)
         }
     }
@@ -359,8 +334,25 @@ router.put('/', CheckUser, async (req, res) => {
                     ]
                 }
                 ],
+                stream:true
             });
-            response.openai=await msg.content[0].text
+            let answer=""
+            for await (const event of msg) {
+                const type=event.type
+                if(type=='content_block_stop'){
+                    res.end()
+                    break
+                }
+                else if(type=='content_block_delta'){
+                const text=event.delta.text
+                console.log(text)
+                if(text){
+                    res.write(`${text}`)
+                    answer+=text
+                }
+                }
+              }
+            response.openai=answer
             console.log(response.openai)
         }else if(prompt_model=="gpt4"){
             await openai.beta.threads.messages.create(threadId, {
@@ -402,13 +394,13 @@ router.put('/', CheckUser, async (req, res) => {
         })
     } finally {
         if (response?.openai) {
-            res.status(200).json({
-                status: 200,
-                message: 'Success',
-                data: {
-                    content: response.openai
-                }
-            })
+            // res.status(200).json({
+            //     status: 200,
+            //     message: 'Success',
+            //     data: {
+            //         content: response.openai
+            //     }
+            // })
             response.db = await chat.updateChat(chatId, prompt, response, userId,threadId,option,type)
         }
         

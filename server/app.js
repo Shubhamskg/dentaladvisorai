@@ -43,9 +43,9 @@ app.use('/api/dashboard/',DashboardRoute)
 app.use('/api/',PaymentRoute)
 
 // front end react route
-app.get('/*',(req,res)=>{
-    res.sendFile(path.join(`${path.resolve(path.dirname(''))}/dist/index.html`))
-})
+// app.get('/*',(req,res)=>{
+//     res.sendFile(path.join(`${path.resolve(path.dirname(''))}/dist/index.html`))
+// })
 app.get("/",(req,res)=>{
     return res.send("hello buddy")
 })

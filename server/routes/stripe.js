@@ -48,7 +48,7 @@ router.post('/create-checkout-session', async (req, res) => {
         product_data: {
           name: 'Plus Membership',
         },
-        unit_amount: 3000,
+        unit_amount: 3000000,
       },
       quantity: 1,
     }],

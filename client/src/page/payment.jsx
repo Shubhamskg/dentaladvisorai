@@ -52,7 +52,7 @@ const reducer = (state, { type, status }) => {
 const Payment = () => {
   const fetchClientSecret = useCallback(() => {
     // Create a Checkout Session
-    return fetch("http://localhost:5000/api/create-checkout-session", {
+    return fetch("/api/create-checkout-session", {
       method: "POST",
     })
       .then((res) => res.json())

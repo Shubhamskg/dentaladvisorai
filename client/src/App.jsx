@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision} from "./page";
+import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment, Success} from "./page";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
@@ -47,7 +47,7 @@ const App = () => {
   return (
     <section className={user ? "main-grid" : null}>
       
-      {loading && <Loading />}
+      {/* {loading && <Loading />} */}
 
       {offline && (
         <Error
@@ -61,6 +61,8 @@ const App = () => {
           <Route exact path="/" element={<Main />} />
           <Route path="/chat" element={<Main />} />
           <Route path="/chat/:id" element={<Main />} />
+          <Route path="/payment" element={<Payment/>}/>
+          <Route path="/checkout/return" element={<Success/>}/>
           <Route path="/vision" element={<Vision/>}/>
           <Route path="/vision/:id" element={<Vision/>}/>
           <Route path="/dashboard" element={<Dashboard/>}/>

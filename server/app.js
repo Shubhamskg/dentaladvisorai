@@ -7,6 +7,7 @@ import ChatRoute from './routes/chat.js';
 import UserRoute from './routes/user.js';
 import VisionRoute from './routes/vision.js';
 import DashboardRoute from './routes/dashboard.js'
+import PaymentRoute from './routes/stripe.js'
 import ImageRoute from './routes/image.js'
 import path from 'path'
 import status from 'express-status-monitor'
@@ -39,6 +40,7 @@ app.use('/api/user/', UserRoute)
 app.use('/api/vision/', VisionRoute)
 app.use('/api/upload-image/',ImageRoute)
 app.use('/api/dashboard/',DashboardRoute)
+app.use('/api/',PaymentRoute)
 
 // front end react route
 app.get('/*',(req,res)=>{

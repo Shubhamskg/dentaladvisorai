@@ -27,6 +27,7 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "nodemon": "^2.0.22",
     "openai": "^4.24.1",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "stripe": "^14.23.0"
   }
 }

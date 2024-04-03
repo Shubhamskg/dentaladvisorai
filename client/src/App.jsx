@@ -61,8 +61,8 @@ const App = () => {
           <Route exact path="/" element={<Main />} />
           <Route path="/chat" element={<Main />} />
           <Route path="/chat/:id" element={<Main />} />
-          <Route path="/payment" element={<Payment/>}/>
-          <Route path="/checkout/return" element={<Success/>}/>
+          <Route path="/checkout" element={<Payment/>}/>
+          <Route path="/return" element={<Success/>}/>
           <Route path="/vision" element={<Vision/>}/>
           <Route path="/vision/:id" element={<Vision/>}/>
           <Route path="/dashboard" element={<Dashboard/>}/>

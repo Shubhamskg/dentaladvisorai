@@ -221,7 +221,7 @@ const Menu = ({ changeColorMode }) => {
             )
           }
           <button onClick={()=>{
-            navigate("/payment")
+            navigate("/checkout")
           }}><Avatar />Upgrade to Plus <span>New</span></button>
           <button onClick={() => {
             if (settingRef?.current) {

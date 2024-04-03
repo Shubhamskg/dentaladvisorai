@@ -13,6 +13,12 @@ import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout
 } from '@stripe/react-stripe-js';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate
+} from "react-router-dom";
 
 
 
@@ -51,7 +57,6 @@ const reducer = (state, { type, status }) => {
 
 const Payment = () => {
   const fetchClientSecret = useCallback(() => {
-    // Create a Checkout Session
     return fetch("/api/create-checkout-session", {
       method: "POST",
     })

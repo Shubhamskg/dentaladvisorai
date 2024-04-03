@@ -44,11 +44,11 @@ router.post('/create-checkout-session', async (req, res) => {
   const session = await stripe.checkout.sessions.create({
     line_items: [{
       price_data: {
-        currency: 'inr',
+        currency: 'gbp',
         product_data: {
           name: 'Plus Membership',
         },
-        unit_amount: 3000000,
+        unit_amount: 3000,
       },
       quantity: 1,
     }],

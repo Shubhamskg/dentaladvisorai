@@ -2,5 +2,7 @@ export default {
     CHAT: 'chat',
     USER: 'user',
     TEMP: 'temp',
-    VISION:'vision'
+    VISION:'vision',
+    QUERY:'query',
+    PAYMENT:'payment'
 }

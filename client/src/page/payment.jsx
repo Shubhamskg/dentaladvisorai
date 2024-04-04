@@ -25,6 +25,8 @@ import {
 
 const stripePromise = loadStripe('pk_live_51P1AbdKHCxw9Q9iU3NvbMX0SX1JTqUQ0eC0FIAIhazAQTAUKqnklTsU3QNSMxWzKWxGq7ySHNeF1F5RPpBThw0oO00zi35IpLO');
 
+// const stripePromise = loadStripe(import.meta.env.VITE_CLIENT_STRIPE_KEY);
+
 
 const reducer = (state, { type, status }) => {
   switch (type) {

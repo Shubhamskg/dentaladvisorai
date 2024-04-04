@@ -394,7 +394,6 @@ hr{
 
   .inputArea {
     z-index: 1000;
-    top: 0;
     height: auto;
     background-color: rgba(247, 247, 248, 1);
     padding-top: 20px;
@@ -426,6 +425,7 @@ hr{
       display: flex;
       justify-content: center;
       align-items: center;
+      
 
       button {
         position: relative;
@@ -688,6 +688,12 @@ hr{
         }
       }
     }
+    .column{
+      flex-direction: row;
+      .boxs{
+        margin-top: 13px;
+      }
+    }
 
     .error {
       display: flex;
@@ -746,6 +752,13 @@ hr{
         padding-right: 1rem;
       }
     }
+  }
+  .sticky{
+    position: fixed;
+    bottom: 0;
+    background: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
 }
 

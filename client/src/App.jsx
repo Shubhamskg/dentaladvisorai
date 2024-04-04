@@ -47,7 +47,7 @@ const App = () => {
   return (
     <section className={user ? "main-grid" : null}>
       
-      {/* {loading && <Loading />} */}
+      {loading && <Loading />}
 
       {offline && (
         <Error

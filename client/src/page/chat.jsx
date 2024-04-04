@@ -150,9 +150,9 @@ const Main = () => {
       </div>
       
       <div className="contentArea">
-        {status.chat ?<><InputArea status={status} chatRef={chatRef} option={option} stateAction={stateAction} /> 
+        {status.chat ?<><Chat ref={chatRef} error={status.error} /> 
         <hr/>
-        <Chat ref={chatRef} error={status.error} /> </>:
+        <InputArea status={status} chatRef={chatRef} option={'general'} stateAction={stateAction} class={'stick'}/> </>:
         <> {option=='general'?<><hr/><New /></>:<hr/>}<InputArea status={status} chatRef={chatRef} option={option} stateAction={stateAction} />
         
         </>}
@@ -334,11 +334,11 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
   
  
   return (
-    <div className="inputArea">
+    <div className={status.chat?"inputArea sticky":"inputArea"}>
     
       {!status.error ? (
-        <>
-          <div className="flexBody">
+        <div >
+          <div className={status.chat?"flexBody column":"flexBody"}>
             {option==='general'?"":<div>
             {option==='notes'?<div className="space">
           <div className="type-selector">
@@ -449,7 +449,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
             )}
           </div>
           
-        </>
+        </div>
       ) : (
         <div className="error">
           <p>There was an error generating a response</p>

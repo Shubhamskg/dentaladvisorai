@@ -128,7 +128,50 @@ const Chat = forwardRef(({ error }, ref) => {
   return (
     <div className='Chat'>
       
-
+      {
+        all?.filter((obj) => {
+          return !obj.id ? true : obj?.id !== latest?.id
+        })?.map((obj, key) => {
+          return (
+            <Fragment key={key}>
+              <div className='qs'>
+                <div className='acc'>
+                  {user?.fName?.charAt(0)}
+                </div>
+                <div className='txt'>
+                  <span>
+                    <h4>{obj?.type}</h4>
+                    <p>{obj.prompt}</p>
+                    <p>{timeSince(obj.createdAt)}</p></span>
+                  {obj?.prompt && 
+                <div className="copy">
+                  <CopyButton text={obj?.prompt} />
+                  </div>}
+                </div>
+              </div>
+              <div className="res">
+                <div className='icon'>
+                  <img src={IMAGES.image} alt='first image'/>
+                </div>
+                <div className='txt'>
+    
+                  <span>
+                  <ReactMarkdown>{obj?.content}</ReactMarkdown>
+                  </span>
+                  <div className="copy">
+                  <CopyButton text={obj?.content} onCopy={handleCopySuccess} />
+                  {play==3 && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,0)}}><Listen/></button>}
+                  {(play==0 || play==2) && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,1)}}><Pause/></button>}
+                  {play==1 && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,2)}}><Resume/></button>}
+                  {(play==0 || play==2) && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,3)}}><Stop/></button>}
+                  </div>
+                  
+                </div>
+              </div>
+            </Fragment>
+          )
+        })
+      }
       {
         latest?.prompt?.length > 0 && (
           <Fragment>
@@ -169,50 +212,6 @@ const Chat = forwardRef(({ error }, ref) => {
             </div>
           </Fragment>
         )
-      }
-      {
-        all?.filter((obj) => {
-          return !obj.id ? true : obj?.id !== latest?.id
-        })?.reverse().map((obj, key) => {
-          return (
-            <Fragment key={key}>
-              <div className='qs'>
-                <div className='acc'>
-                  {user?.fName?.charAt(0)}
-                </div>
-                <div className='txt'>
-                  <span>
-                    <h4>{obj?.type}</h4>
-                    <p>{obj.prompt}</p>
-                    <p>{timeSince(obj.createdAt)}</p></span>
-                  {obj?.prompt && 
-                <div className="copy">
-                  <CopyButton text={obj?.prompt} />
-                  </div>}
-                </div>
-              </div>
-              <div className="res">
-                <div className='icon'>
-                  <img src={IMAGES.image} alt='first image'/>
-                </div>
-                <div className='txt'>
-    
-                  <span>
-                  <ReactMarkdown>{obj?.content}</ReactMarkdown>
-                  </span>
-                  <div className="copy">
-                  <CopyButton text={obj?.content} onCopy={handleCopySuccess} />
-                  {play==3 && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,0)}}><Listen/></button>}
-                  {(play==0 || play==2) && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,1)}}><Pause/></button>}
-                  {play==1 && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,2)}}><Resume/></button>}
-                  {(play==0 || play==2) && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,3)}}><Stop/></button>}
-                  </div>
-                  
-                </div>
-              </div>
-            </Fragment>
-          )
-        })
       }
     </div>
   )

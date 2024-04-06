@@ -185,7 +185,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
   };
   const dispatch = useDispatch();
 
-  const { prompt, content, _id} = useSelector((state) => state.messages);
+  let { prompt, content, _id} = useSelector((state) => state.messages);
 
   useEffect(() => {
     textAreaRef.current?.addEventListener("input", (e) => {
@@ -207,6 +207,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
                   // console.log(prompt)
   }
     const FormHandle = async () => {
+      let id=-1;
     setQ2('')
     setQ3('')
     setQ4('')
@@ -230,8 +231,10 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           //   type
             
           // });
+          console.log("_if",_id)
           const url = '/api/chat'
         const data = {
+          chatId: _id,
           prompt: prompt,
           option: option,
           type: type
@@ -284,7 +287,6 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         body: JSON.stringify(data)
       }
       res = await fetch(url, request)
-      // console.log("res: ",res)
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
       let done, value;
@@ -292,16 +294,21 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
       while (!done) {
         ({ value, done } = await reader.read());
         value = decoder.decode(value);
+        // console.log("val:",value)
+        if(value.includes("[stop]")){
+          id=value.split(" ")[1]
+          // console.log("id",id)
+        }else{
+          answer+=value
+        }
         if (done) {
           break
         }
-        // console.log("value:",value);
-        answer+=value
+        
         chatRef?.current?.loadResponse(stateAction, answer, chatsId);
         chunks.push(value);
       }
       if(done){
-      //  console.log("done",chunks)
        return
       }
         }
@@ -317,8 +324,9 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
       } finally {
         if (res) {
           // const { _id, content } = res?.data?.data;
-          const _id=123
-          // console.log("finally")
+          if(id!=-1)
+           _id=id
+          // console.log("id",_id)
           dispatch(insertNew({ _id, fullContent: answer, chatsId }));
           // chatRef?.current?.loadResponse(stateAction, content, chatsId);
           stateAction({ type: "error", status: false });

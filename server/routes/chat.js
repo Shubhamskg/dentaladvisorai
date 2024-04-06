@@ -184,7 +184,7 @@ router.post('/', CheckUser, async (req, res) => {
             for await (const event of msg) {
                 const type=event.type
                 if(type=='content_block_stop'){
-                    res.end()
+                    // res.end()
                     break
                 }
                 else if(type=='content_block_delta'){
@@ -252,6 +252,10 @@ router.post('/', CheckUser, async (req, res) => {
         //         }
         //     })
             response.db = await chat.newResponse(prompt, response, userId,threadId,option,type)
+            res.write("[stop]")
+            res.write(" ")
+            res.write(response.db['chatId'])
+            res.end()
         }
     }
 })
@@ -317,23 +321,58 @@ router.put('/', CheckUser, async (req, res) => {
     }
     try {
         if(prompt_model=="sonnet"){
-            let starttime = Date.now();
+            let messagess=[];
+            try{
+            const  responses = await chat.getChat(userId, chatId)
+            // console.log("user:",userId)
+            // console.log("chat:",chatId)
+            // console.log("resp:",responses)
+            let size=responses.length
+                for(let i=0;i<size;i++){
+                    messagess.push(
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": responses[i].prompt
+                                }
+                            ]
+                        }
+                    )
+                    messagess.push(
+                        {
+                            "role": "assistant",
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": responses[i].content
+                                }
+                            ]
+                        }
+                    )
+                }
+                messagess.push( {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": prompt
+                        }
+                    ]
+                })
+                // console.log("mess:",messagess)
+            }
+            catch(err){
+                console.log("er:",err)
+            }
+            
             const msg = await anthropic.messages.create({
                 model: "claude-3-sonnet-20240229",
                 max_tokens: 4000,
                 temperature: 0.1,
                 system: system_msg[0].text,
-                messages: [
-                {
-                    "role": "user",
-                    "content": [
-                    {
-                        "type": "text",
-                        "text": prompt
-                    }
-                    ]
-                }
-                ],
+                messages: messagess,
                 stream:true
             });
             let answer=""

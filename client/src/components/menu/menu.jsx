@@ -90,7 +90,7 @@ const Menu = ({ changeColorMode }) => {
     })
 
     window.addEventListener('resize', () => {
-      if (!window.matchMedia("(max-width:767px)").matches) {
+      if (!window.matchMedia("(max-width:1000px)").matches) {
         document.body.style.overflowY = "auto"
       } else {
         if (menuRef?.current?.classList?.contains('showMd')) {
@@ -143,13 +143,13 @@ const Menu = ({ changeColorMode }) => {
           <button onClick={showMenuMd} ref={btnRef}><Bar /></button>
         </div>
 
-        <div className='title'>
+        {/* <div className='title'>
           {
             path.length > 6 ? history[0]?.prompt : 'New chat'
           }
-        </div>
+        </div> */}
 
-        <div className='end'>
+        {/* <div className='end'>
           <button onClick={() => {
             if (path.includes('/chat')) {
               navigate('/')
@@ -157,7 +157,7 @@ const Menu = ({ changeColorMode }) => {
               navigate('/chat')
             }
           }}><Plus /></button>
-        </div>
+        </div> */}
       </header>
 
       <div className="menu" ref={menuRef}>

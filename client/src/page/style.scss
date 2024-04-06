@@ -325,7 +325,7 @@ textarea {
   .navbar {
     display: flex;
     width: 100%;
-    background-color: white;
+    background:none;
     font-size: 14px;
     position: fixed;
     padding-left: 50px;
@@ -337,12 +337,19 @@ textarea {
       padding: 0;
       font-size: 10px;
     }
+    @media screen and (max-width: 1000px) {
+      margin-left:15%;
+      // justify-content: center;
+    }
+    @media screen and (max-width: 500px) {
+      margin-left: 7%;
+    }
   }
 
   .option_button {
     text-decoration-line: none;
     text-decoration-style: none;
-    background-color: white;
+    background:none;
     color: black;
     border: none;
     border-radius: 5px;
@@ -411,11 +418,13 @@ hr{
       margin-left: 10px;
       margin-right: 10px;
       // margin: auto;
-      
+      width: 100% !important;
     }
    
-    @media screen and (max-width: 1200px) {
-      width: 100% !important;
+    @media screen and (max-width: 1000px) {
+      margin-left: 10%;
+      margin-right: 10%;
+      width: 80% !important;
       
     }
    
@@ -478,14 +487,27 @@ hr{
           background: transparent;
           background-color: white;
           padding: 0.70rem;
+         
           // justify-content: center;
           // align-items: center;
           // text-align: center;
           border-radius: 50%;
           margin-left: 680px;
           cursor: pointer;
-          @media screen and (max-width: 1300px) {
-            margin-left: 320px;
+          @media screen and (max-width: 1500px) {
+           right: 15%;
+          }
+          @media screen and (max-width: 1400px) {
+            right: 16%;
+           }
+           @media screen and (max-width: 1300px) {
+            right: 20%;
+           }
+           @media screen and (max-width: 1200px) {
+            right: 8%;
+           }
+          @media screen and (max-width: 1000px) {
+            right: 12%;
           }
         }
         .red{
@@ -531,11 +553,6 @@ hr{
       }
 
       @media only screen and (max-width: 1000px) {
-        padding-left: 1em;
-        padding-right: 1em;
-      }
-
-      @media only screen and (max-width: 767px) {
         padding-left: 0.5em;
         padding-right: 0.5em;
       }
@@ -543,7 +560,7 @@ hr{
       .chatActionsMd {
         display: none;
 
-        @media only screen and (max-width: 767px) {
+        @media only screen and (max-width: 1000px) {
           display: block;
           padding-left: 0.5em;
 

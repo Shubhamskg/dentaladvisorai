@@ -88,7 +88,7 @@ const VisionMenu = ({ changeColorMode }) => {
     })
 
     window.addEventListener('resize', () => {
-      if (!window.matchMedia("(max-width:767px)").matches) {
+      if (!window.matchMedia("(max-width:1000px)").matches) {
         document.body.style.overflowY = "auto"
       } else {
         if (menuRef?.current?.classList?.contains('showMd')) {

@@ -204,7 +204,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
                   ${q3?`, Materila or instrutment used - 
                   ${q3}`:''} ${q4?`, plan for next appointment - 
                   ${q4}`:''} `))
-                  console.log(prompt)
+                  // console.log(prompt)
   }
     const FormHandle = async () => {
     setQ2('')
@@ -244,7 +244,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         body: JSON.stringify(data)
       }
       res = await fetch(url, request)
-      console.log("res: ",res)
+      // console.log("res: ",res)
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
       let done, value;
@@ -255,13 +255,13 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
             if (done) {
               break
             }
-            console.log("value:",value);
+            // console.log("value:",value);
             answer+=value
             chatRef?.current?.loadResponse(stateAction, answer, chatsId);
             chunks.push(value);
           }
           if(done){
-           console.log("done",chunks)
+          //  console.log("done",chunks)
            return
           }
         } else {
@@ -284,7 +284,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         body: JSON.stringify(data)
       }
       res = await fetch(url, request)
-      console.log("res: ",res)
+      // console.log("res: ",res)
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
       let done, value;
@@ -295,18 +295,18 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         if (done) {
           break
         }
-        console.log("value:",value);
+        // console.log("value:",value);
         answer+=value
         chatRef?.current?.loadResponse(stateAction, answer, chatsId);
         chunks.push(value);
       }
       if(done){
-       console.log("done",chunks)
+      //  console.log("done",chunks)
        return
       }
         }
       } catch (err) {
-        console.log("error",err)
+        // console.log("error",err)
         if (err?.response?.data?.status === 405) {
           dispatch(emptyUser());
           dispatch(emptyAllRes());
@@ -318,7 +318,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         if (res) {
           // const { _id, content } = res?.data?.data;
           const _id=123
-          console.log("finally")
+          // console.log("finally")
           dispatch(insertNew({ _id, fullContent: answer, chatsId }));
           // chatRef?.current?.loadResponse(stateAction, content, chatsId);
           stateAction({ type: "error", status: false });
@@ -331,7 +331,15 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
   if(option=='general') placeholder='Ask Dental Query'
   else if(option=='notes') placeholder='Please provide appointment details here'
   else placeholder='Please provide details of the letter you would like to write'
-  
+  let value;
+  const handleChange=()=>{
+    value=textAreaRef.current.value
+    setArea(value)
+  }
+  useEffect(()=>{
+    
+    fn()
+  },[area])
  
   return (
     <div className={status.chat?"inputArea sticky":"inputArea"}>
@@ -373,10 +381,8 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
             <textarea  
               placeholder={placeholder}
               ref={textAreaRef}
-              onChange={(e) => {
-                setArea(e.target.value)
-                fn()
-              }}
+              value={value}
+              onChange={handleChange}
               // onKeyDown={(evt)=>{
               // var keyCode = evt ? (evt.which ? evt.which : evt.keyCode) : event.keyCode;
               // if(keyCode==13){
@@ -407,7 +413,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
       :''}
       {!status?.loading ? (
               <div className="boxs">
-              <button onClick={()=>{if(area.length>0){fn();FormHandle()}}}>
+              <button onClick={()=>{if(area?.length>0){fn();FormHandle()}}}>
                 {<Rocket />}
               </button>
               

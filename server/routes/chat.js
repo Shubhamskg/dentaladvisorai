@@ -189,7 +189,7 @@ router.post('/', CheckUser, async (req, res) => {
                 }
                 else if(type=='content_block_delta'){
                 const text=event.delta.text
-                console.log(text)
+                // console.log(text)
                 if(text){
                     res.write(`${text}`)
                     answer+=text
@@ -345,7 +345,7 @@ router.put('/', CheckUser, async (req, res) => {
                 }
                 else if(type=='content_block_delta'){
                 const text=event.delta.text
-                console.log(text)
+                // console.log(text)
                 if(text){
                     res.write(`${text}`)
                     answer+=text

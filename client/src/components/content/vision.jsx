@@ -20,7 +20,7 @@ import React, {
   
     const { user, radiograph } = useSelector((state) => state)
     const { latest, content, all } = radiograph
-    console.log(radiograph)
+    // console.log(radiograph)
     const loadResponse = (stateAction,
       response = content,
       chatsId = latest?.id) => {
@@ -144,7 +144,7 @@ import React, {
                   {error && <span>!</span>}
                 </div>
                 <div>
-                  {console.log(latest)}
+                  {/* {console.log(latest)} */}
                     <img className='img' src={`${latest?.image}`} />
                   </div>
                   <br/>

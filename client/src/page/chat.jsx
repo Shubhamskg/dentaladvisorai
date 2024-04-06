@@ -231,7 +231,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           //   type
             
           // });
-          console.log("_if",_id)
+          // console.log("_if",_id)
           const url = '/api/chat'
         const data = {
           chatId: _id,

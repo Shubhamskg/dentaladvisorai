@@ -29,7 +29,7 @@ export default function Speech({textarea,cls,q,q2,q3,q4,set,fn}) {
         
     }
           useEffect(()=>{
-            console.log(transcript)
+            // console.log(transcript)
             if(q=="q2" && speechActive){
                 q2.current.value=transcript
                 set(transcript)

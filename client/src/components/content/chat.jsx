@@ -16,7 +16,7 @@ import ReactMarkdown from 'react-markdown';
 
 const Chat = forwardRef(({ error }, ref) => {
   const handleCopySuccess = () => {
-    console.log('Text copied successfully');
+    // console.log('Text copied successfully');
   };
   const IMAGES = {
     image : new URL('../../../public/favicon.png', import.meta.url).href
@@ -207,6 +207,11 @@ const Chat = forwardRef(({ error }, ref) => {
                 {<ReactMarkdown>{latest?.content}</ReactMarkdown> && 
                 <div className="copy">
                   <CopyButton text={latest?.content} onCopy={handleCopySuccess} />
+                  {play==3 && <button className="playbtn" onClick={()=>{handleSpeech(latest?.content,0)}}><Listen/></button>}
+                  {(play==0 || play==2) && <button className="playbtn" onClick={()=>{handleSpeech(latest?.content,1)}}><Pause/></button>}
+                  {play==1 && <button className="playbtn" onClick={()=>{handleSpeech(latest?.content,2)}}><Resume/></button>}
+                  {(play==0 || play==2) && <button className="playbtn" onClick={()=>{handleSpeech(latest?.content,3)}}><Stop/></button>}
+                  
                   </div>}
               </div>
             </div>

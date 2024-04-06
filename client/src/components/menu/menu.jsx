@@ -111,7 +111,7 @@ const Menu = ({ changeColorMode }) => {
       } catch (err) {
       } finally {
         if (res?.data) {
-          console.log(res.data.data)
+          // console.log(res.data.data)
           dispatch(addHistory(res?.data?.data))
         }
       }

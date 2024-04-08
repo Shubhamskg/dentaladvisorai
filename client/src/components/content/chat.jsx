@@ -12,6 +12,9 @@ import Stop from "../../assets/stop"
 import Pause from "../../assets/pause"
 import Resume from "../../assets/resume"
 import ReactMarkdown from 'react-markdown';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"
+
 
 
 const Chat = forwardRef(({ error }, ref) => {
@@ -124,7 +127,7 @@ const Chat = forwardRef(({ error }, ref) => {
     }
   }
   const [play,setPlay]=useState(3)
-  
+  // const [edit,setEdit]=useState(false)
   return (
     <div className='Chat'>
       
@@ -132,6 +135,7 @@ const Chat = forwardRef(({ error }, ref) => {
         all?.filter((obj) => {
           return !obj.id ? true : obj?.id !== latest?.id
         })?.map((obj, key) => {
+          // const [value, setValue] = useState(obj?.content);
           return (
             <Fragment key={key}>
               <div className='qs'>
@@ -156,15 +160,28 @@ const Chat = forwardRef(({ error }, ref) => {
                 <div className='txt'>
     
                   <span>
-                  <ReactMarkdown>{obj?.content}</ReactMarkdown>
+                  <ReactMarkdown 
+                  // className={edit?"hide":""}
+                  >{obj?.content}</ReactMarkdown>
+                  {/* <div className={edit?"editorContainer":"hide"}>
+          <ReactQuill
+            className="editor"
+            theme="snow"
+            value={value}
+            onChange={setValue}
+          />
+        </div> */}
                   </span>
                   <div className="copy">
+                  {/* <button onClick={()=>setEdit((prev)=>!prev)}>{edit?"Save":"Edit"}</button> */}
                   <CopyButton text={obj?.content} onCopy={handleCopySuccess} />
                   {play==3 && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,0)}}><Listen/></button>}
                   {(play==0 || play==2) && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,1)}}><Pause/></button>}
                   {play==1 && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,2)}}><Resume/></button>}
                   {(play==0 || play==2) && <button className="playbtn" onClick={()=>{handleSpeech(obj?.content,3)}}><Stop/></button>}
+                  
                   </div>
+                  
                   
                 </div>
               </div>

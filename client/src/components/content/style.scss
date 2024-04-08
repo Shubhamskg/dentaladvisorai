@@ -62,6 +62,9 @@
             }
             .txt {
                 width: 45vw;
+                .hide{
+                    display: none;
+                }
                 .error {
                     color: #374151;
                 }
@@ -188,7 +191,7 @@
 }
 
 .Chat {
-    margin-bottom: 108px;
+    margin-bottom: 150px;
     display: block;
     text-align: left;
 

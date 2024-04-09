@@ -131,7 +131,7 @@ const Main = () => {
   const noteRef = useRef(null)
   const letRef = useRef(null)
   const path=useLocation().pathname
-  console.log("path",path)
+  // console.log("path",path)
 
   return (
     <>

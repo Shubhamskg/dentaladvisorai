@@ -456,7 +456,43 @@ header {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    .search{
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      gap: 20px;
+      justify-content: space-between;
+      align-items: center;
+      // border: 2px black solid;
+      border-style: inset;
+      .btn{
+        margin-top: 20px;
+        display: flex;
+        gap: 8px;
+        input{
+          width: 90%;
+          height: 25px;
+          padding: 0 5px;
+        }
+        button{
+          
+          background: none;
+          border: none;
+          
+        }
+      }
+      .result{
+        padding: 20px 20px;
+        height: auto;
+        overflow:auto;
+        
+      }
+    }
     .link{
+      flex: 3;
       text-decoration: none;
       text-align: center;
       color: white;

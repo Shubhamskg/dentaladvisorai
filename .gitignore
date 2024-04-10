@@ -28,6 +28,7 @@ client/node_modules
 client/dist
 client/dist-ssr
 client/*.local
+client/.env
 
 # Server
 server/.env

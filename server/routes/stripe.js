@@ -20,7 +20,7 @@ router.post('/create-checkout-session', async (req, res) => {
       quantity: 1,
     }],
     mode: 'payment',
-    return_url: 'http://localhost:5173/return?session_id={CHECKOUT_SESSION_ID}'
+    return_url: 'https://dentaladvisor.ai/return?session_id={CHECKOUT_SESSION_ID}'
   });
   // console.log("session: ",session)
   res.send({clientSecret: session.client_secret});

@@ -139,7 +139,8 @@ export default {
                         email: email,
                         fName: fName,
                         lName: lName,
-                        pass: pass
+                        pass: pass,
+                        credit:0
                     })
                 } catch (err) {
                     if (err?.code === 11000) {

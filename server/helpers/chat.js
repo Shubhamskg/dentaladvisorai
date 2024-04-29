@@ -9,6 +9,11 @@ export default {
             let chatId = new ObjectId().toHexString()
             let res = null
             try {
+                res = await db.collection(collections.USER).updateOne({
+                    _id:ObjectId( userId.toString())
+                }, {
+                    $inc: { credit: 1 }
+                })
                 await db.collection(collections.CHAT).createIndex({ user: 1 }, { unique: true })
                 res = await db.collection(collections.CHAT).insertOne({
                     user: userId.toString(),

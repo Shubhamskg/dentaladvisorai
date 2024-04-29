@@ -162,8 +162,10 @@ router.post('/', CheckUser, async (req, res) => {
     
     try {
         if(prompt_model=="sonnet"){
+            const model1= "claude-3-sonnet-20240229";
+            const model2= "claude-3-haiku-20240229";
             const agent1 = await anthropic.messages.create({
-                model: "claude-3-sonnet-20240229",
+                model: option!="letters"?model2:model1,
                 max_tokens: 4000,
                 temperature: 0,
                 system: system_msg[0].text,
@@ -278,7 +280,7 @@ router.post('/', CheckUser, async (req, res) => {
               }
               response.openai=res_agent3
             }
-          else response.openai=res_agent1
+            else response.openai=res_agent1
           console.log("final: ",response.openai)
         }
         else if(prompt_model=="gpt4"){

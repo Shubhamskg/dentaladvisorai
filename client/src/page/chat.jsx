@@ -233,7 +233,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
             
           // });
           // console.log("_if",_id)
-          const url = '/api/chat'
+          const url = 'https://server.dentaladvisor.ai/api/chat'
         const data = {
           chatId: _id,
           prompt: prompt,
@@ -274,7 +274,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           //   option,
           //   type,
           // })
-        const url = '/api/chat'
+        const url = 'https://server.dentaladvisor.ai/api/chat'
         const data = {
           prompt: prompt,
           option: option,

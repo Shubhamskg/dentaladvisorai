@@ -59,7 +59,7 @@ const reducer = (state, { type, status }) => {
 
 const Payment = () => {
   const fetchClientSecret = useCallback(() => {
-    return fetch("/api/create-checkout-session", {
+    return fetch("https://server.dentaladvisor.ai/api/create-checkout-session", {
       method: "POST",
     })
       .then((res) => res.json())

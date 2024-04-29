@@ -4,6 +4,7 @@ import { VitePWA } from "vite-plugin-pwa";
 import dotnet from 'dotenv'
 dotnet.config()
 // https://vitejs.dev/config/
+let origin=process.env.SERVER_URL||"http://localhost:5000/"
 export default defineConfig({
   server: {
     // host:true,
@@ -11,7 +12,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         // target: "https://dentaladvisor.onrender.com/",
-        target:"http://localhost:5000/",
+        target:origin,
         changeOrigin: true,
         secure: true,
       },

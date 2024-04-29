@@ -10,7 +10,7 @@ export default {
             let res = null
             try {
                 res = await db.collection(collections.USER).updateOne({
-                    _id:ObjectId( userId.toString())
+                    _id: userId.toString()
                 }, {
                     $inc: { credit: 1 }
                 })
@@ -68,7 +68,7 @@ export default {
     updateChat: (chatId, prompt, { openai }, userId,threadId,option,type) => {
         return new Promise(async (resolve, reject) => {
             let res1 = await db.collection(collections.USER).updateOne({
-                _id:ObjectId( userId.toString())
+                _id: userId.toString()
             }, {
                 $inc: { credit: 1 }
             })

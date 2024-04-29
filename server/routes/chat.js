@@ -187,8 +187,8 @@ router.post('/',CheckUser, async (req, res) => {
             for await (const event of agent1) {
                 const type=event.type
                 if(type=='content_block_stop'){
-                    if(option=="letters")
-                    res.end()
+                    // if(option=="letters")
+                    // res.end()
                     break
                 }
                 else if(type=='content_block_delta'){

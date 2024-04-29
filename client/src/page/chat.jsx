@@ -222,7 +222,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
       typeRef="";
       let res = null;
       try {
-        console.log("_id",_id)
+        // console.log("_id",_id)
         if (_id) {
           // res = await instance.put("/api/chat", {
           //   chatId: _id,
@@ -297,7 +297,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         credentials: 'include'
       }
       res = await fetch(url, request)
-      console.log("res",res)
+      // console.log("res",res)
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
       let done, value;
@@ -308,7 +308,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         // console.log("val:",value)
         if(value.includes("[stop]")){
           id=value.split(" ")[1]
-          console.log("id1",id)
+          // console.log("id1",id)
         }else{
           answer+=value
         }
@@ -337,7 +337,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           // const { _id, content } = res?.data?.data;
           if(id!=-1)
            _id=id
-          console.log("id2",_id)
+          // console.log("id2",_id)
           dispatch(insertNew({ _id, fullContent: answer, chatsId }));
           // chatRef?.current?.loadResponse(stateAction, content, chatsId);
           stateAction({ type: "error", status: false });

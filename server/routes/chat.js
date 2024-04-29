@@ -98,7 +98,7 @@ let assistant_id=process.env.ASSISTANT_ID_GENERAL
   ];
 const prompt_model=process.env.prompt_model
 let threadId=""
-router.post('/', async (req, res) => {
+router.post('/',CheckUser, async (req, res) => {
     // console.log(req.body)
     const { prompt, userId, option,type } = req.body
     console.log(prompt_model)
@@ -187,19 +187,21 @@ router.post('/', async (req, res) => {
             for await (const event of agent1) {
                 const type=event.type
                 if(type=='content_block_stop'){
-                    // res.end()
+                    if(option=="letters")
+                    res.end()
                     break
                 }
                 else if(type=='content_block_delta'){
                 const text=event.delta.text
                 // console.log(text)
                 if(text){
-                    // res.write(`${text}`)
+                    if(option=="letters")
+                    res.write(`${text}`)
                     res_agent1+=text
                 }
                 }
               }
-            console.log("agent1: ",res_agent1)
+            // console.log("agent1: ",res_agent1)
             if(option!="letters"){
             // res.write(`\n \n`)
             // res.write(`Agent-2 Review Response: \n \n`)
@@ -280,7 +282,10 @@ router.post('/', async (req, res) => {
               }
               response.openai=res_agent3
             }
-            else response.openai=res_agent1
+            else {
+                // console.log("let",res_agent1)
+                response.openai=res_agent1
+            }
           console.log("final: ",response.openai)
         }
         else if(prompt_model=="gpt4"){
@@ -344,7 +349,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/', async (req, res) => {
+router.put('/', CheckUser,async (req, res) => {
     const { prompt, userId, chatId,option ,type} = req.body
     console.log(prompt_model)
     console.log(type)

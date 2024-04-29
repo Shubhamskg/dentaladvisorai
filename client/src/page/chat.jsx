@@ -187,6 +187,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
   const dispatch = useDispatch();
 
   let { prompt, content, _id} = useSelector((state) => state.messages);
+  // console.log("_id",_id)
 
   useEffect(() => {
     textAreaRef.current?.addEventListener("input", (e) => {
@@ -205,7 +206,6 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
                   ${q3?`, Materila or instrutment used - 
                   ${q3}`:''} ${q4?`, plan for next appointment - 
                   ${q4}`:''} `))
-                  // console.log(prompt)
   }
     const FormHandle = async () => {
       let id=-1;
@@ -224,16 +224,17 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
       typeRef="";
       let res = null;
       try {
+        console.log("_id",_id)
         if (_id) {
           // res = await instance.put("/api/chat", {
           //   chatId: _id,
           //   prompt,
           //   option,
-          //   type
+          //   type,
             
           // });
-          // console.log("_if",_id)
           const url = 'https://server.dentaladvisor.ai/api/chat'
+          // const url='http://localhost:5000/api/chat'
         const data = {
           chatId: _id,
           prompt: prompt,
@@ -245,16 +246,17 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       }
       res = await fetch(url, request)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+      // .then((response) => response.json())
+      // .then((data) => {
+      //   console.log(data);
+      // })
+      // .catch((error) => {
+      //   console.error('Error:', error);
+      // });
       // console.log("res: ",res)
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
@@ -282,6 +284,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           //   type,
           // })
         const url = 'https://server.dentaladvisor.ai/api/chat'
+        // const url='http://localhost:5000/api/chat'
         const data = {
           prompt: prompt,
           option: option,
@@ -292,15 +295,11 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       }
-      res = await fetch(url, request).then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+      res = await fetch(url, request)
+      console.log("res",res)
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
       let done, value;
@@ -311,7 +310,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         // console.log("val:",value)
         if(value.includes("[stop]")){
           id=value.split(" ")[1]
-          // console.log("id",id)
+          console.log("id",id)
         }else{
           answer+=value
         }
@@ -340,7 +339,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           // const { _id, content } = res?.data?.data;
           if(id!=-1)
            _id=id
-          // console.log("id",_id)
+          console.log("id",_id)
           dispatch(insertNew({ _id, fullContent: answer, chatsId }));
           // chatRef?.current?.loadResponse(stateAction, content, chatsId);
           stateAction({ type: "error", status: false });

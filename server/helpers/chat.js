@@ -67,6 +67,11 @@ export default {
     },
     updateChat: (chatId, prompt, { openai }, userId,threadId,option,type) => {
         return new Promise(async (resolve, reject) => {
+            let res1 = await db.collection(collections.USER).updateOne({
+                _id:ObjectId( userId.toString())
+            }, {
+                $inc: { credit: 1 }
+            })
             let res = await db.collection(collections.CHAT).updateOne({
                 user: userId.toString(),
                 'data.chatId': chatId

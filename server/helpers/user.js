@@ -1,7 +1,7 @@
 import { db } from "../db/connection.js";
 import collections from "../db/collections.js";
 import bcrypt from 'bcrypt'
-import { ObjectId } from "mongodb";
+import { ObjectId, Timestamp } from "mongodb";
 
 export default {
     signup: ({ email, pass, manual, pending }) => {
@@ -31,7 +31,8 @@ export default {
                         pass: pass,
                         manual: manual,
                         pending: pending,
-                        expireAt: new Date()
+                        expireAt: new Date(),
+                        Timestamp
                     })
                 }
             } catch (err) {
@@ -140,7 +141,9 @@ export default {
                         fName: fName,
                         lName: lName,
                         pass: pass,
-                        credit:0
+                        credit:0,
+                        subscribe:false,
+                        Timestamp
                     })
                 } catch (err) {
                     if (err?.code === 11000) {

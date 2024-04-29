@@ -163,7 +163,7 @@ router.post('/', async (req, res) => {
     try {
         if(prompt_model=="sonnet"){
             const model1= "claude-3-sonnet-20240229";
-            const model2= "claude-3-haiku-20240229";
+            const model2= "claude-3-haiku-20240307";
             const agent1 = await anthropic.messages.create({
                 model: option!="letters"?model2:model1,
                 max_tokens: 4000,
@@ -450,6 +450,7 @@ router.put('/', async (req, res) => {
             catch(err){
                 console.log("er:",err)
             }
+            
             const msg = await anthropic.messages.create({
                 model: "claude-3-sonnet-20240229",
                 max_tokens: 4000,

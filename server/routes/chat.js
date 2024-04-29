@@ -98,7 +98,7 @@ let assistant_id=process.env.ASSISTANT_ID_GENERAL
   ];
 const prompt_model=process.env.prompt_model
 let threadId=""
-router.post('/', CheckUser, async (req, res) => {
+router.post('/', async (req, res) => {
     // console.log(req.body)
     const { prompt, userId, option,type } = req.body
     console.log(prompt_model)
@@ -344,7 +344,7 @@ router.post('/', CheckUser, async (req, res) => {
     }
 })
 
-router.put('/', CheckUser, async (req, res) => {
+router.put('/', async (req, res) => {
     const { prompt, userId, chatId,option ,type} = req.body
     console.log(prompt_model)
     console.log(type)

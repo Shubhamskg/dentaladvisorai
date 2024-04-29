@@ -248,6 +248,13 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         body: JSON.stringify(data)
       }
       res = await fetch(url, request)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
       // console.log("res: ",res)
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
@@ -287,7 +294,13 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         },
         body: JSON.stringify(data)
       }
-      res = await fetch(url, request)
+      res = await fetch(url, request).then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
       const reader = res.body.getReader();
       const decoder = new TextDecoder('utf-8');
       let done, value;

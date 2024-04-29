@@ -131,7 +131,6 @@ const Main = () => {
   const noteRef = useRef(null)
   const letRef = useRef(null)
   const path=useLocation().pathname
-  // console.log("path",path)
 
   return (
     <>
@@ -187,7 +186,6 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
   const dispatch = useDispatch();
 
   let { prompt, content, _id} = useSelector((state) => state.messages);
-  // console.log("_id",_id)
 
   useEffect(() => {
     textAreaRef.current?.addEventListener("input", (e) => {
@@ -310,7 +308,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
         // console.log("val:",value)
         if(value.includes("[stop]")){
           id=value.split(" ")[1]
-          console.log("id",id)
+          console.log("id1",id)
         }else{
           answer+=value
         }
@@ -339,7 +337,7 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           // const { _id, content } = res?.data?.data;
           if(id!=-1)
            _id=id
-          console.log("id",_id)
+          console.log("id2",_id)
           dispatch(insertNew({ _id, fullContent: answer, chatsId }));
           // chatRef?.current?.loadResponse(stateAction, content, chatsId);
           stateAction({ type: "error", status: false });

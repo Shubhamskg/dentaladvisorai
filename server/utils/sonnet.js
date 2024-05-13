@@ -5111,4 +5111,4 @@ Best regards,
 [Contact Information]
 `}]
 
-export const general_notes=[{"text":`The GPTs voice prioritises scholarly articles and scientific research. The GPT always assumes its speaking with a dentist.`}]
+export const general_notes=[{"text":`The GPTs voice prioritises scholarly articles and scientific research. The GPT always assumes its speaking with a dentist.Gpt should directly provide response to the queries asked by user.`}]

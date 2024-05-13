@@ -145,15 +145,17 @@ const Main = () => {
         <button className="option_button active" ref={genRef} onClick={()=>{setOption("general");if(path!='/')navigate("/"); genRef.current.classList.add("active"), noteRef.current.classList.remove("active"), letRef.current.classList.remove("active")}}>Dental GPT</button>
         <button className="option_button" ref={noteRef} onClick={()=>{setOption("notes");if(path!='/')navigate("/");  noteRef.current.classList.add("active"),genRef.current.classList.remove("active"), letRef.current.classList.remove("active")}}>Clinical Notes</button>
         <button className="option_button" ref={letRef} onClick={()=>{setOption("letters");if(path!='/')navigate("/"); letRef.current.classList.add("active"),noteRef.current.classList.remove("active"), genRef.current.classList.remove("active")}}>Patient Letters</button>
-       
-        {/* <NavLink to="/vision" className="option_button">Radiograph</NavLink> */}
+        {/* <button className="option_button"  onClick={()=>{navigate("/treatmentprice")}}>Treatment Price</button> */}
+        {/* <button className="option_button"  onClick={()=>{navigate("/patient")}}>Patient Portal</button> */}
+
+        {/* <button onClick={()=>{navigate("/vision")}} className="option_button">Radiograph</button> */}
       </div>
       
       <div className="contentArea">
         {status.chat ?<><Chat ref={chatRef} error={status.error} /> 
         <hr/>
         <InputArea status={status} chatRef={chatRef} option={'general'} stateAction={stateAction} class={'stick'}/> </>:
-        <> {option=='general'?<><hr/><New /></>:<hr/>}<InputArea status={status} chatRef={chatRef} option={option} stateAction={stateAction} />
+        <> {option=='general'?<><hr/></>:<hr/>}<InputArea status={status} chatRef={chatRef} option={option} stateAction={stateAction} />
         
         </>}
       </div>

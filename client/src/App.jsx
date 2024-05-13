@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment, Success} from "./page";
+import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment, Success,Patient,Treatmentprice, Patientportal} from "./page";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
@@ -47,7 +47,7 @@ const App = () => {
   return (
     <section className={user ? "main-grid" : null}>
       
-      {loading && <Loading />}
+      {/* {loading && <Loading />} */}
 
       {offline && (
         <Error
@@ -68,6 +68,8 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/dashboard/chat/:id" element={<ChatView/>}/>
           <Route path="/dashboard/vision/:id" element={<VisionView/>}/>
+          <Route path="/patient" element={<Patient/>}/>
+          <Route path="/treatmentprice" element={<Treatmentprice/>}/>
         </Route>
 
         <Route element={<ProtectedRoute offline={offline} />}>
@@ -77,6 +79,7 @@ const App = () => {
           <Route path="/signup/pending/:id" element={<Signup />} />
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/forgot/set/:userId/:secret" element={<Forgot />} />
+          <Route path="/patientportal" element={<Patientportal/>}/>
         </Route>
         <Route
           path="*"

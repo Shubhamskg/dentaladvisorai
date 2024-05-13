@@ -307,6 +307,7 @@ textarea {
 }
 
 .main {
+  margin-left: 260px;
   .ads_box {
     width: calc(100vw - 520px) !important;
     height: 250px;
@@ -324,7 +325,7 @@ textarea {
 
   .navbar {
     display: flex;
-    width: 100%;
+    width: 100vw;
     background:white;
     font-size: 14px;
     position: fixed;
@@ -570,6 +571,7 @@ hr{
             border-radius: 0.25rem;
             font-size: 0.875rem;
             cursor: pointer;
+
             border: none;
             background: transparent;
           }
@@ -780,28 +782,90 @@ hr{
 }
 
 .Auth {
-  display: block;
+  display: flex;
   position: fixed;
   z-index: 1000;
   height: 100%;
   width: 100%;
-  background: white;
   color: #000000;
-
+  background: url('../assets/img/login.jpg');
+  background-size:cover;
+  align-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   .inner {
     display: flex;
-    height: 100%;
-    width: 100%;
+    background-color:rgba(255, 255, 255, 0.893);
+    margin:auto;
+    border-radius: 20px;
     flex-direction: column;
+    height: auto;
+    align-items: center;
+    justify-content: center;
     overflow-y: auto;
-
+    .nav{
+      color: white;
+      font-size: 20px;
+      .type {
+      display: flex;
+      flex-direction: row;
+        button {
+          width: 300px;
+          padding: 16px 36px;
+          border: 0px solid #999;
+          border-bottom: none;
+          cursor: pointer;
+          background-color: blue;
+          text-transform: capitalize;
+          color: white;
+          font-size: 20px;
+          font-weight: bolder;
+          &.active {
+            background-color: white;
+            color: black;
+          }
+          &:first-child {
+            border-top-left-radius: 5px;
+            border-bottom-right-radius: 10px;
+            border-right: none;
+          }
+          &:last-child {
+            border-top-right-radius: 5px;
+            border-bottom-left-radius: 10px;
+            border-left: none;
+          }
+        }
+      }
+    }
+    .form{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      input{
+        width: 300px;
+        height: 40px;
+        padding-left: 10px;
+        font-size: larger;
+        // border-radius: 5px;
+        // border: 1px solid ;
+      }
+      button{
+        height: 40px;
+        background-color: blue;
+        color: white;
+        border-radius: 5px;
+        border: none;
+        font-size: larger;
+        cursor: pointer;
+      }
+    }
     .suggection {
       height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-
       svg {
         margin-bottom: 0.5rem;
       }
@@ -821,7 +885,8 @@ hr{
           width: 5em;
           height: 3em;
           text-align: center;
-          background: rgb(45, 16, 163);
+          // background: rgb(45, 16, 163);
+          background-color: blue;
           ;
           color: rgba(255, 255, 255, 1);
           border-radius: 0.25rem;
@@ -838,7 +903,7 @@ hr{
     }
 
     .bottum {
-      margin-top: auto;
+      margin-top: 0;
       display: flex;
       flex-direction: row;
       width: 100%;

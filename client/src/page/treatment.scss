@@ -1,0 +1,247 @@
+@import "../index.scss";
+
+::-webkit-scrollbar {
+    width: 1px;
+}
+
+::-webkit-scrollbar-track {
+    background: white;
+
+}
+
+::-webkit-scrollbar-thumb {
+    background: black;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: green;
+}
+
+.contentsArea {
+    scroll-behavior: smooth;
+
+    .cover {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 260px;
+        height: 50px;
+        background-color: white;
+        z-index: 1000;
+    }
+
+    display: flex;
+    width: 100vw;
+    height:max(100%, calc(100vh - 50px));
+    margin: auto;
+    margin-top: 50px;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    background-image: url('https://t3.ftcdn.net/jpg/02/80/91/22/360_F_280912237_LwphjbCj0T79j8Qnirxeqzf6tjxKQz3b.jpg');
+    background-size:cover;
+    // background-repeat: repeat-x;
+    overflow: auto;
+
+    .homePage {
+        margin: 0;
+        padding: 0;
+
+        .searchBar {
+            position: relative;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+
+            .search {
+                height: 50px;
+                padding-left: 20px;
+                font-size: larger;
+                width: 60vw;
+                border-radius: 50px;
+                border: 1px solid grey;
+            }
+
+            .filter {
+                margin-top: 20px;
+                margin-right: - 230px;
+                z-index: 1000;
+                // border: 1px black solid;
+                -webkit-box-shadow: 0px 0px 5px -1px #000000;
+                box-shadow: 0px 0px 5px -1px #000000;
+                padding: 20px;
+                border-radius: 10px;
+                width: 250px;
+                background: white;
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                right: 0;
+                gap: 10px;
+                display: none;
+                align-items: center;
+
+                input {
+                    padding-left: 10px;
+                    width: 90%;
+                    height: 30px;
+                    border-radius: 5px;
+                    border: none;
+                    border: 1px black solid;
+                }
+
+                .action {
+                    padding: 20px;
+                    display: flex;
+                    // justify-content: space-between;
+                    gap: 40px;
+                    button {
+                        height: 30px;
+                        margin-top: 5px;
+                        padding: 0 20px ;
+                        width: max-content;
+                        color: white;
+                        font-size: 12px;
+                        border-radius: 10px;
+                        border: none;
+                        font-size: larger;
+                    }
+                    .clear{
+                        background-color: red;
+                    }
+                    .apply{
+                        background-color: green;
+                    }
+                }
+            }
+
+            .click {
+                display: flex;
+            }
+
+            .filter_button {
+                height: 40px;
+                margin-left: -115px;
+                margin-top: 5px;
+                width: 100px;
+                // width: 410px;
+                background-color: blue;
+                color: white;
+                border-radius: 50px;
+                border: none;
+                font-size: larger;
+            }
+        }
+
+        .chart {
+            background-color: rgba(255, 0, 0, 0.068);
+            padding-left: 40px;
+            padding-top: 10px;
+            margin: 0px 0;
+            border-radius: 20px;
+            border: 2px solid grey;
+        }
+
+        .boxes {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+
+    .clinic {
+        margin: 0;
+        padding: 0;
+        margin-top: 50px;
+        width: 100vw;
+        height: 500px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+
+        // align-items: center;
+        // justify-content: center;
+        .titl {
+            margin-left: 100px;
+        }
+
+        .change {
+            margin: 20px;
+            margin-left: 120px;
+            display: flex;
+            gap: 100px;
+
+            .box {
+                display: flex;
+                gap: 20px;
+                font-size: 20px;
+
+                select {
+                    width: 100px;
+                    font-size: 20px;
+                    height: max-content;
+                }
+            }
+
+            .boxs {
+                display: flex;
+                gap: 100px;
+            }
+        }
+
+        .data {
+            display: flex;
+            gap: 15px;
+            margin: 0 auto;
+            width: 90vw;
+            flex-wrap: wrap;
+
+            .card {
+                box-sizing: border-box;
+                width: 24%;
+                margin-bottom: 20px;
+                height: 230px;
+                background-color: rgba(96, 76, 248, 0.952);
+                // background-color: white;
+                border: 1px solid grey;
+                overflow: auto;
+                border-radius: 10px;
+                padding: 30px;
+                position: relative;
+                color: white;
+
+                .title {
+                    font-size: 20px;
+                    padding-bottom: 10px;
+                }
+
+                .link {
+                    font-size: 12px;
+                    overflow: hidden;
+                    padding-bottom: 10px;
+                    color: white;
+                    text-decoration: none;
+                }
+
+                .distance {
+                    font-size: 14px;
+                    position: absolute;
+                    right: 20px;
+                    bottom: 40px;
+                }
+
+                .treatment {
+                    font-size: 14px;
+                    padding-bottom: 5px;
+                }
+
+                .price {
+                    font-size: 18px;
+                }
+
+            }
+        }
+    }
+}

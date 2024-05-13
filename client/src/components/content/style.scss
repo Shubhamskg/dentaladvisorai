@@ -17,6 +17,7 @@
 .light {
     .New {
         margin-top: 50px;
+        margin-left: 0;
         .card-bg {
             background: rgb(218, 233, 245);
             border-radius: .375rem;
@@ -132,7 +133,7 @@
 
 .New {
     display: block;
-    padding-left: 12em;
+    // padding-left: 12em;
     padding-right: 12em;
     padding-top: 0em;
     padding-bottom: 1rem;

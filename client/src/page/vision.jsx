@@ -134,8 +134,11 @@ const Main = () => {
         <button className="option_button" ref={genRef} onClick={()=>{setOption("general"), genRef.current.classList.add("active"), noteRef.current.classList.remove("active"), letRef.current.classList.remove("active")}}>General LLM</button>
         <button className="option_button" ref={noteRef} onClick={()=>{setOption("notes"), noteRef.current.classList.add("active"),genRef.current.classList.remove("active"), letRef.current.classList.remove("active")}}>Clinical Notes</button>
         <button className="option_button" ref={letRef} onClick={()=>{setOption("letters"), letRef.current.classList.add("active"),noteRef.current.classList.remove("active"), genRef.current.classList.remove("active")}}>Pateint Letters</button>
+        
+
         </NavLink>
-        <NavLink to="/vision" className="option_button">Radiograp</NavLink>
+        {/* <button onClick={()=>{navigate("/vision")}} className="option_button">Radiograph</button> */}
+        {/* <NavLink to="/vision" className="option_button">Radiograp</NavLink> */}
       </div>
       {/* <NavLink to="/" className="vision_button">Switch to Dental Chat</NavLink> */}
       

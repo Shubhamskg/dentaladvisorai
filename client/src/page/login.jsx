@@ -5,6 +5,7 @@ import { GptIcon } from "../assets";
 import { LoginComponent } from "../components";
 import { setLoading } from "../redux/loading";
 import "./style.scss";
+import FormFeild from '../components/auth/FormFeild'
 
 const Login = () => {
   const IMAGES = {
@@ -36,14 +37,36 @@ const Login = () => {
       }
     }
   }, [location]);
+  const types = ["dentists", "patients"];
+  const [logintype, setLogintype] = useState("dentists");
+
+  const switchType = (val) => {
+    setLogintype(val);
+  };
 
   return (
     <div className="Auth">
       <div className="inner">
+      <div className="nav">
+      <div className="type">
+        {types.map((type) => (
+          <button
+            key={type}
+            onClick={() => switchType(type)}
+            className={logintype === type ? "active" : ""}
+          >
+            {type}
+          </button>
+        ))}
+      </div>
+      </div>
+      {logintype==="dentists"?<div>
         {auth ? (
           <LoginComponent />
         ) : (
           <div className="suggection">
+            <br/>
+            <br/>
             <div>
               <img src={IMAGES.image} alt='first image'/>
             </div>
@@ -52,7 +75,10 @@ const Login = () => {
               <p>Welcome to Dental Advisor</p>
               <p>Log in with your Dental Advisor account to continue</p>
             </div>
-
+            <br/>
+            <br/>
+            
+        
             <div className="btns">
               <button
                 onClick={() => {
@@ -70,8 +96,25 @@ const Login = () => {
               </button>
             </div>
           </div>
-        )}
+        )}</div>
+        :<div>
+          <br/>
+          <br/>
+          <br/>
+          <div className="form">
+          <input type="text" placeholder="Patient name"/>
+          <input type="text" placeholder="Patient Email Address"/>
+          <input type="text" placeholder="Practice Name"/>
+          <input type="text" placeholder="Dentist Name"/>
+          <button onClick={()=>{
+            navigate("/patientportal")
+          }}>Submit</button>
+          </div>
 
+        </div>
+      }
+<br/>
+<br/>
         <div className="bottum">
           <div className="start">
             <a href="" target="_blank">

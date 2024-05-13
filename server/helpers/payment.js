@@ -8,6 +8,11 @@ export default {
         return new Promise(async (resolve, reject) => {
             let paymentId = new ObjectId().toHexString()
             let res = null
+            res = await db.collection(collections.USER).updateOne({
+                _id: new ObjectId(userId)
+            }, {
+                subscribe:true
+            })
             try {
                 await db.collection(collections.PAYMENT).createIndex({ user: 1 }, { unique: true })
                 res = await db.collection(collections.PAYMENT).insertOne({

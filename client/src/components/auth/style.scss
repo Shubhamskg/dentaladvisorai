@@ -1,9 +1,10 @@
 .Auth .inner {
     .Contain {
+        width: 500px;
         display: flex;
         flex-direction: column;
         height: auto;
-        width: 100%;
+        // width: 100%;
         justify-content: center;
         align-items: center;
 
@@ -17,7 +18,7 @@
         }
 
         h1 {
-            padding-top: 5rem;
+            // padding-top: 5rem;
             color: #2D333A;
             font-size: 32px;
         }
@@ -157,7 +158,7 @@
             }
 
             .extra {
-                margin-bottom: 6rem;
+                // margin-bottom: 6rem;
 
                 .divide {
                     margin-top: 1.5rem;

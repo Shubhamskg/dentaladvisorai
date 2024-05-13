@@ -14,7 +14,7 @@ export default {
                 }, {
                     $inc: { credit: 1 }
                 })
-                console.log("credit",res)
+                // console.log("credit",res)
                 await db.collection(collections.CHAT).createIndex({ user: 1 }, { unique: true })
                 res = await db.collection(collections.CHAT).insertOne({
                     user: userId.toString(),

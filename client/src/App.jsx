@@ -4,6 +4,7 @@ import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Visio
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
+import { Analytics } from "@vercel/analytics/react"
 
 const App = () => {
   const [offline, setOffline] = useState(!window.navigator.onLine);
@@ -46,6 +47,7 @@ const App = () => {
 
   return (
     <section className={user ? "main-grid" : null}>
+    <Analytics/>
       
       {/* {loading && <Loading />} */}
 

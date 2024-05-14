@@ -47,8 +47,8 @@ const App = () => {
 
   return (
     <section className={user ? "main-grid" : null}>
-    <Analytics/>
-    <SpeedInsights/>
+    {/* <Analytics/> */}
+    {/* <SpeedInsights/> */}
       
       {/* {loading && <Loading />} */}
 

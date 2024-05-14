@@ -106,9 +106,11 @@ const Login = () => {
           <input type="text" placeholder="Patient Email Address"/>
           <input type="text" placeholder="Practice Name"/>
           <input type="text" placeholder="Dentist Name"/>
-          <button onClick={()=>{
-            navigate("/patientportal")
-          }}>Submit</button>
+          <button 
+          // onClick={()=>{
+          //   navigate("/patientportal")
+          // }}
+          >Submit</button>
           </div>
 
         </div>

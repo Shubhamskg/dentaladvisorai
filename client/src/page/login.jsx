@@ -52,7 +52,7 @@ const Login = () => {
         {types.map((type) => (
           <button
             key={type}
-            onClick={() => switchType(type)}
+            // onClick={() => switchType(type)}
             className={logintype === type ? "active" : ""}
           >
             {type}

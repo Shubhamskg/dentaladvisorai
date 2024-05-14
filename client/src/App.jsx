@@ -5,8 +5,7 @@ import { useSelector } from "react-redux";
 import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
 import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-
+import { SpeedInsights } from "@vercel/speed-insights/react"
 const App = () => {
   const [offline, setOffline] = useState(!window.navigator.onLine);
 

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const App = () => {
   const [offline, setOffline] = useState(!window.navigator.onLine);
@@ -48,6 +49,7 @@ const App = () => {
   return (
     <section className={user ? "main-grid" : null}>
     <Analytics/>
+    <SpeedInsights/>
       
       {/* {loading && <Loading />} */}
 

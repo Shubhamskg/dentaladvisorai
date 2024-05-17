@@ -319,7 +319,7 @@ textarea {
 
   }
 
-  width: 100%;
+  width: 100vw;
   display: block;
   position: relative;
 
@@ -343,8 +343,13 @@ textarea {
       // justify-content: center;
     }
     @media screen and (max-width: 500px) {
-      margin-left: 7%;
+      margin-left: 35px;;
+      // justify-content: center;
+      // align-items: center;
     }
+  }
+  @media screen and (max-width: 500px) {
+    margin-left: 0;
   }
 
   .option_button {

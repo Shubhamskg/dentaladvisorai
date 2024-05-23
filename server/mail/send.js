@@ -7,6 +7,7 @@ dotnet.config()
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
+    secure: true,
     auth: {
         user: process.env.MAIL_EMAIL,
         pass: process.env.MAIL_SECRET

@@ -249,7 +249,7 @@ const Audio = () => {
     const formData = new FormData();
           formData.append('audioBlob', blob);
           try {
-            const response = await axios.post('/api/audio/recording', formData, {
+            const response = await instance.post('/api/audio/recording', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },
@@ -264,7 +264,7 @@ const uploadAudiofile=async(e)=>{
   const formData = new FormData();
           formData.append('audioBlob', audiofile);
           try {
-            const response = await axios.post('/api/audio/uploadfile', formData, {
+            const response = await instance.post('/api/audio/uploadfile', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data',
               },

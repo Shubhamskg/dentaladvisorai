@@ -277,7 +277,7 @@ const uploadAudiofile=async(e)=>{
 }
 useEffect(()=>{
   action()
-},[transcript>0])
+},[transcript])
 
 
   return (

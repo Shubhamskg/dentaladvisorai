@@ -126,7 +126,7 @@ const Audio = () => {
       }, 1000);
     }
   }, [location]);
-  
+  const [option,setOption]=useState("general")
   let answer=""
   const [sentiment,setSentiment]=useState("")
   const [transcript,setTranscript]=useState("")

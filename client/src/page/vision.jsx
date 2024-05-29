@@ -204,7 +204,6 @@ const InputArea = ({ status, chatRef, stateAction }) => {
       };
       reader.readAsDataURL(file);
     }
-    
   };
   
   let textAreaRef = useRef();

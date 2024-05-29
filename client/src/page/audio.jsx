@@ -14,11 +14,9 @@ import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
 import ReactMarkdown from 'react-markdown';
 import Speech from "./speech";
 import { AssemblyAI } from 'assemblyai'
-
-
-
-
-
+import axios from "axios";
+import {MediaRecorder, register} from 'extendable-media-recorder';
+import {connect} from 'extendable-media-recorder-wav-encoder';
 const reducer = (state, { type, status }) => {
   switch (type) {
     case "chat":
@@ -128,19 +126,19 @@ const Audio = () => {
       }, 1000);
     }
   }, [location]);
-  const IMAGES = {
-    image : new URL('../assets/img/ads.jpg', import.meta.url).href,
-    image2 : new URL('../assets/img/ads2.jpg', import.meta.url).href
-  }
+  
   let answer=""
-  const [result,setresult]=useState("")
-  const [option,setOption]=useState("general")
+  const [sentiment,setSentiment]=useState("")
+  const [transcript,setTranscript]=useState("")
+  const [clinicalnotes,setClinicalnotes]=useState("")
+  const [resulttype,setResulttype]=useState(2)
   const genRef = useRef(null)
   const noteRef = useRef(null)
   const letRef = useRef(null)
   const path=useLocation().pathname
-  const [transcript,setTranscript]=useState("")
+  
   const FormHandle = async () => {
+    let res;
     try {
       const _id=-1
         const url='http://localhost:5000/api/chat'
@@ -162,42 +160,25 @@ const Audio = () => {
     const reader = res.body.getReader();
     const decoder = new TextDecoder('utf-8');
     let done, value;
-   
         while (!done) {
           ({ value, done } = await reader.read());
           value = decoder.decode(value);
           if (done) {
             break
           }
-          // console.log("value:",value);
           answer+=value
-          chatRef?.current?.loadResponse(stateAction, answer, chatsId);
-          chunks.push(value);
+          setClinicalnotes(prev=>prev+value)
         }
         if(done){
-        //  console.log("done",chunks)
          return
         }
       } 
      
      catch (err) {
-      // console.log("error",err)
-      if (err?.response?.data?.status === 405) {
-        dispatch(emptyUser());
-        dispatch(emptyAllRes());
-        navigate("/login");
-      } else {
-        stateAction({ type: "error", status: true });
-      }
+      console.log("err",err)
     } finally {
       if (res) {
-        // const { _id, content } = res?.data?.data;
-        if(id!=-1)
-         _id=id
-        // console.log("id2",_id)
-        dispatch(insertNew({ _id, fullContent: answer, chatsId }));
-        // chatRef?.current?.loadResponse(stateAction, content, chatsId);
-        stateAction({ type: "error", status: false });
+       
       }
     }
   }
@@ -205,11 +186,9 @@ const Audio = () => {
   const action=async()=>{
     let res=""
     try{
-      setresult("")
-      // res = await instance.post("/api/audio/", {
-      //       transcript,
-      //     })
-      const url='http://localhost:5000/api/audio'
+      setSentiment("")
+      const url='http://localhost:5000/api/audio/transcript'
+      console.log(transcript)
       const data = {
         transcript: transcript
       };
@@ -231,20 +210,15 @@ const Audio = () => {
         value = decoder.decode(value);
         console.log("val:",value)
         if(value.includes("[stop]")){
-          // id=value.split(" ")[1]
-          // console.log("id1",id)
         }else{
           answer+=value
-          setresult(prev=>prev+value)
-          // console.log("r",result)
+          setSentiment(prev=>prev+value)
         }
         if (done) {
           break
         }
         console.log(answer)
-        console.log(result)
-        // chatRef?.current?.loadResponse(stateAction, answer, chatsId);
-        // chunks.push(value);
+        console.log(sentiment)
       }
       if(done){
        return
@@ -255,11 +229,11 @@ const Audio = () => {
         console.log("err",err)
       }
       finally{
-        // console.log(res.data.data.content)
         answer=""
       }
   }
   const [type,setType]=useState('1')
+  const [audiofile,setAudiofile]=useState()
   const handleTypeChange = (event) => {
     setType(event.target.value);
   };
@@ -267,45 +241,48 @@ const Audio = () => {
   const addAudioElement = async(blob) => {
     console.log("blob",blob)
     const url = URL.createObjectURL(blob);
-    console.log("url",url)
+    const audiobox=document.getElementById("audiobox")
     const audio = document.createElement("audio");
-    console.log("audio",audio)
-    const params = {
-      audio: url,
-      speaker_labels: true
-    }
-    const transcript = await client.transcripts.transcribe(params)
-    console.log(transcript.text)
     audio.src = url;
     audio.controls = true;
-    audio.crossOrigin='cross-origin'
-    document.body.appendChild(audio);
-    
+    audiobox.appendChild(audio);
+    const formData = new FormData();
+          formData.append('audioBlob', blob);
+          try {
+            const response = await axios.post('/api/audio/recording', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+            console.log('Audio uploaded and processed successfully:', response.data);
+            setTranscript(response.data.data.content)
+          } catch (error) {
+            console.error('Error uploading audio:', error);
+          }
 }
-const client = new AssemblyAI({
-  apiKey: 'f98b4c28f45a4a3e9ac1dc87190f904d' 
-})
-
-const audioUrl ='"C:/Users/shubh/OneDrive/Documents/Sound Recordings/Recording.m4a"'
-
-const params = {
-  audio: audioUrl,
-  speaker_labels: true
+const uploadAudiofile=async(e)=>{
+  const formData = new FormData();
+          formData.append('audioBlob', audiofile);
+          try {
+            const response = await axios.post('/api/audio/uploadfile', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            });
+            console.log('Audio uploaded and processed successfully:', response.data);
+            setTranscript(response.data.data.content)
+          } catch (error) {
+            console.error('Error uploading audio:', error);
+          }
 }
-const run = async () => {
-  const transcript = await client.transcripts.transcribe(params)
-  console.log(transcript.text)
-
-  // for (let utterance of transcript.utterances!) {
-  //   console.log(`Speaker ${utterance.speaker}: ${utterance.text}`)
-  // }
-}
+useEffect(()=>{
+  action()
+},[transcript>0])
 
 
   return (
     <>
     <div className="main">
-      
       <div className="navbar">
         <button className="option_button" ref={genRef} onClick={()=>{setOption("general");if(path!='/')navigate("/"); genRef.current.classList.add("active"), noteRef.current.classList.remove("active"), letRef.current.classList.remove("active")}}>Dental GPT</button>
         <button className="option_button" ref={noteRef} onClick={()=>{setOption("notes");if(path!='/')navigate("/");  noteRef.current.classList.add("active"),genRef.current.classList.remove("active"), letRef.current.classList.remove("active")}}>Clinical Notes</button>
@@ -326,7 +303,7 @@ const run = async () => {
       <option value='3'>Input session transcript</option>
     </select>
   </div>
-  {type=='1' && <div className="audiobox">
+  {type=='1' && <div id='audiobox' className="audiobox">
       <AudioRecorder 
         onRecordingComplete={(blob) => addAudioElement(blob)}
         recorderControls={recorderControls}
@@ -335,23 +312,50 @@ const run = async () => {
           noiseSuppression: true,
           echoCancellation: true,
         }} 
-        downloadOnSavePress={true}
         downloadFileExtension="mp3"
       />
-      {/* <button onClick={run}>run</button> */}
     </div>}
+    {type=='2' && <div className="upload">
+    <label htmlFor="upload">Upload session audio</label>
+<input type="file" id="upload" name="myfile" onChange={(e)=>{
+  console.log(e.target.files[0])
+  setAudiofile(e.target.files[0])
+  console.log(e.target.result)
+}}/>
+<button onClick={uploadAudiofile}>Upload</button>
+
+      </div>}
        {type=='3' && 
        <div className="inputbox">
         <textarea autoFocus placeholder="Input session audio transcript here..." type="text" onChange={(e)=>{
           setTranscript(e.target.value)
         }}/>
-        <button onClick={action}>Session Analysis</button>
-        <button onClick={FormHandle}>Clinical Notes</button>
+        <button onClick={action}>Submit</button>
        </div>}
-       <div className="result">
-       {/* <ReactMarkdown>{result}</ReactMarkdown> */}
-       {result}
+       <div className="content">
+       {/* <div className="resulttype">
+        <button className="active">Transcript</button>
+        <button >Sentiment Analysis</button>
+        <button >Clinical Notes</button>
+       </div> */}
+       {transcript && 
+    <div className="result">
+      <div className="transcript">
+      <h3>Transcript</h3>
+       <p>{transcript}</p>
        </div>
+       <div className="sentiment">
+      <h3>Sentiment</h3>
+       <p>{sentiment}</p>
+       </div>
+       {/* <div className="clinicalnotes">
+      <h3>Clinical Notes</h3>
+       <p>{clinicalnotes}</p>
+       </div> */}
+       
+       </div>}
+       </div>
+       
 
       </div>
     </>

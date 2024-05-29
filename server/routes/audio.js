@@ -8,32 +8,18 @@ import {
     GoogleGenerativeAI,
     HarmCategory,
     HarmBlockThreshold,
-  } from "@google/generative-ai";
-import {examination,treament,review,patient,dentist,general} from '../utils/prompt.js'
+} from "@google/generative-ai";
+import { examination, treament, review, patient, dentist, general } from '../utils/prompt.js'
 import Anthropic from "@anthropic-ai/sdk";
-import {treatment_notes,examination_notes,review_notes,patient_letters,dentist_letters,general_notes,notes_letters} from '../utils/sonnet.js'
+import { treatment_notes, examination_notes, review_notes, patient_letters, dentist_letters, general_notes, notes_letters } from '../utils/sonnet.js'
 import { AssemblyAI } from 'assemblyai'
-
+import multer from 'multer'
+import fs from 'fs'
+const upload = multer({ dest: 'audiofile/' }); 
 dotnet.config()
-
-// const client = new AssemblyAI({
-//   apiKey: "f3fde506b3b44dac96d91ceef4bcf236"
-// })
-
-// const audioUrl =
-//   'https://storage.googleapis.com/aai-web-samples/5_common_sports_injuries.mp3'
-
-// const config = {
-//   audio_url: audioUrl
-// }
-
-// const run = async () => {
-//   const transcript = await client.transcripts.create(config)
-//   console.log(transcript.text)
-// }
-
-// run()
-
+const client = new AssemblyAI({
+    apiKey: 'f98b4c28f45a4a3e9ac1dc87190f904d'
+})
 let router = Router()
 
 const CheckUser = async (req, res, next) => {
@@ -81,17 +67,96 @@ const anthropic = new Anthropic({
 router.get('/', (req, res) => {
     res.send("Welcome to Dental Advisor api v1")
 })
-router.post('/',CheckUser, async (req, res) => {
-    // console.log(req.body)
-    const { transcript, userId } = req.body
+router.post('/recording', upload.single('audioBlob'), async (req, res) => {
+    const recordedBlob = req.file.path;
+    console.log("re",recordedBlob)
     let response = {}
     try {
-            const model= "claude-3-sonnet-20240229";
-            const agent = await anthropic.messages.create({
-                model: model,
-                max_tokens: 4000,
-                temperature: 0.2,
-                system:
+const params = {
+    audio: recordedBlob,
+    speaker_labels: true
+}
+    const transcript = await client.transcripts.transcribe(params)
+    console.log(transcript.text)
+    response=transcript.text
+    if (transcript) {
+        if (transcript.utterances) {
+            for (let utterance of transcript.utterances) {
+                console.log(`Speaker ${utterance.speaker}: ${utterance.text}`)
+            }
+        } else {
+            console.log("no transcript to show")
+        }
+    }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 500,
+            message: err
+        })
+    } finally {
+        if (response) {
+            res.status(200).json({
+                status: 200,
+                message: 'Success',
+                data: {
+                    content: response
+                }
+            })
+        }
+    }
+})
+router.post('/uploadfile', upload.single('audioBlob'), async (req, res) => {
+    const recordedBlob = req.file.path;
+    console.log("re",recordedBlob)
+    let response = {}
+    try {
+const params = {
+    audio: recordedBlob,
+    speaker_labels: true
+}
+    const transcript = await client.transcripts.transcribe(params)
+    console.log(transcript.text)
+    response=transcript.text
+    if (transcript) {
+        if (transcript.utterances) {
+            for (let utterance of transcript.utterances) {
+                console.log(`Speaker ${utterance.speaker}: ${utterance.text}`)
+            }
+        } else {
+            console.log("no transcript to show")
+        }
+    }
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            status: 500,
+            message: err
+        })
+    } finally {
+        if (response) {
+            res.status(200).json({
+                status: 200,
+                message: 'Success',
+                data: {
+                    content: response
+                }
+            })
+        }
+    }
+})
+router.post('/transcript', CheckUser, async (req, res) => {
+    
+    const { transcript, userId } = req.body
+    console.log("tran",transcript)
+    let response = {}
+    try {
+        const model = "claude-3-sonnet-20240229";
+        const agent = await anthropic.messages.create({
+            model: model,
+            max_tokens: 4000,
+            temperature: 0.2,
+            system:
                 `
                 Please carefully analyze the sentiment, level of pain experienced by the patient, and risk of the patient churning (not returning for future appointments) in the following transcript of a dental appointment:
 
@@ -108,38 +173,38 @@ Then provide the following in a table format:
 
 Make sure to show your work and reasoning in the section first before providing the final results in the table.
                 `
-                ,
-                messages: [
-                    {
-                        "role": "user",
-                        "content": [
+            ,
+            messages: [
+                {
+                    "role": "user",
+                    "content": [
                         {
                             "type": "text",
                             "text": transcript
                         }
-                        ]
-                    }
-                    ],
-                    stream:true
-            });
-            let res_agent=""
-            for await (const event of agent) {
-                const type=event.type
-                if(type=='content_block_stop'){
-                    // res.end()
-                    break
+                    ]
                 }
-                else if(type=='content_block_delta'){
-                const text=event.delta.text
+            ],
+            stream: true
+        });
+        let res_agent = ""
+        for await (const event of agent) {
+            const type = event.type
+            if (type == 'content_block_stop') {
+                // res.end()
+                break
+            }
+            else if (type == 'content_block_delta') {
+                const text = event.delta.text
                 // console.log(text)
-                if(text){
+                if (text) {
                     res.write(`${text}`)
-                    res_agent+=text
+                    res_agent += text
                 }
-                }
-              }
-              response.openai=res_agent
-            console.log("res",response.openai)
+            }
+        }
+        response.openai = res_agent
+        console.log("res", response.openai)
 
     } catch (err) {
         console.log(err)

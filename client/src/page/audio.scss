@@ -11,10 +11,11 @@
     .audiobox{
         margin-left: auto;
         margin-right: auto;
-        
-        // flex-direction: column;
-        // justify-content: center;
-        // align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
     }
     .typebox{
         margin: 0px 30%;
@@ -59,9 +60,39 @@
         }
     }
     .result{
+        margin: auto;
+        align-items: center;
+        justify-content: center;
         padding: 30px 200px;
-        scratchpad{
-            background-color: red;
+        .transcript{
+            margin: auto;
+        align-items: center;
+        justify-content: center;
+        }
+    }
+    .content{
+        margin: 0 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        .resulttype{
+            display: flex;
+            margin: 0;
+            button{
+                background-color: aqua;
+                color: black;
+                border: none;
+                width: 300px;
+                height: 40px;
+                font-size: 18px;
+                cursor: pointer;
+                border-left: 2px white solid;
+                border-radius: 10px;
+            }
+            .active{
+                background-color: blue;
+                color: white;
+            }
         }
     }
 }

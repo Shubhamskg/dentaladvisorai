@@ -8,9 +8,12 @@ import UserRoute from './routes/user.js';
 import VisionRoute from './routes/vision.js';
 import DashboardRoute from './routes/dashboard.js'
 import PaymentRoute from './routes/stripe.js'
+import AudioRoute from './routes/audio.js'
 import ImageRoute from './routes/image.js'
 import path from 'path'
 import status from 'express-status-monitor'
+
+
 
 dotnet.config()
 
@@ -41,6 +44,7 @@ app.use('/api/vision/', VisionRoute)
 app.use('/api/upload-image/',ImageRoute)
 app.use('/api/dashboard/',DashboardRoute)
 app.use('/api/',PaymentRoute)
+app.use('/api/audio/',AudioRoute)
 
 // front end react route
 // app.get('/*',(req,res)=>{

@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment, Success,Patient,Treatmentprice, Patientportal} from "./page";
+import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment,Audio, Success,Patient,Treatmentprice, Patientportal} from "./page";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
@@ -72,6 +72,7 @@ const App = () => {
           <Route path="/dashboard/chat/:id" element={<ChatView/>}/>
           <Route path="/dashboard/vision/:id" element={<VisionView/>}/>
           <Route path="/patient" element={<Patient/>}/>
+          <Route path="/audio" element={<Audio/>}/>
           <Route path="/treatmentprice" element={<Treatmentprice/>}/>
         </Route>
 

@@ -149,6 +149,7 @@ const Main = () => {
         {/* <button className="option_button"  onClick={()=>{navigate("/patient")}}>Patient Portal</button> */}
 
         {/* <button onClick={()=>{navigate("/vision")}} className="option_button">Radiograph</button> */}
+         <button onClick={()=>{navigate("/audio")}} className="option_button">Dental Audio</button>
       </div>
       
       <div className="contentArea">

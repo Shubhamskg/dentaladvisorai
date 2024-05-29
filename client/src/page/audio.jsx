@@ -141,7 +141,7 @@ const Audio = () => {
     let res;
     try {
       const _id=-1
-        const url='http://localhost:5000/api/chat'
+        const url='http://server.dentaladvisor.ai/api/chat'
       const data = {
         chatId: _id,
         prompt: transcript,
@@ -187,7 +187,7 @@ const Audio = () => {
     let res=""
     try{
       setSentiment("")
-      const url='http://localhost:5000/api/audio/transcript'
+      const url='https://server.dentaladvisor.ai/api/audio/transcript'
       console.log(transcript)
       const data = {
         transcript: transcript

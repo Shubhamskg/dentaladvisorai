@@ -11,5 +11,16 @@ const connectDB = async (done) => {
         done(err)
     }
 }
+let db2 = null
 
-export { connectDB, db }
+const connectDB2 = async (done) => {
+    try {
+        var data = await MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true })
+        db2 = data.db('dental-advisor-audio-session')
+        done()
+    } catch (err) {
+        done(err)
+    }
+}
+
+export { connectDB, db, connectDB2, db2 }

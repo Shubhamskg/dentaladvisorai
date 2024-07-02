@@ -87,6 +87,7 @@ const Signup = () => {
                 </a>
               </div>
             </div>
+            <p><b>Trajectory Health Limited</b></p>
           </>
         )}
       </div>

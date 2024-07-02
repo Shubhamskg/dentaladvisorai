@@ -74,6 +74,9 @@ const Login = () => {
             <div>
               <p>Welcome to Dental Advisor</p>
               <p>Log in with your Dental Advisor account to continue</p>
+              <br></br>
+              <br></br>
+              <p>by <b>Trajectory Health Limited</b></p>
             </div>
             <br/>
             <br/>

@@ -487,6 +487,8 @@ const InputArea = ({ status, chatRef, stateAction,option }) => {
           </button>
         </div>
       )}
+      <br></br>
+      <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
        <p><b>Trajectory Health Limited</b></p>
     </div>
   );

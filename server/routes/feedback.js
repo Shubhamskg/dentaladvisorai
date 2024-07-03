@@ -26,6 +26,7 @@ router.post('/submit', async (req, res) => {
             //         content: response
             //     }
             // })
+            res.send("Session feedback submitted successfully. Thank you for your response.")
         }
     }
 })

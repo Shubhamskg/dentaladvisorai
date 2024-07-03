@@ -7,7 +7,7 @@ let router = Router()
 router.post('/submit', async (req, res) => {
     // var pathname = url.parse(request.url).pathname;
     const feedback_data = req.query
-    console.log("pathname",pathname)
+    console.log("pathname",feedback_data)
     let response={}
     try {
         response.db = await feedback.newResponse(feedback_data)

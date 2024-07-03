@@ -19,13 +19,13 @@ router.post('/submit', async (req, res) => {
         })
     } finally {
         if (response) {
-            res.status(200).json({
-                status: 200,
-                message: 'Success',
-                data: {
-                    content: response
-                }
-            })
+            // res.status(200).json({
+            //     status: 200,
+            //     message: 'Success',
+            //     data: {
+            //         content: response
+            //     }
+            // })
         }
     }
 })

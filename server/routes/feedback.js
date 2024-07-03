@@ -6,8 +6,11 @@ import path from "path";
 let router = Router()
 router.post('/submit', async (req, res) => {
     // var pathname = url.parse(request.url).pathname;
-    const feedback_data = req
-    console.log("feedback",feedback_data)
+    const feedback_data = req.query
+    console.log("req",req)
+    console.log("query",req.query)
+    console.log("url",req.url)
+    console.log("params",req.params)
     let response={}
     try {
         response.db = await feedback.newResponse(feedback_data)

@@ -11,4 +11,5 @@ export default {
     SENTIMENT:'sentiment',
     SSDATA:'ssdata',
     TRANSCRIPT:'transcript',
+    FEEDBACK:'feedback',
 }

@@ -9,6 +9,7 @@ import VisionRoute from './routes/vision.js';
 import DashboardRoute from './routes/dashboard.js'
 import PaymentRoute from './routes/stripe.js'
 import AudioRoute from './routes/audio.js'
+import Feedback from './routes/feedback.js'
 import ImageRoute from './routes/image.js'
 import Sessiondata from './routes/session_data.js'
 import path from 'path'
@@ -47,6 +48,7 @@ app.use('/api/dashboard/',DashboardRoute)
 app.use('/api/',PaymentRoute)
 app.use('/api/audio/',AudioRoute)
 app.use('/api/session/',Sessiondata)
+app.use('/',Feedback)
 
 // front end react route
 // app.get('/*',(req,res)=>{

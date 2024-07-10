@@ -12,47 +12,81 @@ let router = Router()
 // })
 
 router.get('/', async (req, res) => {
-    let response=null
-    let res2
-    let res3
-    let data=[]
-    let info=[]
+    let sessionIds=null
+    let all_data=[]
     try {
-        response = await session.getAllsessionId()
-        for(let i=0;i<response.length;i++){
-        res2=await session.getAllssdata(response[i].sessionId).then(
-        function(value){
-            let z=""+value[0]?.data
-            if(z.includes('```json')){
-            // console.log("v",z)
-            data.push(z);
-            }
-        }
-        ) 
-        res3=await session.getAllInfo(response[i].sessionId).then(
+        sessionIds = await session.getAllsessionId()
+        for(let i=0;i<sessionIds.length;i++){
+            let single_data={}
+            let flag=true
+            await session.getAllTranscript(sessionIds[i].sessionId).then(
+                function(value){
+                    let z=""+value[0]?.data
+                    if(z.length<=1000){
+                        flag=false
+                    }
+                    // single_data.transcript=z
+                    
+                }
+                ) 
+                if(flag==false) continue
+        //         await session.getAllNotes(sessionIds[i].sessionId).then(
+        //             function(value){
+        //                 let z=""+value[0]?.data
+        //                 // if(z.includes('Personal')){
+        //                 single_data.notes=z
+        //                 // }
+        //             }
+        //             ) 
+        //             await session.getAllLetter(sessionIds[i].sessionId).then(
+        //                 function(value){
+        //                     let z=""+value[0]?.data
+        //                     // if(z.includes('Personal')){
+        //                     single_data.letter=z
+        //                     // }
+        //                 }
+        //                 ) 
+        //                 await session.getAllSentiment(sessionIds[i].sessionId).then(
+        //                     function(value){
+        //                         let z=""+value[0]?.data
+        //                         // if(z.includes('Personal')){
+        //                         single_data.sentiment=z
+        //                         // }
+        //                     }
+        //                     ) 
+        // await session.getAllssdata(sessionIds[i].sessionId).then(
+        // function(value){
+        //     let z=""+value[0]?.data
+        //     if(z.includes('```json')){
+        //     single_data.ssdata=z
+        //     }
+        // }
+        // ) 
+        await session.getAllInfo(sessionIds[i].sessionId).then(
             function(value){
                 let z=""+value[0]?.data
                 if(z.includes('Personal')){
-                console.log("v",z)
-                info.push(z)
+                single_data.info=z
                 }
             }
             ) 
+            all_data.push(single_data)
     }
     } catch (err) {
         console.log("er",err)
         res.status(500).json({
             status: 500,
             message: err,
-            data:response
+            data:sessionIds
         })
     } finally {
-        if (response) {
+        if (sessionIds) {
             res.status(200).json({
                 status: 200,
                 message: 'Success',
-                data:data
+                data:all_data
             })
+            // res.send(all_data)
         }
     }
 })

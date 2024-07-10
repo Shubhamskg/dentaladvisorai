@@ -6,6 +6,7 @@ import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/react"
+import Session_Dashboard from "./page/session_dashboard";
 const App = () => {
   const [offline, setOffline] = useState(!window.navigator.onLine);
 
@@ -74,6 +75,7 @@ const App = () => {
           <Route path="/patient" element={<Patient/>}/>
           <Route path="/audio" element={<Audio/>}/>
           <Route path="/treatmentprice" element={<Treatmentprice/>}/>
+          <Route path="/session" element={<Session_Dashboard/>}/>
         </Route>
 
         <Route element={<ProtectedRoute offline={offline} />}>
@@ -84,6 +86,7 @@ const App = () => {
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/forgot/set/:userId/:secret" element={<Forgot />} />
           <Route path="/patientportal" element={<Patientportal/>}/>
+          <Route path="/session" element={<Session_Dashboard/>}/>
         </Route>
         <Route
           path="*"

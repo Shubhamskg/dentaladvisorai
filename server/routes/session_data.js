@@ -54,14 +54,14 @@ router.get('/', async (req, res) => {
         //                         // }
         //                     }
         //                     ) 
-        // await session.getAllssdata(sessionIds[i].sessionId).then(
-        // function(value){
-        //     let z=""+value[0]?.data
-        //     if(z.includes('```json')){
-        //     single_data.ssdata=z
-        //     }
-        // }
-        // ) 
+        await session.getAllssdata(sessionIds[i].sessionId).then(
+        function(value){
+            let z=""+value[0]?.data
+            if(z.includes('```json')){
+            single_data.ssdata=z
+            }
+        }
+        ) 
         await session.getAllInfo(sessionIds[i].sessionId).then(
             function(value){
                 let z=""+value[0]?.data

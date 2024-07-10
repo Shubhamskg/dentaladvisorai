@@ -1,12 +1,11 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment,Audio, Success,Patient,Treatmentprice, Patientportal} from "./page";
+import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment,Audio, Success,Patient,Treatmentprice, Patientportal,SessionDashboard} from "./page";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/react"
-import Session_Dashboard from "./page/session_dashboard";
 const App = () => {
   const [offline, setOffline] = useState(!window.navigator.onLine);
 
@@ -59,8 +58,8 @@ const App = () => {
           content={"Website in offline check your network."}
         />
       )}
-
       <Routes>
+      <Route path="/session" element={<SessionDashboard/>}/>
         <Route element={<ProtectedRoute offline={offline} authed={true} />}>
           <Route exact path="/" element={<Main />} />
           <Route path="/chat" element={<Main />} />
@@ -75,7 +74,6 @@ const App = () => {
           <Route path="/patient" element={<Patient/>}/>
           <Route path="/audio" element={<Audio/>}/>
           <Route path="/treatmentprice" element={<Treatmentprice/>}/>
-          <Route path="/session" element={<Session_Dashboard/>}/>
         </Route>
 
         <Route element={<ProtectedRoute offline={offline} />}>
@@ -86,7 +84,6 @@ const App = () => {
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/forgot/set/:userId/:secret" element={<Forgot />} />
           <Route path="/patientportal" element={<Patientportal/>}/>
-          <Route path="/session" element={<Session_Dashboard/>}/>
         </Route>
         <Route
           path="*"

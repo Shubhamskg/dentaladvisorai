@@ -437,7 +437,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { DensityChart } from '../components/charts/DensityChart';
 import { categoryName } from '../lib/data';
-import './TreatmentPrice.scss';
+import './treatment.scss';
 
 const TreatmentPrice = () => {
   const navigate = useNavigate();

@@ -74,9 +74,12 @@ const App = () => {
           <Route path="/patient" element={<Patient/>}/>
           <Route path="/audio" element={<Audio/>}/>
           <Route path="/treatmentprice" element={<Treatmentprice/>}/>
+        <Route path="/feedback" element={<FeedbackRequestPage/>}/>
         </Route>
 
         <Route element={<ProtectedRoute offline={offline} />}>
+        <Route path="/feedback" element={<FeedbackRequestPage/>}/>
+          <Route path="/treatmentprice" element={<Treatmentprice/>}/>
           <Route path="/login" element={<Login />} />
           <Route path="/login/auth" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -84,8 +87,7 @@ const App = () => {
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/forgot/set/:userId/:secret" element={<Forgot />} />
           <Route path="/patientportal" element={<Patientportal/>}/>
-          <Route path="/feedback" element={<FeedbackRequestPage/>}/>
-          <Route path="/treatmentprice" element={<Treatmentprice/>}/>
+          
         </Route>
         <Route
           path="*"

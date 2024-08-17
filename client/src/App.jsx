@@ -50,7 +50,7 @@ const App = () => {
     <Analytics/>
     <SpeedInsights/>
       
-      {loading && <Loading />}
+      {/* {loading && <Loading />} */}
 
       {offline && (
         <Error

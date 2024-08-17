@@ -47,10 +47,10 @@ const App = () => {
 
   return (
     <section className={user ? "main-grid" : null}>
-    {/* <Analytics/> */}
-    {/* <SpeedInsights/> */}
+    <Analytics/>
+    <SpeedInsights/>
       
-      {/* {loading && <Loading />} */}
+      {loading && <Loading />}
 
       {offline && (
         <Error
@@ -73,7 +73,7 @@ const App = () => {
           <Route path="/dashboard/vision/:id" element={<VisionView/>}/>
           <Route path="/patient" element={<Patient/>}/>
           <Route path="/audio" element={<Audio/>}/>
-          {/* <Route path="/treatmentprice" element={<Treatmentprice/>}/> */}
+          <Route path="/treatmentprice" element={<Treatmentprice/>}/>
         </Route>
 
         <Route element={<ProtectedRoute offline={offline} />}>

@@ -12,4 +12,5 @@ export default {
     SSDATA:'ssdata',
     TRANSCRIPT:'transcript',
     FEEDBACK:'feedback',
+    HANDLE_FEEDBACK:'handle_feedback'
 }

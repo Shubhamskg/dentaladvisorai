@@ -161,8 +161,8 @@ const Treatmentprice = () => {
       let datas=[]
       let mini=1e9;
       let maxi=0;
-      for(let i=0;i<res.data.length;i++){
-        for(let j=0;j<Math.min(res.data[i].data.length,10);j++){
+      for(let i=0;i<res?.data?.length;i++){
+        for(let j=0;j<Math.min(res?.data?.[i]?.data?.length,10);j++){
           const data=res.data[i].data[j]
           datas.push(data.Price)
           mini=Math.min(mini,data.Price)
@@ -212,9 +212,9 @@ const Treatmentprice = () => {
         setDistance("")
         setMini(res.data.mini!=1000000?res.data.mini:0)
         setMaxi(res.data.maxi)
-        setAvg(Math.round(res.data.sum/(res.data.clinicsdata.length!=0?res.data.clinicsdata.length:1)))
-        for(let i=0;i<res.data.clinicsdata.length;i++){
-          datas.push(res.data.clinicsdata[i].price)
+        setAvg(Math.round(res.data.sum/(res?.data?.clinicsdata?.length!=0?res?.data?.clinicsdata?.length:1)))
+        for(let i=0;i<res?.data?.clinicsdata?.length;i++){
+          datas.push(res?.data?.clinicsdata?.[i]?.price)
           clinicsdatas.push({
             price:res.data.clinicsdata[i].price,
             clinicName:res.data.clinicsdata[i].clinicName,

@@ -550,7 +550,7 @@ const TreatmentPrice = () => {
 
       <main className="content">
         <section className="search-section">
-          <div className="search-bar">
+          {/* <div className="search-bar">
             <input
               type="text"
               placeholder="Search Treatment Category Name"
@@ -559,7 +559,7 @@ const TreatmentPrice = () => {
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
             <button onClick={handleSearch}>Search</button>
-          </div>
+          </div> */}
 
           <div className="filter">
             <select value={category} onChange={(e) => setCategory(e.target.value)}>

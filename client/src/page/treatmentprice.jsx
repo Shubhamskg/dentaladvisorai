@@ -452,7 +452,7 @@ const TreatmentPrice = () => {
   const [clinicsData, setClinicsData] = useState([]);
   const [filterData, setFilterData] = useState({ category: '', distance: '', postcode: '' });
   const [priceStats, setPriceStats] = useState({ min: 0, max: 0, avg: 0 });
-  const [config, setConfig] = useState({ size: 5, sortBy: 'price', sortOrder: 'asc' });
+  const [config, setConfig] = useState({ size: 4, sortBy: 'price', sortOrder: 'asc' });
 
   const handleSearch = async () => {
     try {
@@ -625,7 +625,7 @@ const TreatmentPrice = () => {
                     value={config.size} 
                     onChange={(e) => setConfig({...config, size: Number(e.target.value)})}
                   >
-                    {[5, 10, 15, 20].map(num => (
+                    {[4, 8, 12, 16, 20].map(num => (
                       <option key={num} value={num}>{num}</option>
                     ))}
                   </select>

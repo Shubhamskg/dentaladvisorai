@@ -6,25 +6,25 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
-import Error from "./page/Error";
+import Error from "./page/error";
 
 // Lazy load components
-const Dashboard = lazy(() => import("./page/Dashboard"));
-const ChatView = lazy(() => import("./page/ChatView"));
-const VisionView = lazy(() => import("./page/VisionView"));
-const Forgot = lazy(() => import("./page/Forgot"));
-const Login = lazy(() => import("./page/Login"));
-const Main = lazy(() => import("./page/Main"));
-const Signup = lazy(() => import("./page/Signup"));
-const Vision = lazy(() => import("./page/Vision"));
-const Payment = lazy(() => import("./page/Payment"));
-const Audio = lazy(() => import("./page/Audio"));
-const Success = lazy(() => import("./page/Success"));
-const Patient = lazy(() => import("./page/Patient"));
-const Treatmentprice = lazy(() => import("./page/Treatmentprice"));
-const Patientportal = lazy(() => import("./page/Patientportal"));
-const SessionDashboard = lazy(() => import("./page/SessionDashboard"));
-const FeedbackRequestPage = lazy(() => import("./page/FeedbackRequestPage"));
+const Dashboard = lazy(() => import("./page/dashboard"));
+const ChatView = lazy(() => import("./page/chatView"));
+const VisionView = lazy(() => import("./page/visionView"));
+const Forgot = lazy(() => import("./page/forgot"));
+const Login = lazy(() => import("./page/login"));
+const Main = lazy(() => import("./page/main"));
+const Signup = lazy(() => import("./page/signup"));
+const Vision = lazy(() => import("./page/vision"));
+const Payment = lazy(() => import("./page/payment"));
+const Audio = lazy(() => import("./page/audio"));
+const Success = lazy(() => import("./page/success"));
+const Patient = lazy(() => import("./page/patient"));
+const Treatmentprice = lazy(() => import("./page/treatmentprice"));
+const Patientportal = lazy(() => import("./page/patientportal"));
+const SessionDashboard = lazy(() => import("./page/session_dashboard"));
+const FeedbackRequestPage = lazy(() => import("./page/feedback"));
 
 const App = () => {
   const [offline, setOffline] = useState(!navigator.onLine);

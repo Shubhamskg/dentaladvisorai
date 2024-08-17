@@ -14,7 +14,7 @@ const ChatView = lazy(() => import("./page/chatView"));
 const VisionView = lazy(() => import("./page/visionView"));
 const Forgot = lazy(() => import("./page/forgot"));
 const Login = lazy(() => import("./page/login"));
-const Main = lazy(() => import("./page/main"));
+const Main = lazy(() => import("./page/chat"));
 const Signup = lazy(() => import("./page/signup"));
 const Vision = lazy(() => import("./page/vision"));
 const Payment = lazy(() => import("./page/payment"));

@@ -31,6 +31,7 @@
     "extendable-media-recorder": "^9.2.4",
     "extendable-media-recorder-wav-encoder": "^7.0.111",
     "firebase": "^10.7.2",
+    "lucide-react": "^0.428.0",
     "node-audiorecorder": "^3.0.0",
     "react": "^18.2.0",
     "react-audio-voice-recorder": "^2.2.0",
@@ -42,6 +43,7 @@
     "react-router-dom": "^6.9.0",
     "react-speech": "^1.0.2",
     "react-speech-recognition": "^3.10.0",
+    "react-tabs": "^6.0.2",
     "regenerator-runtime": "^0.14.1",
     "sass": "^1.59.3"
   },

@@ -151,7 +151,7 @@ const Treatmentprice = () => {
   const handlesearchevent=async()=>{
     let res=null;
     try{
-      res=await axios.get("http://localhost:5001/api/data/search",{
+      res=await axios.get("https://dentaladvisor.ai/api/data/search",{
         params:{
           searchdata:searchdata
         }
@@ -188,7 +188,7 @@ const Treatmentprice = () => {
   const handleSubmit = async () => {
     let res = null;
     try {
-      res = await axios.get("http://localhost:5001/api/data", {
+      res = await axios.get("https://dentaladvisor.ai/api/data", {
         params: {
           categoryName: category,
           postcode:postcode.replaceAll(' ','').toUpperCase(),

@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment,Audio, Success,Patient,Treatmentprice, Patientportal,SessionDashboard} from "./page";
+import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment,Audio, Success,Patient,Treatmentprice, Patientportal,SessionDashboard,FeedbackRequestPage} from "./page";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
@@ -84,6 +84,7 @@ const App = () => {
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/forgot/set/:userId/:secret" element={<Forgot />} />
           <Route path="/patientportal" element={<Patientportal/>}/>
+          <Route path="/feedback" element={<FeedbackRequestPage/>}/>
         </Route>
         <Route
           path="*"

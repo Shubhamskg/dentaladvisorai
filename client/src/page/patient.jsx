@@ -150,7 +150,7 @@ const Patient = () => {
   const handleSubmit = async () => {
     let res = null;
     try {
-      res = await axios.get("http://localhost:5001/api/data", {
+      res = await axios.get("https://dentaladvisor.ai/api/data", {
         params: {
           categoryName: category,
           postcode:postcode.replaceAll(' ','').toUpperCase(),

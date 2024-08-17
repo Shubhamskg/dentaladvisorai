@@ -195,6 +195,7 @@ const Treatmentprice = () => {
           distance:distance
         },
       });
+      console.log("res",res)
     } catch (err) {
       if (err?.response?.data?.status === 404) {
         alert("404")

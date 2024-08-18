@@ -248,13 +248,21 @@
 @import "../index.scss";
 
 .treatment-price {
+  // display: flex;
+  // flex-direction: column;
+  // min-height: 100vh;
+  // // background-image: url('https://t3.ftcdn.net/jpg/02/80/91/22/360_F_280912237_LwphjbCj0T79j8Qnirxeqzf6tjxKQz3b.jpg');
+  // background-image: url("../assets/img/cool3.jpg");
+  // background-size: cover;
+  // background-attachment: fixed;
+  // color: #333;
+  // font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  // background-image: url('https://t3.ftcdn.net/jpg/02/80/91/22/360_F_280912237_LwphjbCj0T79j8Qnirxeqzf6tjxKQz3b.jpg');
-  background-image: url("../assets/img/cool3.jpg");
-  background-size: cover;
-  background-attachment: fixed;
+  background-color: #e6f2ff; /* Light blue color */
+  background-image: radial-gradient(#d9e9ff 1px, transparent 1px);
+  background-size: 20px 20px; /* Adjust size of dots as needed */
   color: #333;
   font-family: Arial, sans-serif;
 

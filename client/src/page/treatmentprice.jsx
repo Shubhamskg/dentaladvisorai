@@ -540,13 +540,13 @@ const TreatmentPrice = () => {
 
   return (
     <div className="treatment-price">
-      <nav className="navbar">
+      {/* <nav className="navbar">
         <button onClick={() => navigate('/')}>Dental GPT</button>
         <button onClick={() => navigate('/')}>Clinical Notes</button>
         <button onClick={() => navigate('/')}>Patient Letters</button>
         <button className="active">Treatment Price</button>
         <button onClick={() => navigate('/patient')}>Patient Portal</button>
-      </nav>
+      </nav> */}
 
       <main className="content">
         <section className="search-section">

@@ -10,7 +10,7 @@ const feedback_form=async(email)=>{
       secure: true,
       auth: {
       user: from,
-      pass: 'oqdi cnkh hday brcz',
+      pass: process.env.FEEDBACK_EMAIL_PASS,
       },
      });
         let html=`<!DOCTYPE html>

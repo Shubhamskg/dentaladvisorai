@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { CalendarIcon, UploadIcon, MailIcon, PhoneIcon } from 'lucide-react';
 import axios from 'axios';
-import "./feedback.scss"
+import "./feedback.scss";
 import instance from '../config/instance';
+
+const TREATMENT_TYPES = ['Cleaning', 'Filling', 'Extraction', 'Root Canal'];
 
 const RequestTypeToggle = ({ requestType, setRequestType }) => (
   <div className="form-group request-type">
@@ -24,17 +26,18 @@ const RequestTypeToggle = ({ requestType, setRequestType }) => (
   </div>
 );
 
-const FormField = ({ label, id, type, icon: Icon, ...props }) => (
+const FormField = React.memo(({ label, id, type, icon: Icon, error, ...props }) => (
   <div className="form-group">
     <label htmlFor={id}>{label}:</label>
     <div className={`input-wrapper ${Icon ? 'with-icon' : ''}`}>
-      <input type={type} id={id} name={id} required {...props} />
+      <input type={type} id={id} name={id} {...props} />
       {Icon && <Icon className="icon" />}
     </div>
+    {error && <span className="error-message">{error}</span>}
   </div>
-);
+));
 
-const FileUpload = ({ file, setFile }) => (
+const FileUpload = React.memo(({ file, setFile, error }) => (
   <div className="form-group">
     <label htmlFor="file-upload">Upload Contacts File:</label>
     <div className="file-upload">
@@ -49,13 +52,48 @@ const FileUpload = ({ file, setFile }) => (
         <span>{file ? file.name : 'Choose a file'}</span>
       </div>
     </div>
+    {error && <span className="error-message">{error}</span>}
     <p className="file-format-info">
       Please upload a .txt file with each line in the format:
       <br />
       name,dob,treatment,date,email/whatsapp
     </p>
   </div>
-);
+));
+
+const validateName = (name) => {
+  if (!name.trim()) return "Name is required";
+  if (name.length < 2) return "Name must be at least 2 characters long";
+  return "";
+};
+
+const validateDate = (date) => {
+  if (!date) return "Date is required";
+  const selectedDate = new Date(date);
+  const today = new Date();
+  if (selectedDate > today) return "Date cannot be in the future";
+  return "";
+};
+
+const validateEmail = (email) => {
+  if (!email.trim()) return "Email is required";
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) return "Invalid email format";
+  return "";
+};
+
+const validateWhatsApp = (number) => {
+  if (!number.trim()) return "WhatsApp number is required";
+  const phoneRegex = /^\+?[1-9]\d{1,14}$/;
+  if (!phoneRegex.test(number)) return "Invalid phone number format";
+  return "";
+};
+
+const validateFile = (file) => {
+  if (!file) return "File is required";
+  if (!file.name.endsWith('.txt')) return "File must be a .txt file";
+  return "";
+};
 
 const FeedbackForm = ({ type }) => {
   const [requestType, setRequestType] = useState('individual');
@@ -68,56 +106,66 @@ const FeedbackForm = ({ type }) => {
     email: '',
     whatsapp: ''
   });
+  const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [serverError, setServerError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData(prevData => ({ ...prevData, [name]: value }));
-  };
+    setErrors(prevErrors => ({ ...prevErrors, [name]: '' }));
+  }, []);
+
+  const validateForm = useCallback(() => {
+    const newErrors = {};
+    if (requestType === 'individual') {
+      newErrors.name = validateName(formData.name);
+      newErrors.dob = validateDate(formData.dob);
+      newErrors.treatment = formData.treatment ? '' : 'Treatment is required';
+      newErrors.date = validateDate(formData.date);
+      if (type === 'email') {
+        newErrors.email = validateEmail(formData.email);
+      } else {
+        newErrors.whatsapp = validateWhatsApp(formData.whatsapp);
+      }
+    } else {
+      newErrors.file = validateFile(file);
+    }
+    setErrors(newErrors);
+    return Object.values(newErrors).every(error => !error);
+  }, [formData, requestType, type, file]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     setIsLoading(true);
-    setError(null);
+    setServerError(null);
     setSuccess(false);
 
     try {
-      let dataToSend;
-      if (requestType === 'individual') {
-        dataToSend = {
-          ...formData,
-          requestType,
-          feedbackType: type
-        };
-        const response = await instance.post('/api/handle_feedback/single', dataToSend, {
-            headers: {
-              'Content-Type': requestType === 'individual' ? 'application/json' : 'multipart/form-data'
-            }
-          });
-          console.log('Server response:', response.data);
-          setSuccess(true);
-      } else {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('requestType', requestType);
-        formData.append('feedbackType', type);
-        dataToSend = formData;
-        const response = await instance.post('/api/handle_feedback/bulk', dataToSend, {
-            headers: {
-              'Content-Type': requestType === 'individual' ? 'application/json' : 'multipart/form-data'
-            }
-          });
-          console.log('Server response:', response.data);
-          setSuccess(true);
-      }
+      const endpoint = `/api/handle_feedback/${requestType === 'individual' ? 'single' : 'bulk'}`;
+      const data = requestType === 'individual' 
+        ? { ...formData, requestType, feedbackType: type }
+        : (() => {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('requestType', requestType);
+            formData.append('feedbackType', type);
+            return formData;
+          })();
 
-    
-     
+      const response = await instance.post(endpoint, data, {
+        headers: {
+          'Content-Type': requestType === 'individual' ? 'application/json' : 'multipart/form-data'
+        }
+      });
+      console.log('Server response:', response.data);
+      setSuccess(true);
     } catch (err) {
       console.error('Error sending feedback request:', err);
-      setError('An error occurred while sending the feedback request. Please try again.');
+      setServerError('An error occurred while sending the feedback request. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -129,32 +177,77 @@ const FeedbackForm = ({ type }) => {
       
       {requestType === 'individual' ? (
         <>
-          <FormField label="Name" id="name" type="text" value={formData.name} onChange={handleInputChange} />
-          <FormField label="Date of Birth" id="dob" type="date" icon={CalendarIcon} value={formData.dob} onChange={handleInputChange} />
+          <FormField 
+            label="Name" 
+            id="name" 
+            type="text" 
+            value={formData.name} 
+            onChange={handleInputChange} 
+            error={errors.name}
+          />
+          <FormField 
+            label="Date of Birth" 
+            id="dob" 
+            type="date" 
+            icon={CalendarIcon} 
+            value={formData.dob} 
+            onChange={handleInputChange}
+            error={errors.dob}
+          />
           <div className="form-group">
             <label htmlFor="treatment">Treatment Type:</label>
             <div className="input-wrapper">
-              <select id="treatment" name="treatment" required value={formData.treatment} onChange={handleInputChange}>
+              <select 
+                id="treatment" 
+                name="treatment" 
+                value={formData.treatment} 
+                onChange={handleInputChange}
+              >
                 <option value="">Select treatment</option>
-                {['Cleaning', 'Filling', 'Extraction', 'Root Canal'].map((treatment) => (
+                {TREATMENT_TYPES.map((treatment) => (
                   <option key={treatment} value={treatment.toLowerCase().replace(' ', '-')}>
                     {treatment}
                   </option>
                 ))}
               </select>
             </div>
+            {errors.treatment && <span className="error-message">{errors.treatment}</span>}
           </div>
-          <FormField label="Treatment Date" id="date" type="date" icon={CalendarIcon} value={formData.date} onChange={handleInputChange} />
+          <FormField 
+            label="Treatment Date" 
+            id="date" 
+            type="date" 
+            icon={CalendarIcon} 
+            value={formData.date} 
+            onChange={handleInputChange}
+            error={errors.date}
+          />
           {type === 'email' ? (
-            <FormField label="Email" id="email" type="email" icon={MailIcon} value={formData.email} onChange={handleInputChange} />
+            <FormField 
+              label="Email" 
+              id="email" 
+              type="email" 
+              icon={MailIcon} 
+              value={formData.email} 
+              onChange={handleInputChange}
+              error={errors.email}
+            />
           ) : (
-            <FormField label="WhatsApp Number" id="whatsapp" type="tel" icon={PhoneIcon} value={formData.whatsapp} onChange={handleInputChange} />
+            <FormField 
+              label="WhatsApp Number" 
+              id="whatsapp" 
+              type="tel" 
+              icon={PhoneIcon} 
+              value={formData.whatsapp} 
+              onChange={handleInputChange}
+              error={errors.whatsapp}
+            />
           )}
         </>
       ) : (
-        <FileUpload file={file} setFile={setFile} />
+        <FileUpload file={file} setFile={setFile} error={errors.file} />
       )}
-      {error && <div className="error-message">{error}</div>}
+      {serverError && <div className="error-message">{serverError}</div>}
       {success && <div className="success-message">Feedback request sent successfully!</div>}
       <button type="submit" className="submit-btn" disabled={isLoading}>
         {isLoading ? 'Sending...' : `Send Feedback Request${requestType === 'bulk' ? 's' : ''}`}

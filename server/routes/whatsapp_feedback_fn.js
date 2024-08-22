@@ -14,37 +14,10 @@ async function send_message(recipient_number)
             to: recipient_number,
             type: 'template',
            template: {
-       name: "feedback_survey",
+       name: "q1temp",
        language: {
-           code: "en_US"
+           code: "en"
        },
-       components: [
-            {
-                type:"header",
-                parameters:[
-                    {
-                        type:"text",
-                        text:"Linda Greenwall’s Dental Practice"
-                    }
-                ]
-            },
-            {
-                type:"body",
-                parameters:[
-                    {
-                        type:"text",
-                        text:"Dental Treatment Session"
-                    }
-                ]
-            },
-          {
-      type: "BUTTON",
-      sub_type:"flow",
-      index:0,
-      parameters:[]
-      
-    }
-       ]
    }
           };
           try {

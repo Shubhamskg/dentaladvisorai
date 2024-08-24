@@ -28,7 +28,7 @@ const ProtectedRoute = ({ offline, authed }) => {
           dispatch(emptyUser());
           dispatch(emptyAllRes());
           if (authed) {
-            navigate("/login");
+            navigate("/");
           } else {
             setComponent(<Outlet />);
           }
@@ -38,7 +38,7 @@ const ProtectedRoute = ({ offline, authed }) => {
       } finally {
         if (res?.data?.status === 208) {
           if (!authed) {
-            navigate("/");
+            navigate("/chat");
           } else {
             setComponent(<Outlet />);
           }

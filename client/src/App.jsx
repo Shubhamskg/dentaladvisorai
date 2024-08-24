@@ -1,6 +1,8 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment,Audio, Success,Patient,Treatmentprice, Patientportal,SessionDashboard,FeedbackRequestPage} from "./page";
+import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment,Audio, 
+  Success,Patient,Treatmentprice, Patientportal,SessionDashboard,FeedbackRequestPage,
+Landing} from "./page";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
@@ -63,9 +65,10 @@ const App = () => {
       <Route path="/treatmentprice" element={<Treatmentprice/>}/>
       <Route path="/session" element={<SessionDashboard/>}/>
       <Route path="/patientportal" element={<Patientportal/>}/>
-
+      
+      
         <Route element={<ProtectedRoute offline={offline} authed={true} />}>
-          <Route exact path="/" element={<Main />} />
+        {/* <Route exact path="/" element={<Main />} /> */}
           <Route path="/chat" element={<Main />} />
           <Route path="/chat/:id" element={<Main />} />
           <Route path="/checkout" element={<Payment/>}/>
@@ -80,6 +83,7 @@ const App = () => {
         </Route>
 
         <Route element={<ProtectedRoute offline={offline} />}>
+        <Route exact path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/login/auth" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

@@ -1,11 +1,15 @@
 import React from 'react';
 import './landing.scss';
 
-const Navbar = () => (
+const Navbar = () => {
+    const IMAGES = {
+        image : new URL('../../public/favicon.png', import.meta.url).href
+      }
+    return(
   <nav className="navbar">
     <div className="navbar-container">
       <div className="navbar-logo">
-        <img src="../../public/favicon.png" alt="Dental Advisor Logo" className="logo-image" />
+        <img src={IMAGES.image} alt="Dental Advisor Logo" className="logo-image" />
         <span className="logo-text">Dental Advisor</span>
       </div>
       <div className="navbar-links">
@@ -20,7 +24,7 @@ const Navbar = () => (
       </div>
     </div>
   </nav>
-);
+)}
 
 const FeatureCard = ({ icon, title, description }) => (
   <div className="feature-card">

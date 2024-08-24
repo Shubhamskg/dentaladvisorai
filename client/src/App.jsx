@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Dashboard,ChatView,VisionView,Error, Forgot, Login, Main, Signup ,Vision, Payment,Audio, 
   Success,Patient,Treatmentprice, Patientportal,SessionDashboard,FeedbackRequestPage,
-Landing} from "./page";
+Landing, DownloadPage} from "./page";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./protected";
 import Loading from "./components/loading/loading";
@@ -68,7 +68,7 @@ const App = () => {
       
       
         <Route element={<ProtectedRoute offline={offline} authed={true} />}>
-        {/* <Route exact path="/" element={<Main />} /> */}
+        <Route  path="/download" element={<DownloadPage />} />
           <Route path="/chat" element={<Main />} />
           <Route path="/chat/:id" element={<Main />} />
           <Route path="/checkout" element={<Payment/>}/>

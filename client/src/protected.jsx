@@ -38,7 +38,7 @@ const ProtectedRoute = ({ offline, authed }) => {
       } finally {
         if (res?.data?.status === 208) {
           if (!authed) {
-            navigate("/chat");
+            navigate("/download");
           } else {
             setComponent(<Outlet />);
           }

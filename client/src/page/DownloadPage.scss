@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+// Variables
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$background-color: #f8f9fa;
+$text-color: #333;
+$border-radius: 8px;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  color: $text-color;
+  background-color: $background-color;
+}
+
+.navbar {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+  }
+
+  &__logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: $primary-color;
+    text-decoration: none;
+  }
+
+  &__menu {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin-left: 2rem;
+
+      a {
+        text-decoration: none;
+        color: $text-color;
+        font-weight: 500;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+}
+
+.download-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 70px; // To account for fixed navbar
+
+  &__content {
+    flex-grow: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: $secondary-color;
+    }
+  }
+
+  &__main {
+    @include flex-center;
+    flex-direction: column;
+  }
+
+  &__footer {
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: $secondary-color;
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.system-selector {
+  @include flex-center;
+  margin-bottom: 2rem;
+}
+
+.system-btn {
+  background-color: white;
+  border: 2px solid $secondary-color;
+  border-radius: $border-radius;
+  padding: 1rem 2rem;
+  margin: 0 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: darken(white, 5%);
+  }
+
+  &.active {
+    background-color: $primary-color;
+    color: white;
+    border-color: $primary-color;
+  }
+
+  .icon {
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
+  }
+}
+
+.download-options {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.download-option {
+  background-color: white;
+  border-radius: $border-radius;
+  padding: 2rem;
+  width: 45%;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin-bottom: 1.5rem;
+    color: $secondary-color;
+  }
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: $border-radius;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+
+  &--primary {
+    background-color: $primary-color;
+    color: white;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  &--secondary {
+    background-color: $secondary-color;
+    color: white;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+    }
+  }
+}
+
+.download-btn {
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .navbar {
+    &__container {
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    &__menu {
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      li {
+        margin: 0.5rem;
+      }
+    }
+  }
+
+  .download-page {
+    padding-top: 120px; // Increased to account for stacked navbar on mobile
+  }
+
+  .download-options {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .download-option {
+    width: 90%;
+    margin-bottom: 2rem;
+  }
+}

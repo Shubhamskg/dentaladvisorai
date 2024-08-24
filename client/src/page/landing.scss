@@ -44,9 +44,20 @@ body {
   }
 
   &-logo {
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+
+    .logo-image {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
   }
 
   &-links {
@@ -106,7 +117,7 @@ body {
   color: var(--white);
   padding: 150px 0 100px;
   text-align: center;
-  margin-top: 60px; // Add margin to account for fixed navbar
+  margin-top: 60px;
 
   &-content {
     max-width: 1200px;
@@ -127,9 +138,63 @@ body {
   }
 }
 
-.features {
+.revenue-boost {
   padding: 100px 0;
   background-color: var(--white);
+
+  &-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+    text-align: center;
+  }
+
+  &-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    flex: 1;
+
+    li {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      padding-left: 30px;
+      position: relative;
+
+      &:before {
+        content: '✓';
+        color: var(--secondary-color);
+        position: absolute;
+        left: 0;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .btn {
+    align-self: flex-start;
+  }
+}
+
+.features {
+  padding: 100px 0;
+  background-color: var(--background-color);
 
   &-content {
     max-width: 1200px;
@@ -152,7 +217,7 @@ body {
 }
 
 .feature-card {
-  background-color: var(--background-color);
+  background-color: var(--white);
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -167,11 +232,21 @@ body {
     color: var(--primary-color);
     margin-bottom: 20px;
   }
+
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+  }
+
+  p {
+    font-size: 1rem;
+  }
 }
 
 .about {
   padding: 100px 0;
-  background-color: var(--background-color);
+  background-color: var(--white);
 
   &-content {
     max-width: 800px;
@@ -194,7 +269,7 @@ body {
 
 .contact {
   padding: 100px 0;
-  background-color: var(--white);
+  background-color: var(--background-color);
 
   &-content {
     max-width: 600px;
@@ -237,7 +312,7 @@ body {
 .cta {
   padding: 100px 0;
   text-align: center;
-  background-color: var(--background-color);
+  background-color: var(--white);
 
   &-content {
     max-width: 1200px;
@@ -250,6 +325,11 @@ body {
     margin-bottom: 20px;
     color: var(--primary-color);
   }
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -261,9 +341,36 @@ body {
     &-container {
       justify-content: space-between;
     }
+
+    &-logo {
+      .logo-image {
+        width: 30px;
+        height: 30px;
+        margin-right: 0;
+      }
+
+      .logo-text {
+        display: none;
+      }
+    }
   }
 
   .hero h1 {
     font-size: 2.5rem;
+  }
+
+  .revenue-boost {
+    &-details {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    ul {
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      align-self: center;
+    }
   }
 }

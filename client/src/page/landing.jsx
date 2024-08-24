@@ -4,19 +4,19 @@ import './landing.scss';
 const Navbar = () => (
   <nav className="navbar">
     <div className="navbar-container">
-      <div className="navbar-logo">Dental Advisor</div>
+      <div className="navbar-logo">
+        <img src="../../public/favicon.png" alt="Dental Advisor Logo" className="logo-image" />
+        <span className="logo-text">Dental Advisor</span>
+      </div>
       <div className="navbar-links">
+        <a href="#revenue-boost">Revenue Boost</a>
         <a href="#features">Features</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
       </div>
       <div className="navbar-auth">
-        {/* <button className="btn btn-secondary"> */}
-            <a className='btn btn-secondary' href='/login/auth'>Login</a>
-            {/* </button> */}
-        {/* <button className="btn btn-primary"> */}
-            <a className="btn btn-primary" href='/signup'>Register</a>
-            {/* </button> */}
+        <a className='btn btn-secondary' href='/login/auth'>Login</a>
+        <a className="btn btn-primary" href='/signup'>Register</a>
       </div>
     </div>
   </nav>
@@ -44,23 +44,34 @@ const LandingPage = () => {
           </div>
         </section>
 
+        <section id="revenue-boost" className="revenue-boost">
+          <div className="revenue-boost-content">
+            <h2>Boost Your Practice Revenue</h2>
+            <div className="revenue-boost-details">
+              <ul>
+                <li>Automate personalized follow-up emails after each patient visit</li>
+                <li>Provide tailored product recommendations based on patient needs</li>
+                <li>Generate additional revenue through product sales</li>
+              </ul>
+              <a href='/login' className="btn btn-primary">Start Boosting Revenue</a>
+            </div>
+          </div>
+        </section>
+
         <section id="features" className="features">
           <div className="features-content">
             <h2>Why Choose DentalAdvisor?</h2>
             <div className="features-grid">
-            <FeatureCard
-                icon="💰"
-                title="Revenue Boost"
-                description="Automate personalized follow-up emails after each patient visit
-Provide tailored product recommendations based on patient needs
-Generate additional revenue through product sales"
+              <FeatureCard
+                icon="🎙️"
+                title="Transcription Features"
+                description="Utilize session recordings to generate clinical notes, patient letters, and other useful documentation automatically."
               />
               <FeatureCard
                 icon="💡"
                 title="AI-Powered Insights"
                 description="Get real-time recommendations to improve patient care and practice efficiency."
               />
-              
               <FeatureCard
                 icon="🦷"
                 title="Smart Dental GPT"
@@ -100,7 +111,7 @@ Generate additional revenue through product sales"
           <div className="cta-content">
             <h2>Ready to Revolutionize Your Practice?</h2>
             <p>Join thousands of dental professionals already benefiting from DentalAdvisor.</p>
-            <button className="btn btn-primary">Get Started</button>
+            <a href='/login' className="btn btn-primary">Get Started</a>
           </div>
         </section>
       </main>

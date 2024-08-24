@@ -48,16 +48,19 @@ const LandingPage = () => {
           <div className="features-content">
             <h2>Why Choose DentalAdvisor?</h2>
             <div className="features-grid">
+            <FeatureCard
+                icon="💰"
+                title="Revenue Boost"
+                description="Automate personalized follow-up emails after each patient visit
+Provide tailored product recommendations based on patient needs
+Generate additional revenue through product sales"
+              />
               <FeatureCard
                 icon="💡"
                 title="AI-Powered Insights"
                 description="Get real-time recommendations to improve patient care and practice efficiency."
               />
-              <FeatureCard
-                icon="💰"
-                title="Revenue Boost"
-                description="Increase your earnings with our innovative revenue sharing model."
-              />
+              
               <FeatureCard
                 icon="🦷"
                 title="Smart Dental GPT"

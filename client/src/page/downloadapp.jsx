@@ -1,12 +1,36 @@
 import React, { useState } from 'react';
 import './DownloadPage.scss';
+import instance from '../config/instance';
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { emptyUser } from '../redux/user'
+
 
 const DOWNLOAD_LINKS = {
   windows: "https://mega.nz/file/w6hAybJY#ZkIM0L2ogf-K3Fyf7QaDSUKZJc52-ElRuEPRX9-3Xe0",
   mac: "https://mega.nz/file/w6hAybJY#ZkIM0L2ogf-K3Fyf7QaDSUKZJc52-ElRuEPRX9-3Xe0"
 };
 
-const Navbar = () => (
+const Navbar = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const logOut = async () => {
+        // if (window.confirm("Do you want log out")) {
+          let res = null
+          try {
+            res = await instance.get('/api/user/logout')
+          } catch (err) {
+            alert(err)
+          } finally {
+            if (res?.data?.status === 200) {
+            //   alert("Done")
+              dispatch(emptyUser())
+              navigate('/')
+            }
+          }
+        // }
+      }
+    return(
   <nav className="navbar">
     <div className="navbar__container">
       <a href="/" className="navbar__logo">Dental Advisor</a>
@@ -14,11 +38,11 @@ const Navbar = () => (
         <li><a href="/features">Features</a></li>
         <li><a href="/pricing">Pricing</a></li>
         <li><a href="/support">Support</a></li>
-        {/* <li><a href="/login" className="btn btn--secondary">Login</a></li> */}
+        <li><p onClick={logOut} className="btn btn--secondary">Logout</p></li>
       </ul>
     </div>
   </nav>
-);
+)}
 
 const DownloadButton = ({ system, version }) => (
   <a href={DOWNLOAD_LINKS[system.toLowerCase()]} className="btn btn--primary download-btn" download>
@@ -29,6 +53,7 @@ const DownloadButton = ({ system, version }) => (
 const DownloadPage = () => {
   const [selectedSystem, setSelectedSystem] = useState('windows');
   const version = "1.0.0";
+  
 
   return (
     <div className="download-page">

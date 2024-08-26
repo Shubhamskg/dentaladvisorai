@@ -1,7 +1,7 @@
 import React, { Fragment, useCallback, useRef, useState } from 'react'
 import { Eye, EyeHide } from '../../assets'
 
-const FormFeild = ({ label,
+const FormField = ({ label,
     value, name, type, handleInput,
     passwordClass, isDisabled, error }) => {
 
@@ -74,4 +74,4 @@ const FormFeild = ({ label,
     )
 }
 
-export default FormFeild
+export default FormField

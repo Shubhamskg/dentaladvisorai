@@ -92,7 +92,7 @@ const DownloadPage = () => {
             <div className="download-option">
               <h2>Use Online Version</h2>
               <p>Access DentalAdvisor directly from your web browser.</p>
-              <a href="/app" className="btn btn--secondary">Launch Web App</a>
+              <a href="/chat" className="btn btn--secondary">Launch Web App</a>
             </div>
           </div>
         </main>

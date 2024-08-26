@@ -1,0 +1,217 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // min-height: 100vh;
+    background-color: #f0f2f5;
+    // padding: 10px;
+  }
+  
+  .login-form {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 480px; // Increased from 400px
+  
+    @media (max-width: 520px) {
+      padding: 30px;
+    }
+  }
+  
+  h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+  
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #555;
+      font-weight: 500;
+    }
+  
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+  
+      &:focus {
+        outline: none;
+        border-color: #4a90e2;
+      }
+    }
+  }
+  
+  .password-input {
+    position: relative;
+  
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+    }
+  }
+  
+  .btn-primary {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #4a90e2;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #3a7bc8;
+    }
+  }
+  
+  .email-display {
+    background-color: #f7f9fc;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    span {
+      font-weight: 500;
+      color: #333;
+    }
+  
+    button {
+      background: none;
+      border: none;
+      color: #4a90e2;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+  
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 15px;
+    text-align: center;
+  }
+  
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 24px 0;
+  
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    span {
+      padding: 0 10px;
+      color: #777;
+      font-size: 14px;
+    }
+  }
+  
+//   .btn-google {
+//     width: 100%;
+//     padding: 12px 16px;
+//     background-color: #ffffff;
+//     color: #333;
+//     border: 1px solid #ddd;
+//     border-radius: 6px;
+//     font-size: 16px;
+//     font-weight: 600;
+//     cursor: pointer;
+//     transition: background-color 0.3s ease;
+  
+//     &:hover {
+//       background-color: #f5f5f5;
+//     }
+//   }
+.btn-google {
+    width: 100%;
+    padding: 10px 16px;
+    background-color: #ffffff;
+    color: #3c4043;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    &:hover {
+      background-color: #f7f8f9;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+  
+  .login-footer {
+    margin-top: 24px;
+    text-align: center;
+  
+    .forgot-password {
+      display: block;
+      color: #4a90e2;
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 12px;
+  
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  
+    .signup-link {
+      font-size: 14px;
+      color: #666;
+  
+      a {
+        color: #4a90e2;
+        text-decoration: none;
+        font-weight: 500;
+  
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }

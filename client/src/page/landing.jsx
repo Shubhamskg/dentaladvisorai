@@ -44,7 +44,7 @@ const LandingPage = () => {
           <div className="hero-content">
             <h1>Transform Your Dental Practice with AI</h1>
             <p>Enhance patient care, boost revenue, and streamline your workflow with our cutting-edge AI technology.</p>
-            <button className="btn btn-secondary">Learn More</button>
+            <a href='#about' className="btn btn-secondary">Learn More</a>
           </div>
         </section>
 

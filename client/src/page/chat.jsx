@@ -142,9 +142,9 @@ const Main = () => {
     <div className="main">
       
       <div className="navbar">
-        <button className="option_button active" ref={genRef} onClick={()=>{setOption("general");if(path!='/')navigate("/"); genRef.current.classList.add("active"), noteRef.current.classList.remove("active"), letRef.current.classList.remove("active")}}>Dental GPT</button>
-        <button className="option_button" ref={noteRef} onClick={()=>{setOption("notes");if(path!='/')navigate("/");  noteRef.current.classList.add("active"),genRef.current.classList.remove("active"), letRef.current.classList.remove("active")}}>Clinical Notes</button>
-        <button className="option_button" ref={letRef} onClick={()=>{setOption("letters");if(path!='/')navigate("/"); letRef.current.classList.add("active"),noteRef.current.classList.remove("active"), genRef.current.classList.remove("active")}}>Patient Letters</button>
+        <button className="option_button active" ref={genRef} onClick={()=>{setOption("general");if(path!='/')navigate("/chat"); genRef.current.classList.add("active"), noteRef.current.classList.remove("active"), letRef.current.classList.remove("active")}}>Dental GPT</button>
+        <button className="option_button" ref={noteRef} onClick={()=>{setOption("notes");if(path!='/')navigate("/chat");  noteRef.current.classList.add("active"),genRef.current.classList.remove("active"), letRef.current.classList.remove("active")}}>Clinical Notes</button>
+        <button className="option_button" ref={letRef} onClick={()=>{setOption("letters");if(path!='/')navigate("/chat"); letRef.current.classList.add("active"),noteRef.current.classList.remove("active"), genRef.current.classList.remove("active")}}>Patient Letters</button>
         {/* <button className="option_button"  onClick={()=>{navigate("/treatmentprice")}}>Treatment Price</button> */}
         {/* <button className="option_button"  onClick={()=>{navigate("/patient")}}>Patient Portal</button> */}
 

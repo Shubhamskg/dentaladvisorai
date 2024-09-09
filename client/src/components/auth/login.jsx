@@ -200,7 +200,7 @@ const LoginComponent = () => {
   const [step, setStep] = useState('email');
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
+    pass: '',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -231,6 +231,7 @@ const LoginComponent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("formData",formData);
     if (step === 'email') {
       setStep('password');
     } else {
@@ -238,6 +239,7 @@ const LoginComponent = () => {
         const res = await instance.get('/api/user/login', {
           params: { ...formData, manual: true }
         });
+        console.log("res",res);
         if (res?.data) {
           dispatch(insertUser(res.data.data));
           navigate('/');
@@ -278,9 +280,9 @@ const LoginComponent = () => {
                 <div className="password-input">
                   <input
                     type={showPassword ? "text" : "password"}
-                    id="password"
-                    name="password"
-                    value={formData.password}
+                    id="pass"
+                    name="pass"
+                    value={formData.pass}
                     onChange={handleInput}
                     required
                     placeholder="Enter your password"

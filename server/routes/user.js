@@ -239,6 +239,7 @@ router.put('/signup-finish', CheckLogged, async (req, res) => {
 })
 
 router.get('/login', CheckLogged, async (req, res) => {
+    console.log(req.query)
     const Continue = async () => {
         let response = null
         try {

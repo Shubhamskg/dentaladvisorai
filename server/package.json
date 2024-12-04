@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "build": "node app.js"
   },
   "author": "anson benny",
   "license": "ISC",
@@ -28,8 +29,11 @@
     "nodemailer": "^6.9.1",
     "nodemailer-smtp-transport": "^2.7.4",
     "nodemon": "^2.0.22",
+    "npm": "^10.9.1",
     "openai": "^4.24.1",
+    "simple-concat": "^1.0.1",
     "socket.io": "^4.7.5",
+    "start": "^5.1.0",
     "stripe": "^14.23.0"
   }
 }
